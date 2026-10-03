@@ -62,4 +62,4 @@ During development, checks found a softness comparison that was too weak, angula
 - **Public deployment and challenge submission:** prepared only. Keep Workers Free, configure Turnstile and obtain publication authorization. Recheck the official deadline/rules before submitting.
 - **Physical mobile devices, cross-browser/long-duration performance, arbitrary self-collision and offline restart:** no such claims are made.
 
-The local preview stays at `http://127.0.0.1:5173/`. Source control contains only this newly created project; no earlier work was replaced. Local Git commits retain actual creation times before the 5 October deadline, and no remote repository is configured.
+The local preview stays at `http://127.0.0.1:5173/`. Source control contains only this newly created project; no earlier work was replaced. Local Git commits retain actual creation times before the 5 October deadline, and no remote repository is configured. The source archive includes `history.bundle`; recover the repository with `git clone history.bundle squishy-lab-restored` if needed.

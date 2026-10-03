@@ -1,9 +1,10 @@
 import type { Plugin } from 'vite';
 import { Readable } from 'node:stream';
+import { createHash } from 'node:crypto';
 import { ApiError,boundedBody,deadline,infer,json } from '../worker/api.ts';
 import { validateRequest } from '../src/shared/spec.ts';
 import { liveAi } from './cloudflare-access.ts';
-import { MODEL_3B,MODEL_8B,MODEL_QWEN } from '../src/shared/prompt.ts';
+import { MODEL_3B,MODEL_8B,MODEL_QWEN,SYSTEM_PROMPT } from '../src/shared/prompt.ts';
 // Explicit opt-in evaluation only. This plugin is never in the deployed Worker.
 // Credentials stay in this Node process. No paid plan or resource is created.
 export async function localAiPlugin():Promise<Plugin>{
@@ -22,7 +23,7 @@ export async function localAiPlugin():Promise<Plugin>{
         if(req.headers.origin&&req.headers.origin!==url.origin)throw new ApiError(403,'origin','Origine non consentita.');
         if(req.headers['sec-fetch-site']==='cross-site')throw new ApiError(403,'origin','Origine non consentita.');
         if(url.pathname==='/api/config'&&req.method==='GET')response=json({provider:'evaluation-ai',model});
-        else if(url.pathname==='/api/evaluation-report'&&req.method==='GET')response=json({provider:'LIVE Workers AI, local evaluation; production Turnstile not exercised',freeCheck:session.freeCheck,calls:session.calls,limit:12});
+        else if(url.pathname==='/api/evaluation-report'&&req.method==='GET')response=json({provider:'LIVE Workers AI, local evaluation; production Turnstile not exercised',systemPromptSha256:createHash('sha256').update(SYSTEM_PROMPT).digest('hex'),freeCheck:session.freeCheck,calls:session.calls,limit:12});
         else{
           if(url.pathname!=='/api/squishy'||req.method!=='POST')throw new ApiError(405,'method','Metodo non consentito.');
           if(busy)throw new ApiError(429,'busy','Un test è già in corso.');

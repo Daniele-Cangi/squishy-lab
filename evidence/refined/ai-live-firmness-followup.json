@@ -1,0 +1,727 @@
+{
+  "measuredAt": "2026-10-03T19:39:21.703Z",
+  "revision": "25668ead13384c307fe358ddc2f62a5e4d2d848c",
+  "runtimeSourceSha256": "180d46cb0a513ec2a9962ca691413a0d30f1314f8e43933cb205cd5ac1ca3f97",
+  "node": "v22.19.0",
+  "platform": "win32",
+  "promptSha256": "c43a23acef8c4e8dbb514f0e1a4b6b8d78e1a7d373abe11050da5c2884d98140",
+  "provider": "LIVE Workers AI, local evaluation; production Turnstile not exercised",
+  "freeCheck": "Workers Free confirmed by the user; subscription API returned HTTP 403",
+  "beforeCorrection": [
+    {
+      "prompt": "un monchi giallo molto duro",
+      "httpStatus": 200,
+      "body": {
+        "version": 1,
+        "status": "unsupported",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {},
+        "message": "richiesta non supportata",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      }
+    },
+    {
+      "prompt": "un mochi giallo molto duro",
+      "httpStatus": 200,
+      "body": {
+        "version": 1,
+        "status": "unsupported",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {},
+        "message": "richiesta non supportata",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "it-typo-very-hard",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "un monchi giallo molto duro",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "it-typo-very-hard",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "un monchi giallo molto duro",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "color",
+          "softness"
+        ],
+        "color": "yellow",
+        "bands": {
+          "softness": [
+            0.1,
+            0.25
+          ]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "version": 1,
+        "status": "ok",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#ead577",
+          "finish": "matte",
+          "softness": 0.15,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {
+          "color": "#ead577",
+          "softness": 0.15
+        },
+        "message": "molto duro significa softness 0.15",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      },
+      "semanticPass": true,
+      "preserved": true,
+      "failures": []
+    },
+    {
+      "id": "it-create-very-hard",
+      "request": {
+        "version": 1,
+        "mode": "create",
+        "prompt": "Un mochi giallo molto duro."
+      },
+      "expected": {
+        "id": "it-create-very-hard",
+        "request": {
+          "version": 1,
+          "mode": "create",
+          "prompt": "Un mochi giallo molto duro."
+        },
+        "status": "ok",
+        "affected": [
+          "color",
+          "softness"
+        ],
+        "color": "yellow",
+        "bands": {
+          "softness": [
+            0.1,
+            0.25
+          ]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "version": 1,
+        "status": "ok",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#ead577",
+          "finish": "matte",
+          "softness": 0.15,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {
+          "color": "#ead577",
+          "softness": 0.15
+        },
+        "message": "Molto duro significa softness 0.15",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      },
+      "semanticPass": true,
+      "preserved": true,
+      "failures": []
+    },
+    {
+      "id": "it-harder-protected-color",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Uguale, ma più duro. Non cambiare colore.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "it-harder-protected-color",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Uguale, ma più duro. Non cambiare colore.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "softness"
+        ],
+        "bands": {
+          "softness": [
+            0.1,
+            0.7
+          ]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "version": 1,
+        "status": "ok",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.59,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {
+          "softness": 0.59
+        },
+        "message": "Meno morbidezza, duro",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      },
+      "semanticPass": true,
+      "preserved": true,
+      "failures": []
+    },
+    {
+      "id": "it-not-hard-soft",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Un mochi giallo, non duro: molto morbido.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "it-not-hard-soft",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Un mochi giallo, non duro: molto morbido.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "color",
+          "softness"
+        ],
+        "color": "yellow",
+        "bands": {
+          "softness": [
+            0.85,
+            1
+          ]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "version": 1,
+        "status": "ok",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#ead577",
+          "finish": "matte",
+          "softness": 0.95,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {
+          "color": "#ead577",
+          "softness": 0.95
+        },
+        "message": "Molto morbido significa softness 0.95.",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      },
+      "semanticPass": true,
+      "preserved": true,
+      "failures": []
+    },
+    {
+      "id": "en-very-firm",
+      "request": {
+        "version": 1,
+        "mode": "create",
+        "prompt": "A very firm yellow mochi."
+      },
+      "expected": {
+        "id": "en-very-firm",
+        "request": {
+          "version": 1,
+          "mode": "create",
+          "prompt": "A very firm yellow mochi."
+        },
+        "status": "ok",
+        "affected": [
+          "color",
+          "softness"
+        ],
+        "color": "yellow",
+        "bands": {
+          "softness": [
+            0.1,
+            0.25
+          ]
+        }
+      },
+      "httpStatus": 200,
+      "response": {
+        "version": 1,
+        "status": "ok",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#ead577",
+          "finish": "matte",
+          "softness": 0.15,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {
+          "color": "#ead577",
+          "softness": 0.15
+        },
+        "message": "molto sodo significa softness 0.15",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      },
+      "semanticPass": true,
+      "preserved": true,
+      "failures": []
+    },
+    {
+      "id": "it-hard-unsupported-animal",
+      "request": {
+        "version": 1,
+        "mode": "create",
+        "prompt": "Un panda giallo molto duro."
+      },
+      "expected": {
+        "id": "it-hard-unsupported-animal",
+        "request": {
+          "version": 1,
+          "mode": "create",
+          "prompt": "Un panda giallo molto duro."
+        },
+        "status": "unsupported",
+        "affected": []
+      },
+      "httpStatus": 200,
+      "response": {
+        "version": 1,
+        "status": "unsupported",
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "patch": {},
+        "message": "forma non supportata",
+        "corrections": [],
+        "repaired": false,
+        "provider": "workers-ai"
+      },
+      "semanticPass": true,
+      "preserved": true,
+      "failures": []
+    }
+  ],
+  "calls": [
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 3211,
+      "usage": {
+        "prompt_tokens": 1041,
+        "completion_tokens": 42,
+        "total_tokens": 1083,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 6.09412956237793
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 2933,
+      "usage": {
+        "prompt_tokens": 1041,
+        "completion_tokens": 43,
+        "total_tokens": 1084,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 6.12460470199585
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 2659,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 30,
+        "total_tokens": 1077,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 5.7561798095703125
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 2565,
+      "usage": {
+        "prompt_tokens": 1046,
+        "completion_tokens": 45,
+        "total_tokens": 1091,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 6.208676815032959
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 2704,
+      "usage": {
+        "prompt_tokens": 1039,
+        "completion_tokens": 43,
+        "total_tokens": 1082,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 6.115355491638184
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 3097,
+      "usage": {
+        "prompt_tokens": 1040,
+        "completion_tokens": 21,
+        "total_tokens": 1061,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 5.449534893035889
+      },
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "priorSmokeRegression": {
+    "rows": [
+      {
+        "id": "it-less-soft",
+        "response": {
+          "version": 1,
+          "status": "ok",
+          "spec": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.59,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          },
+          "patch": {
+            "softness": 0.59
+          },
+          "message": "Meno molle significa una riduzione della morbidezza.",
+          "corrections": [],
+          "repaired": false,
+          "provider": "workers-ai"
+        },
+        "semanticPass": true,
+        "preserved": true,
+        "failures": []
+      },
+      {
+        "id": "it-protect-color",
+        "response": {
+          "version": 1,
+          "status": "ok",
+          "spec": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 2.02,
+            "damping": 0.88
+          },
+          "patch": {
+            "recoverySeconds": 2.02
+          },
+          "message": "Riduce il tempo di recupero",
+          "corrections": [],
+          "repaired": false,
+          "provider": "workers-ai"
+        },
+        "semanticPass": true,
+        "preserved": true,
+        "failures": []
+      },
+      {
+        "id": "it-shark",
+        "response": {
+          "version": 1,
+          "status": "unsupported",
+          "spec": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          },
+          "patch": {},
+          "message": "forma non supportata",
+          "corrections": [],
+          "repaired": false,
+          "provider": "workers-ai"
+        },
+        "semanticPass": true,
+        "preserved": true,
+        "failures": []
+      }
+    ],
+    "calls": [
+      {
+        "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+        "durationMs": 2684,
+        "usage": {
+          "prompt_tokens": 1041,
+          "completion_tokens": 36,
+          "total_tokens": 1077,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "neurons": 5.911281108856201
+        },
+        "status": 200
+      },
+      {
+        "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+        "durationMs": 3169,
+        "usage": {
+          "prompt_tokens": 1048,
+          "completion_tokens": 33,
+          "total_tokens": 1081,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "neurons": 5.852229118347168
+        },
+        "status": 200
+      },
+      {
+        "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+        "durationMs": 2269,
+        "usage": {
+          "prompt_tokens": 1042,
+          "completion_tokens": 21,
+          "total_tokens": 1063,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "neurons": 5.458784103393555
+        },
+        "status": 200
+      }
+    ]
+  }
+}

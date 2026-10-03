@@ -19,6 +19,7 @@ The page immediately shows a local preset. The **Demo locale · senza AI** descr
 - `Uguale, ma meno molle.`
 - `Non cambiare colore: fallo riprendere più velocemente.`
 - `Lo voglio più schiacciato, non più piccolo.`
+- `Un mochi giallo molto duro.`
 
 Hold the object to increase pressure over 0.85 seconds; drag to move the contact and drag down to add depth. Pressure does not depend on hardware pressure sensors. Hold **Space/Enter** on the canvas or on **Tieni per premere**; release to recover. **Escape** on the canvas and **Ripristina forma** restore the current material's shape. **Ruota la vista** is separate from deformation. The final footer action removes the optional saved spec. Prompts are never saved.
 
@@ -35,7 +36,7 @@ After a material edit, **Confronta prima e dopo** repeats a two-second press and
 - `POST /api/squishy`, explicit local mock, Cloudflare Workers AI binding adapter, one repair at most, quota/rate/timeout/unavailable states, stale-response protection and an object that stays interactive while a request runs or the network fails.
 - Cloudflare Static Assets configuration, server-validated Turnstile, Workers rate-limiting bindings, tests, essential CI and recorded evidence.
 
-**The real phrase → model → material loop is now verified.** Llama 3B and 8B had semantic misses, so the selected model is **Qwen3-30B-A3B-FP8**, on the same Cloudflare Workers AI service. Its final corpus passed 26/26; separate paraphrase regressions passed 8/8 and 5/5, with one bounded repair in the last set. The initial unseen run had a recovery-direction miss, preserved in the history. Real browser A/B evidence shows lower surface indentation after “meno molle.” See [verification](docs/VERIFICATION.md). Cloudflare deployment and real public Turnstile/rate-limit integration remain external steps; the prepared Worker still has AI disabled.
+**The real phrase → model → material loop is now verified.** Llama 3B and 8B had semantic misses, so the selected model is **Qwen3-30B-A3B-FP8**, on the same Cloudflare Workers AI service. Its last full campaign passed 26/26; separate paraphrase regressions passed 8/8 and 5/5, with one bounded repair in the last set. The initial unseen run had a recovery-direction miss, preserved in the history. A later user report exposed an Italian “molto duro” interpretation miss, even without a typo: clarified firmness vocabulary now passes six targeted live cases and three prior smoke cases, including the exact “monchi” phrase in the real browser. Real browser A/B evidence shows lower surface indentation after “meno molle.” See [verification](docs/VERIFICATION.md). Cloudflare deployment and real public Turnstile/rate-limit integration remain external steps; the prepared Worker still has AI disabled.
 
 For an intentional live local session, authenticate with `npx wrangler login`, keep Workers Free, and run `npm run dev:ai`. Open **http://127.0.0.1:5174**. This separate loopback adapter uses real inference, keeps credentials in the Node process and caps the session at 12 model calls. If subscription access returns 403, the documented Free-plan confirmation flag is required; see [Cloudflare setup](docs/CLOUDFLARE.md). Ordinary development and CI remain explicitly mock.
 

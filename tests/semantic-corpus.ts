@@ -39,10 +39,11 @@ function colorCategory(color:string) {
   const [r,g,b]=[1,3,5].map(i=>parseInt(color.slice(i,i+2),16));
   if(b>r*1.12&&b>g*.95&&r>g*.9)return 'purple';
   if(b>r*1.12&&g>r*1.1)return 'blue';
+  if(r>b*1.2&&g>b*1.15&&g>=r*.82)return 'yellow';
   if(r>b*1.12&&g>b*1.04&&r>g*1.04)return 'peach';
   if(r>g*1.12&&b>g*1.05)return 'pink';
   if(g>r*1.1&&g>b*1.05)return 'green';
-  if(r>b*1.2&&g>b*1.15)return 'yellow';return 'other';
+  return 'other';
 }
 export function assess(case_:SemanticCase,response:SquishyResponse) {
   const base=case_.request.current??DEFAULT_SPEC,failures:string[]=[];

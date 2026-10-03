@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { infer,ApiError } from '../worker/api';
 import { CORPUS,assess } from '../tests/semantic-corpus';
 import { HOLDOUT,FRESH_HOLDOUT } from '../tests/semantic-holdout';
+import { FIRMNESS_CASES } from '../tests/semantic-firmness';
 import { MODEL_3B,MODEL_8B,MODEL_QWEN } from '../src/shared/prompt';
 import type { SquishySpec } from '../src/shared/spec';
 import { SoftBody,FIXED_DT } from '../src/physics/solver';
@@ -11,8 +12,8 @@ import { STANDARD_GESTURE,standardContact } from '../src/physics/gesture';
 import { liveAi } from './cloudflare-access';
 import { evidenceContext } from './evidence';
 const live=process.argv.includes('--live'),model=process.argv.includes('--qwen')?MODEL_QWEN:process.argv.includes('--8b')?MODEL_8B:MODEL_3B;
-const suite=process.argv.includes('--smoke')?'smoke':process.argv.includes('--fresh')?'holdout-fresh':process.argv.includes('--holdout')?'holdout':'corpus';
-const cases=suite==='holdout-fresh'?FRESH_HOLDOUT:suite==='holdout'?HOLDOUT:suite==='smoke'?CORPUS.filter(c=>['it-less-soft','it-protect-color','it-shark'].includes(c.id)):CORPUS;
+const suite=process.argv.includes('--firmness')?'firmness':process.argv.includes('--smoke')?'smoke':process.argv.includes('--fresh')?'holdout-fresh':process.argv.includes('--holdout')?'holdout':'corpus';
+const cases=suite==='firmness'?FIRMNESS_CASES:suite==='holdout-fresh'?FRESH_HOLDOUT:suite==='holdout'?HOLDOUT:suite==='smoke'?CORPUS.filter(c=>['it-less-soft','it-protect-color','it-shark'].includes(c.id)):CORPUS;
 const session=live?await liveAi(cases.length*2):null;
 function engineResult(spec:SquishySpec){
   const body=new SoftBody(spec),surface=createSurface(body.cage),probe=surfacePoint(surface,STANDARD_GESTURE.logicalPoint);

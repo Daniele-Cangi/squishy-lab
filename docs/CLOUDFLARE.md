@@ -12,12 +12,15 @@ Authenticate with the project's pinned Wrangler (`npx wrangler login`). The harn
 
 Intentional live commands, separate from CI:
 
+For a long-lived local preview, the adapter retrieves the current credential with `wrangler auth token --json` before each inference. Wrangler refreshes expired OAuth tokens; credentials remain in memory and explicit environment tokens stay unchanged. This fixes the observed HTTP 401 after startup's captured token expired. Credential retrieval obeys cancellation and a ten-second bound inside the model-call deadline. It does not retry rejected inference. Follow-up call durations include the CLI lookup; the earlier campaign latency numbers measured provider HTTP time. The local session cap now reports a specific 429 message rather than claiming the daily provider quota is exhausted. The evaluation report also identifies the actual backend system prompt by SHA-256.
+
 ```sh
 npm run evaluate:ai -- --live       # 3B, prompted JSON, up to 52 calls for 26 cases
 npm run evaluate:ai -- --live --8b  # 8B, documented JSON Schema mode, same corpus
 npm run evaluate:ai -- --live --qwen # selected model, same corpus
 npm run evaluate:ai -- --live --qwen --holdout
 npm run evaluate:ai -- --live --qwen --fresh # reserved phrases, now also regressions
+npm run evaluate:ai -- --live --qwen --firmness # six follow-up firmness/typo regressions
 ```
 
 Missing authentication or an unconfirmed 403 billing check exits before inference. Calls are bounded to two per case; quota/unavailability/timeout stops the campaign. Reports live in `evidence/refined/`; only synthetic, reviewed evidence is committed. Ordinary tests make zero model calls. Historical misses remain in `ai-history/`. Model selection considers meaning, preservation, repair, latency and reported neurons; JSON validity and model size alone proved insufficient. No automatic provider failover is implemented.

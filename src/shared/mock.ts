@@ -8,7 +8,9 @@ export function mockInterpret(request:SquishyRequest):ModelOutput {
   if(/meno (?:molle|morbido)|less soft|firmer|piu sod|piu dur|less squishy/.test(text)) patch.softness=Math.max(.1,base.softness-.28);
   else if(/piu (?:molle|morbido)|softer/.test(text)) patch.softness=Math.min(1,base.softness+.2);
   else if(/molto morb|very soft|super soft|morbbido/.test(text)) patch.softness=.92;
+  else if(/molto (?:dur|sod)|very (?:hard|firm)/.test(text)) patch.softness=.15;
   else if(/morbido|soft/.test(text)) patch.softness=.76;
+  else if(/\b(?:duro|sodo|hard|firm)\b/.test(text)) patch.softness=.3;
   if(/veloc|faster|quick|rapid/.test(text)) patch.recoverySeconds=Math.max(.3,base.recoverySeconds*.32);
   else if(/piu lent|slower/.test(text)) patch.recoverySeconds=Math.min(12,base.recoverySeconds*1.65);
   else if(/lent|slow/.test(text)) patch.recoverySeconds=6;

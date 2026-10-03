@@ -4,9 +4,12 @@ import './style.css';
 import { SquishyScene } from './scene';
 import { DEFAULT_SPEC, PRESETS, validateSpec, type SquishySpec } from './shared/spec';
 import { generate, RequestGate } from './client';
+import { COLLECTION,DEFAULT_APPEARANCE,validateAppearance,collectionName,type Appearance,type SurfaceEffect } from './collection';
 document.querySelector<HTMLDivElement>('#app')!.innerHTML=labMarkup;
 function el<T extends HTMLElement=HTMLElement>(id:string){return document.getElementById(id) as T;}
 let spec=structuredClone(DEFAULT_SPEC),name='Nuvola viola';
+let appearance:Appearance={...DEFAULT_APPEARANCE};
+try{const saved=localStorage.getItem('squishy-appearance-v1');if(saved)appearance=validateAppearance(JSON.parse(saved));}catch{try{localStorage.removeItem('squishy-appearance-v1');}catch{/* Optional storage. */}}
 try {const saved=localStorage.getItem('squishy-spec-v1');if(saved){spec=validateSpec(JSON.parse(saved));name='Il tuo mochi';}}catch{try{localStorage.removeItem('squishy-spec-v1');}catch{/* Storage can be disabled. */}}
 const status=el('status'),prompt=el<HTMLTextAreaElement>('prompt'),submit=el<HTMLButtonElement>('generate'),canvas=el<HTMLCanvasElement>('squishy'),gate=new RequestGate();
 const updateViewport=()=>{
@@ -16,9 +19,10 @@ const updateViewport=()=>{
 window.visualViewport?.addEventListener('resize',updateViewport);window.addEventListener('resize',updateViewport);updateViewport();
 prompt.addEventListener('focus',()=>{document.body.dataset.composing='true';updateViewport();});
 prompt.addEventListener('blur',()=>{delete document.body.dataset.composing;});
-let scene:SquishyScene;
+let scene!:SquishyScene;
 try {scene=new SquishyScene(canvas,spec,state=>{const text=copy.states[state];if(el('state').textContent!==text)el('state').textContent=text;el('state').dataset.state=state;});}
 catch {el('canvas-error').hidden=false;for(const id of ['squeeze','rotate'])el<HTMLButtonElement>(id).disabled=true;}
+scene?.setAppearance(appearance);
 let mode:'create'|'modify'='modify',provider='mock',requestController:AbortController|null=null;
 let comparison:{before:SquishySpec;after:SquishySpec}|null=null,comparing=false;
 function clearComparison(){scene?.stopComparison();comparison=null;el('comparison-row').hidden=true;}
@@ -45,12 +49,23 @@ function renewVerification() {
 }
 declare global {interface Window {turnstile?:Turnstile; __squishy?:{snapshot:()=>unknown;press:()=>void;release:()=>void;reset:()=>void;setSpec:(spec:SquishySpec)=>void};}}
 function updateSummary() {
-  el('material-name').textContent=name;el('color-chip').style.backgroundColor=spec.color;
-  el('material-description').textContent=materialSummary(spec);
+  el('material-name').textContent=appearance.shape==='mochi'?name:collectionName(appearance);el('color-chip').style.backgroundColor=spec.color;
+  el('material-description').textContent=appearance.effect==='foam'?materialSummary(spec):materialSummary(spec).replace(/ · (opaco|satinato)$/u,appearance.effect==='clear'?' · trasparente e glitter':' · glitter');
+  document.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach(b=>{const selected=JSON.stringify(PRESETS[Number(b.dataset.preset)].spec)===JSON.stringify(spec);b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
 }
 function save(){try{localStorage.setItem('squishy-spec-v1',JSON.stringify(spec));}catch{/* Storage is optional. */}}
 function apply(next:SquishySpec,label:string){scene?.applySpec(next);spec=next;name=label;updateSummary();save();}
 function cancelRequest(){gate.invalidate();requestController?.abort();requestController=null;submit.disabled=false;el('generate-label').textContent='Applica la descrizione';}
+function updateAppearanceControls(){
+  document.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach(b=>{const a=COLLECTION.find(c=>c.id===b.dataset.shape)!.appearance;b.setAttribute('aria-pressed',String(a.shape===appearance.shape&&a.label===appearance.label));});
+  document.querySelectorAll<HTMLButtonElement>('[data-effect]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.effect===appearance.effect)));
+  el<HTMLInputElement>('face').checked=appearance.face;
+}
+function applyAppearance(next:Appearance){cancelRequest();clearComparison();appearance={...next};scene?.setAppearance(appearance);updateAppearanceControls();updateSummary();try{localStorage.setItem('squishy-appearance-v1',JSON.stringify(appearance));}catch{/* Optional storage. */}}
+document.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach(button=>button.onclick=()=>{const choice=COLLECTION.find(c=>c.id===button.dataset.shape)!;applyAppearance(choice.appearance);apply(validateSpec({...spec,color:choice.color}),choice.name);document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});status.textContent=`${choice.name} pronto. Premi anche sulle scritte e sui dettagli.`;});
+document.querySelectorAll<HTMLButtonElement>('[data-effect]').forEach(button=>button.onclick=()=>{applyAppearance({...appearance,effect:button.dataset.effect as SurfaceEffect});status.textContent='Superficie aggiornata. Stesso materiale da premere.';});
+el<HTMLInputElement>('face').onchange=event=>applyAppearance({...appearance,face:(event.target as HTMLInputElement).checked});
+canvas.addEventListener('details-error',()=>{status.textContent='I dettagli non sono stati caricati. Ricarica la pagina per riprovare.';});
 function chooseMode(next:'create'|'modify') {mode=next;for(const m of ['create','modify']){const b=el<HTMLButtonElement>(`${m}-mode`);b.classList.toggle('selected',m===mode);b.setAttribute('aria-pressed',String(m===mode));}}
 el('create-mode').onclick=()=>chooseMode('create');el('modify-mode').onclick=()=>chooseMode('modify');
 document.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach(button=>button.onclick=()=>{
@@ -90,8 +105,8 @@ squeeze.onpointerdown=event=>{event.preventDefault();squeeze.setPointerCapture(e
 for(const name of ['pointerup','pointercancel','lostpointercapture','blur'])squeeze.addEventListener(name,()=>scene?.release());
 squeeze.onkeydown=event=>{if((event.code==='Space'||event.code==='Enter')&&!event.repeat){event.preventDefault();scene?.beginStandardPress();}};
 squeeze.onkeyup=event=>{if(event.code==='Space'||event.code==='Enter'){event.preventDefault();scene?.release();}};
-el('forget').onclick=()=>{cancelRequest();clearComparison();try{localStorage.removeItem('squishy-spec-v1');}catch{/* Storage can be disabled. */}scene?.reset();spec=structuredClone(DEFAULT_SPEC);scene?.applySpec(spec);name='Nuvola viola';updateSummary();status.textContent='Specifica salvata cancellata. Nessuna cronologia delle descrizioni è conservata.';};
-updateSummary();
+el('forget').onclick=()=>{cancelRequest();clearComparison();try{localStorage.removeItem('squishy-spec-v1');localStorage.removeItem('squishy-appearance-v1');}catch{/* Storage can be disabled. */}appearance={...DEFAULT_APPEARANCE};scene?.setAppearance(appearance);updateAppearanceControls();scene?.reset();spec=structuredClone(DEFAULT_SPEC);scene?.applySpec(spec);name='Nuvola viola';updateSummary();status.textContent='Specifica salvata cancellata. Nessuna cronologia delle descrizioni è conservata.';};
+updateSummary();updateAppearanceControls();
 async function configureProvider() {
   try {
     const response=await fetch(`${import.meta.env.VITE_API_BASE??''}/api/config`,{signal:AbortSignal.timeout(4000)});if(!response.ok)throw new Error();

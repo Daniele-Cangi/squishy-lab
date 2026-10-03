@@ -7,7 +7,7 @@ All numbers are finite. Unknown fields, missing spec fields, unsupported version
 | Field | Range/unit | Implemented meaning |
 |---|---|---|
 | `version` | literal `1` | Contract version |
-| `archetype` | `mochi` | The only implemented rounded blob family |
+| `archetype` | `mochi` | Unchanged AI material contract; local collection appearance selects the body shape separately |
 | `proportions.width/height/depth` | 0.65–1.6, dimensionless | Relative axes; divided by the cube root of their product to preserve reference volume. Largest/smallest axis ratio must be ≤2.4 |
 | `color` | `#rrggbb` | Surface base color; canonical lowercase |
 | `finish` | `matte` / `satin` | Roughness 0.83 / 0.48, opaque in both cases |

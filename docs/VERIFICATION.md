@@ -1,6 +1,12 @@
 # Refinement verification — 3 October 2026
 
-## Current result
+## Local collection follow-up
+
+The AI backend, model, prompts and v1 material contract are unchanged in this follow-up. The lab adds two printed bars, a smiling strawberry and a refractive cube, with locally selected faces, glitter and transparency. Blender 5.2.2 LTS was found at `E:\blender.exe` and used to generate the editable workshop and relief library. Body and cage geometry remain coherent; labels and facial details follow the actual render triangles. See [implementation and collection evidence](COLLECTION.md). Prior AI and hardware results below refer to their recorded revisions.
+
+Local validation passed **88 unit tests**, typecheck, lint and production build, and **17 installed-Chrome browser tests**. The [normal-time collection video](../evidence/collection/collection.webm), [snapshots and performance metadata](../evidence/collection/collection.json), and [mobile view](../evidence/collection/mobile.png) record the final UI. Idle physics and rendering now sleep and are explicitly checked to wake on interaction. Opaque collection entries recorded a 16.6 ms median frame interval during the video; the transparent cube recorded 24.9 ms. These short recorded samples are distinct from the historical mochi benchmark below.
+
+## AI material result, retained
 
 User follow-up: “un monchi giallo molto duro” was rejected by the real model; correcting the spelling to “mochi” still failed. The first prompt clarification passed only 3/6 targeted cases and also added unrequested damping in a relative edit; that miss remains in `ai-history/ai-live-firmness-followup-v1.json`. Clear Italian firmness instructions now pass **6/6 targeted live regressions**, plus **3/3 prior smoke regressions**, without repair. In both create and modify, yellow very-firm foam has softness **0.15**; “più duro” preserves unrequested fields, negated hardness remains soft, and a panda remains unsupported. The exact typo phrase was applied and rendered in Chrome: [screenshot](../evidence/refined/firm-yellow-followup.png), [responses and usage](../evidence/refined/ai-live-firmness-followup.json). These are scoped follow-up checks; the full 26-case live corpus below belongs to the preceding prompt version and was not rerun for this fix. The harness's yellow classifier was corrected to distinguish yellow from peach before this live run; no semantic bands were relaxed.
 

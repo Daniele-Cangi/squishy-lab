@@ -1,9 +1,10 @@
 import { compileSpec, type SquishySpec } from '../shared/spec';
+import type { ShapeId } from '../collection';
 export type Vec3 = [number, number, number];
 export interface Cage {
   rest: Float64Array; logical: Float64Array; inverseMass: Float64Array;
   tets: Uint16Array; volumes: Float64Array; edges: Uint16Array; lengths: Float64Array;
-  cells: number; radii: Vec3;
+  cells: number; radii: Vec3; shape:ShapeId;
 }
 export function roundedPoint(x: number, y: number, z: number, r: Vec3): Vec3 {
   // Spherified cube, continuous throughout the volume. Bottom is gently seated.
@@ -11,6 +12,16 @@ export function roundedPoint(x: number, y: number, z: number, r: Vec3): Vec3 {
   const py = y * Math.sqrt(1 - z*z/2 - x*x/2 + z*z*x*x/3);
   const pz = z * Math.sqrt(1 - x*x/2 - y*y/2 + x*x*y*y/3);
   return [px*r[0], r[1]*(py + 1) + 0.04, pz*r[2]];
+}
+export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='mochi'):Vec3{
+  if(shape==='mochi')return roundedPoint(x,y,z,r);
+  const unit=roundedPoint(x,y,z,[1,1,1]),sx=unit[0],sy=unit[1]-1.04,sz=unit[2];
+  if(shape==='strawberry'){
+    const taper=.6+.4*(sy+1)/2;
+    return [sx*r[0]*taper,(sy+1)*r[1]+.04,sz*r[2]*taper];
+  }
+  const round=shape==='butter'?.22:.35;
+  return [(x*(1-round)+sx*round)*r[0],(y*(1-round)+sy*round+1)*r[1]+.04,(z*(1-round)+sz*round)*r[2]];
 }
 export function signedVolume(p: ArrayLike<number>, a: number, b: number, c: number, d: number): number {
   a*=3; b*=3; c*=3; d*=3;
@@ -20,13 +31,13 @@ export function signedVolume(p: ArrayLike<number>, a: number, b: number, c: numb
   return (bx*(cy*dz-cz*dy) + by*(cz*dx-cx*dz) + bz*(cx*dy-cy*dx))/6;
 }
 export const permutations = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
-export function generateCage(spec: SquishySpec, cells=5): Cage {
-  const radii=compileSpec(spec).radii, n=cells+1, count=n**3;
+export function generateCage(spec: SquishySpec, cells=5,shape:ShapeId='mochi'): Cage {
+  const radii=compileSpec(spec).radii.map((v,a)=>v*(shape==='butter'?[1.35,.65,.74][a]:shape==='strawberry'?[.9,1.2,.9][a]:shape==='cube'?[.82,1.05,.93][a]:1)) as Vec3, n=cells+1, count=n**3;
   const rest=new Float64Array(count*3), logical=new Float64Array(count*3), inverseMass=new Float64Array(count).fill(1);
   const id=(x:number,y:number,z:number)=> x + n*(y+n*z);
   for(let z=0;z<n;z++) for(let y=0;y<n;y++) for(let x=0;x<n;x++) {
     const i=id(x,y,z), q:Vec3=[2*x/cells-1,2*y/cells-1,2*z/cells-1];
-    logical.set(q,i*3); rest.set(roundedPoint(...q,radii),i*3);
+    logical.set(q,i*3); rest.set(shapePoint(...q,radii,shape),i*3);
     // The low underside is held on a small invisible soft support.
     if (rest[i*3+1] < 0.04+radii[1]*0.16) inverseMass[i]=0;
   }
@@ -45,20 +56,22 @@ export function generateCage(spec: SquishySpec, cells=5): Cage {
   const edges=Uint16Array.from([...edgeSet].flatMap(k=>k.split(',').map(Number)));
   const lengths=new Float64Array(edges.length/2);
   for(let e=0;e<lengths.length;e++) { const a=edges[e*2]*3,b=edges[e*2+1]*3; lengths[e]=Math.hypot(rest[a]-rest[b],rest[a+1]-rest[b+1],rest[a+2]-rest[b+2]); }
-  return {rest,logical,inverseMass,tets:Uint16Array.from(ts),volumes:Float64Array.from(vs),edges,lengths,cells,radii};
+  return {rest,logical,inverseMass,tets:Uint16Array.from(ts),volumes:Float64Array.from(vs),edges,lengths,cells,radii,shape};
 }
 export interface SurfaceEmbedding {
+  faceGrids:{axis:number;sign:number;grid:number[]}[];subdivisions:number;
   rest: Float32Array; logical:Float32Array; indices: Uint16Array; nodes: Uint16Array; weights: Float64Array;
   neighborOffsets:Uint32Array; neighbors:Uint16Array;
   deformationOffsets:Uint32Array; deformationNodes:Uint16Array; deformationWeights:Float64Array;
 }
 export function createSurface(cage:Cage, subdivisions=30):SurfaceEmbedding {
+  const faceGrids:SurfaceEmbedding['faceGrids']=[];
   const rest:number[]=[], logical:number[]=[], indices:number[]=[], nodes:number[]=[], weights:number[]=[], map=new Map<string,number>();
   const n=cage.cells+1, id=(p:number[])=>p[0]+n*(p[1]+n*p[2]);
   function vertex(q:Vec3) {
     const key=q.map(v=>Math.round(v*subdivisions)).join(',');
     const found=map.get(key); if(found!==undefined) return found;
-    const index=rest.length/3; map.set(key,index); rest.push(...roundedPoint(...q,cage.radii));logical.push(...q);
+    const index=rest.length/3; map.set(key,index); rest.push(...shapePoint(...q,cage.radii,cage.shape));logical.push(...q);
     const g=q.map(v=>(v+1)*cage.cells/2), cell=g.map(v=>Math.min(cage.cells-1,Math.floor(v))), f=g.map((v,i)=>v-cell[i]);
     const order=[0,1,2].sort((a,b)=>f[b]-f[a]), path=[...cell];
     nodes.push(id(path));
@@ -72,6 +85,7 @@ export function createSurface(cage:Cage, subdivisions=30):SurfaceEmbedding {
       const q:Vec3=[0,0,0]; q[axis]=sign; q[other[0]]=u*2/subdivisions-1; q[other[1]]=v*2/subdivisions-1;
       grid.push(vertex(q));
     }
+    faceGrids.push({axis,sign,grid});
     for(let v=0;v<subdivisions;v++) for(let u=0;u<subdivisions;u++) {
       const a=grid[u+(subdivisions+1)*v],b=grid[u+1+(subdivisions+1)*v],c=grid[u+(subdivisions+1)*(v+1)],d=grid[u+1+(subdivisions+1)*(v+1)];
       if((axis===1?-1:1)*sign>0) indices.push(a,b,c,b,d,c); else indices.push(a,c,b,b,c,d);
@@ -99,7 +113,7 @@ export function createSurface(cage:Cage, subdivisions=30):SurfaceEmbedding {
   });
   const deformationOffsets=[0],deformationNodes:number[]=[],deformationWeights:number[]=[];
   for(const map of maps){const total=[...map.values()].reduce((a,b)=>a+b);for(const [node,weight]of map){deformationNodes.push(node);deformationWeights.push(weight/total);}deformationOffsets.push(deformationNodes.length);}
-  return {rest:Float32Array.from(rest),logical:Float32Array.from(logical),indices:Uint16Array.from(indices),nodes:Uint16Array.from(nodes),weights:Float64Array.from(weights),neighborOffsets:Uint32Array.from(offsets),neighbors:Uint16Array.from(neighbors),deformationOffsets:Uint32Array.from(deformationOffsets),deformationNodes:Uint16Array.from(deformationNodes),deformationWeights:Float64Array.from(deformationWeights)};
+  return {faceGrids,subdivisions,rest:Float32Array.from(rest),logical:Float32Array.from(logical),indices:Uint16Array.from(indices),nodes:Uint16Array.from(nodes),weights:Float64Array.from(weights),neighborOffsets:Uint32Array.from(offsets),neighbors:Uint16Array.from(neighbors),deformationOffsets:Uint32Array.from(deformationOffsets),deformationNodes:Uint16Array.from(deformationNodes),deformationWeights:Float64Array.from(deformationWeights)};
 }
 export function embedSurface(cage:Cage, positions:Float64Array, surface:SurfaceEmbedding, out:Float32Array) {
   for(let v=0;v<surface.rest.length/3;v++) for(let axis=0;axis<3;axis++) {
@@ -119,6 +133,12 @@ export function sampledSurfaceDepth(cage:Cage,positions:Float64Array,surface:Sur
   return depth;
 }
 export interface MaterialPoint {nodes:number[];weights:number[]}
+export function facePoint(surface:SurfaceEmbedding,axis:number,sign:number,u:number,v:number):MaterialPoint{
+  const face=surface.faceGrids.find(f=>f.axis===axis&&f.sign===sign)!;const n=surface.subdivisions;
+  const gu=(Math.max(-1,Math.min(1,u))+1)*n/2,gv=(Math.max(-1,Math.min(1,v))+1)*n/2,x=Math.min(n-1,Math.floor(gu)),y=Math.min(n-1,Math.floor(gv)),fu=gu-x,fv=gv-y;
+  const a=face.grid[x+(n+1)*y],b=face.grid[x+1+(n+1)*y],c=face.grid[x+(n+1)*(y+1)],d=face.grid[x+1+(n+1)*(y+1)];
+  return fu+fv<=1?{nodes:[a,b,c],weights:[1-fu-fv,fu,fv]}:{nodes:[b,d,c],weights:[1-fv,fu+fv-1,1-fu]};
+}
 export function cagePoint(cage:Cage,q:Vec3):MaterialPoint {
   const g=q.map(v=>(v+1)*cage.cells/2),cell=g.map(v=>Math.min(cage.cells-1,Math.floor(v))),f=g.map((v,i)=>v-cell[i]);
   const order=[0,1,2].sort((a,b)=>f[b]-f[a]),path=[...cell],nodes:number[]=[],n=cage.cells+1;

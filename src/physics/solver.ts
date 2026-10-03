@@ -1,5 +1,6 @@
 import { compileSpec, type SquishySpec } from '../shared/spec';
 import { generateCage, signedVolume, type Vec3 } from './cage';
+import type { ShapeId } from '../collection';
 export interface Contact { point:Vec3; normal:Vec3; intensity:number }
 export const FIXED_DT=1/120;
 export class SoftBody {
@@ -20,8 +21,8 @@ export class SoftBody {
   contact:Contact|null=null;
   time=0;
   safetyBackoffs=0;
-  constructor(public spec:SquishySpec) {
-    this.config=compileSpec(spec); this.cage=generateCage(spec);
+  constructor(public spec:SquishySpec,shape:ShapeId='mochi') {
+    this.config=compileSpec(spec); this.cage=generateCage(spec,5,shape);
     this.positions=this.cage.rest.slice(); this.previous=this.positions.slice();
     this.velocity=new Float64Array(this.positions.length); this.memory=this.velocity.slice(); this.targets=this.positions.slice();
     this.previousMemory=this.memory.slice();

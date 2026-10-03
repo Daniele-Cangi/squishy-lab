@@ -1,0 +1,921 @@
+{
+  "measuredAt": "2026-10-03T20:49:41.500Z",
+  "revision": "c0fdaa6bd7c7093a39493c99140eeba9aa177224",
+  "runtimeSourceSha256": "40fcf0d3d6c629bbe41181728fd7d538aedddc10b80ea0c5cc82dd85b32f7d37",
+  "node": "v22.19.0",
+  "platform": "win32",
+  "workingTree": " M .gitignore\n M README.md\n M docs/TECHNICAL-NOTES.md\n M docs/VERIFICATION.md\n M package.json\n M scripts/evidence.ts\n M src/main.ts\n M src/physics/cage.ts\n M src/physics/gesture.ts\n M src/physics/solver.ts\n M src/scene.ts\n M src/style.css\n M src/view.ts\n?? assets/\n?? docs/COLLECTION.md\n?? evidence/collection/\n?? public/assets/\n?? scripts/blender-collection.py\n?? scripts/export-workshop.ts\n?? scripts/record-collection.ts\n?? src/collection.ts\n?? src/decorations.ts\n?? tests/browser/collection.spec.ts\n?? tests/unit/collection.test.ts\n",
+  "conditions": "Normal browser time, installed Chrome; each form rests, holds standard pressure for 2.2s and recovers for 1.8s. Snapshots record actual achieved physics time. Glitter bar also uses a real pointer drag. No remote AI calls.",
+  "rendering": {
+    "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "gpu": "ANGLE (AMD, AMD Radeon(TM) Vega 8 Graphics (0x000015D8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "viewport": [
+      1366,
+      1100
+    ],
+    "dpr": 1
+  },
+  "errors": [],
+  "captures": [
+    {
+      "name": "butter-rest",
+      "wallTime": 1791060547583,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "butter",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6104,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#edcf72",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0,
+        "internalCageDepthUnits": 0,
+        "maxDisplacement": 0,
+        "minVolumeRatio": 0.9999999999999996,
+        "safetyBackoffs": 0,
+        "physicsTime": 0,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "butter-held",
+      "wallTime": 1791060550182,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "butter",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6104,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#edcf72",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.20385342782332838,
+        "internalCageDepthUnits": 0.27445078909606024,
+        "maxDisplacement": 0.2765360041989234,
+        "minVolumeRatio": 0.6830092021344506,
+        "safetyBackoffs": 0,
+        "physicsTime": 2.5499999999999936,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "butter-recovering",
+      "wallTime": 1791060552419,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "butter",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6104,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#edcf72",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.05383002743758336,
+        "internalCageDepthUnits": 0.07218000316095075,
+        "maxDisplacement": 0.07282738052513753,
+        "minVolumeRatio": 0.9228045859783652,
+        "safetyBackoffs": 0,
+        "physicsTime": 4.766666666666693,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "berry-butter-rest",
+      "wallTime": 1791060553311,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "strawberry",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6167,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#f29bb5",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0,
+        "internalCageDepthUnits": 0,
+        "maxDisplacement": 0,
+        "minVolumeRatio": 0.9999999999999996,
+        "safetyBackoffs": 0,
+        "physicsTime": 0,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "berry-butter-held",
+      "wallTime": 1791060555950,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "strawberry",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6167,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#f29bb5",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.2040035123192805,
+        "internalCageDepthUnits": 0.27457981256218633,
+        "maxDisplacement": 0.2766802635859923,
+        "minVolumeRatio": 0.6829347401918896,
+        "safetyBackoffs": 0,
+        "physicsTime": 2.59166666666666,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "berry-butter-recovering",
+      "wallTime": 1791060558105,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "strawberry",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6167,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#f29bb5",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.0556311009842716,
+        "internalCageDepthUnits": 0.07457007806880878,
+        "maxDisplacement": 0.07524234040811086,
+        "minVolumeRatio": 0.9203521763756665,
+        "safetyBackoffs": 0,
+        "physicsTime": 4.750000000000026,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "berry-rest",
+      "wallTime": 1791060559287,
+      "snapshot": {
+        "appearance": {
+          "shape": "strawberry",
+          "label": "none",
+          "face": true,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 2559,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#ee6078",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0,
+        "internalCageDepthUnits": 0,
+        "maxDisplacement": 0,
+        "minVolumeRatio": 0.9999999999999986,
+        "safetyBackoffs": 0,
+        "physicsTime": 0,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "berry-held",
+      "wallTime": 1791060561871,
+      "snapshot": {
+        "appearance": {
+          "shape": "strawberry",
+          "label": "none",
+          "face": true,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 2559,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#ee6078",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.47892284356037407,
+        "internalCageDepthUnits": 0.5240301624700994,
+        "maxDisplacement": 0.5243189960764872,
+        "minVolumeRatio": 0.7569219223091437,
+        "safetyBackoffs": 0,
+        "physicsTime": 2.56666666666666,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "berry-recovering",
+      "wallTime": 1791060564133,
+      "snapshot": {
+        "appearance": {
+          "shape": "strawberry",
+          "label": "none",
+          "face": true,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 2559,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#ee6078",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.13883638371173546,
+        "internalCageDepthUnits": 0.15190751165699434,
+        "maxDisplacement": 0.15201363733008677,
+        "minVolumeRatio": 0.9146287266459032,
+        "safetyBackoffs": 0,
+        "physicsTime": 4.833333333333363,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "jelly-rest",
+      "wallTime": 1791060567938,
+      "snapshot": {
+        "appearance": {
+          "shape": "cube",
+          "label": "none",
+          "face": false,
+          "effect": "clear"
+        },
+        "detailsReady": true,
+        "decorationVertices": 360,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#87cdda",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0,
+        "internalCageDepthUnits": 0,
+        "maxDisplacement": 0,
+        "minVolumeRatio": 0.9999999999999996,
+        "safetyBackoffs": 0,
+        "physicsTime": 0,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "jelly-held",
+      "wallTime": 1791060570522,
+      "snapshot": {
+        "appearance": {
+          "shape": "cube",
+          "label": "none",
+          "face": false,
+          "effect": "clear"
+        },
+        "detailsReady": true,
+        "decorationVertices": 360,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#87cdda",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.38448321763173765,
+        "internalCageDepthUnits": 0.4523369882516195,
+        "maxDisplacement": 0.4535445971711689,
+        "minVolumeRatio": 0.7714706055219264,
+        "safetyBackoffs": 0,
+        "physicsTime": 2.5749999999999935,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "jelly-recovering",
+      "wallTime": 1791060572762,
+      "snapshot": {
+        "appearance": {
+          "shape": "cube",
+          "label": "none",
+          "face": false,
+          "effect": "clear"
+        },
+        "detailsReady": true,
+        "decorationVertices": 360,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#87cdda",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.1092680691067398,
+        "internalCageDepthUnits": 0.12813769013103116,
+        "maxDisplacement": 0.128558330070615,
+        "minVolumeRatio": 0.9358513687519647,
+        "safetyBackoffs": 0,
+        "physicsTime": 4.808333333333362,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "printed-glitter-face",
+      "wallTime": 1791060575018,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "strawberry",
+          "face": true,
+          "effect": "glitter"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6686,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#f29bb5",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0,
+        "internalCageDepthUnits": 0,
+        "maxDisplacement": 0,
+        "minVolumeRatio": 0.9999999999999996,
+        "safetyBackoffs": 0,
+        "physicsTime": 0,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "printed-glitter-drag",
+      "wallTime": 1791060577964,
+      "snapshot": {
+        "appearance": {
+          "shape": "butter",
+          "label": "strawberry",
+          "face": true,
+          "effect": "glitter"
+        },
+        "detailsReady": true,
+        "decorationVertices": 6686,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#f29bb5",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v2",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88
+        },
+        "renderedSurfaceDepthUnits": 0.08482503833827593,
+        "internalCageDepthUnits": 0.10121788860974934,
+        "maxDisplacement": 0.14572944789332132,
+        "minVolumeRatio": 0.8330385200347606,
+        "safetyBackoffs": 0,
+        "physicsTime": 2.8499999999999925,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    }
+  ],
+  "performanceSamples": [
+    {
+      "appearance": {
+        "shape": "butter",
+        "label": "butter",
+        "face": false,
+        "effect": "foam"
+      },
+      "count": 120,
+      "frame": {
+        "medianMs": 16.600000000000364,
+        "p95Ms": 25
+      },
+      "solver": {
+        "medianMs": 3.399999976158142,
+        "p95Ms": 7.100000023841858
+      },
+      "surface": {
+        "medianMs": 8.699999928474426,
+        "p95Ms": 13.399999976158142
+      },
+      "renderCpu": {
+        "medianMs": 0.7999999523162842,
+        "p95Ms": 1.8000000715255737
+      }
+    },
+    {
+      "appearance": {
+        "shape": "butter",
+        "label": "strawberry",
+        "face": false,
+        "effect": "foam"
+      },
+      "count": 120,
+      "frame": {
+        "medianMs": 16.600000000000364,
+        "p95Ms": 25
+      },
+      "solver": {
+        "medianMs": 3.600000023841858,
+        "p95Ms": 7.299999952316284
+      },
+      "surface": {
+        "medianMs": 9.100000023841858,
+        "p95Ms": 17.100000023841858
+      },
+      "renderCpu": {
+        "medianMs": 0.6999999284744263,
+        "p95Ms": 1.600000023841858
+      }
+    },
+    {
+      "appearance": {
+        "shape": "strawberry",
+        "label": "none",
+        "face": true,
+        "effect": "foam"
+      },
+      "count": 120,
+      "frame": {
+        "medianMs": 16.599999999998545,
+        "p95Ms": 25
+      },
+      "solver": {
+        "medianMs": 3.5999999046325684,
+        "p95Ms": 9.099999904632568
+      },
+      "surface": {
+        "medianMs": 6.700000047683716,
+        "p95Ms": 13.299999952316284
+      },
+      "renderCpu": {
+        "medianMs": 0.6999999284744263,
+        "p95Ms": 1.899999976158142
+      }
+    },
+    {
+      "appearance": {
+        "shape": "cube",
+        "label": "none",
+        "face": false,
+        "effect": "clear"
+      },
+      "count": 120,
+      "frame": {
+        "medianMs": 24.899999999997817,
+        "p95Ms": 41.70000000000073
+      },
+      "solver": {
+        "medianMs": 5.599999904632568,
+        "p95Ms": 11.5
+      },
+      "surface": {
+        "medianMs": 5.5,
+        "p95Ms": 13.5
+      },
+      "renderCpu": {
+        "medianMs": 1.2000000476837158,
+        "p95Ms": 4.800000071525574
+      }
+    }
+  ]
+}

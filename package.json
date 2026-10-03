@@ -19,6 +19,7 @@
     "measure:physics": "tsx scripts/measure-physics.ts",
     "measure:surface": "tsx scripts/measure-surface.ts",
     "record:experience": "tsx scripts/record-experience.ts",
+    "record:collection": "tsx scripts/record-collection.ts",
     "measure:browser": "tsx scripts/measure-browser.ts",
     "evaluate:ai": "tsx scripts/evaluate-ai.ts",
     "worker:dev": "npm run build && wrangler dev --local --env mock",

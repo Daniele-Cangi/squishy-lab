@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { DEFAULT_APPEARANCE, type Appearance } from './collection';
+import { Decorations,loadDetails,type DetailLibrary } from './decorations';
 import { compileSpec, type SquishySpec } from './shared/spec';
 import { createSurface, embedSurface, cagePoint,surfacePoint,pointDepth,type MaterialPoint,type SurfaceEmbedding, type Vec3 } from './physics/cage';
 import { FixedClock, SoftBody } from './physics/solver';
@@ -13,7 +16,14 @@ export class SquishyScene {
   private internalProbe:MaterialPoint;
   private geometry:THREE.BufferGeometry;
   private referenceNormals:Float32Array=new Float32Array();
-  private mesh:THREE.Mesh<THREE.BufferGeometry,THREE.MeshStandardMaterial>;
+  private mesh:THREE.Mesh<THREE.BufferGeometry,THREE.MeshPhysicalMaterial>;
+  private appearance:Appearance={...DEFAULT_APPEARANCE};
+  private detailLibrary:DetailLibrary|undefined;
+  private decorations:Decorations|undefined;
+  private disposed=false;
+  private needsRender=true;
+  private environment:THREE.WebGLRenderTarget|undefined;
+  private clearFloor:THREE.Mesh;
   private clock=new FixedClock();
   private raycaster=new THREE.Raycaster();
   private observer:ResizeObserver;
@@ -39,7 +49,7 @@ export class SquishyScene {
     this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFShadowMap;
     this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.05;
-    this.mesh=new THREE.Mesh(this.geometry,new THREE.MeshStandardMaterial({color:spec.color,roughness:compileSpec(spec).roughness,metalness:0}));
+    this.mesh=new THREE.Mesh(this.geometry,new THREE.MeshPhysicalMaterial({color:spec.color,roughness:compileSpec(spec).roughness,metalness:0}));
     this.mesh.castShadow=true;this.mesh.receiveShadow=true;this.scene.add(this.mesh);
     this.scene.add(new THREE.HemisphereLight('#fff9f1','#8594b3',1.05));
     const key=new THREE.DirectionalLight('#fff5e8',3.0);key.position.set(-3.8,4.8,1.8);key.castShadow=true;
@@ -50,17 +60,22 @@ export class SquishyScene {
     const shadowCanvas=document.createElement('canvas');shadowCanvas.width=128;shadowCanvas.height=128;
     const ctx=shadowCanvas.getContext('2d')!;const gradient=ctx.createRadialGradient(64,64,0,64,64,64);gradient.addColorStop(0,'rgba(49,68,113,.22)');gradient.addColorStop(.5,'rgba(49,68,113,.12)');gradient.addColorStop(1,'rgba(49,68,113,0)');ctx.fillStyle=gradient;ctx.fillRect(0,0,128,128);
     const contactShadow=new THREE.Mesh(new THREE.PlaneGeometry(3.5,3.5),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(shadowCanvas),transparent:true,depthWrite:false}));contactShadow.rotation.x=-Math.PI/2;contactShadow.position.y=.012;this.scene.add(contactShadow);
+    const tile=document.createElement('canvas');tile.width=256;tile.height=256;const tc=tile.getContext('2d')!;
+    tc.fillStyle='#f1f2fa';tc.fillRect(0,0,256,256);tc.fillStyle='#dbe5ef';tc.fillRect(0,0,128,128);tc.fillRect(128,128,128,128);
+    const texture=new THREE.CanvasTexture(tile);texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(6,6);
+    this.clearFloor=new THREE.Mesh(new THREE.CircleGeometry(3.1,64),new THREE.MeshStandardMaterial({map:texture,roughness:1}));this.clearFloor.rotation.x=-Math.PI/2;this.clearFloor.position.y=.018;this.clearFloor.visible=false;this.clearFloor.receiveShadow=true;this.scene.add(this.clearFloor);
     // An open, thin contact ring leaves the indentation itself visible.
     this.halo=new THREE.Mesh(new THREE.RingGeometry(.18,.19,48,1,Math.PI*.15,Math.PI*1.7),new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.55,side:THREE.DoubleSide,depthTest:false}));this.halo.visible=false;this.halo.renderOrder=3;this.scene.add(this.halo);
     this.updateCamera();
     this.observer=new ResizeObserver(()=>this.resize());this.observer.observe(canvas);this.resize();
     this.bindInput();this.frame=requestAnimationFrame(t=>this.animate(t));
+    void loadDetails().then(assets=>{if(this.disposed)return;this.detailLibrary=assets;this.rebuildDecorations();}).catch(()=>{this.canvas.dispatchEvent(new CustomEvent('details-error'));});
   }
   private makeGeometry() {
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(this.surface.rest.slice(),3));geometry.setIndex(new THREE.BufferAttribute(this.surface.indices,1));geometry.computeVertexNormals();this.referenceNormals=(geometry.getAttribute('normal').array as Float32Array).slice();geometry.computeBoundingSphere();return geometry;
   }
-  private updateCamera() {this.camera.position.set(Math.sin(this.angle)*5.3,4.3,Math.cos(this.angle)*5.3);this.camera.lookAt(0,this.body.cage.radii[1]*.95,0);this.camera.updateMatrixWorld();}
-  private resize() {const w=this.canvas.clientWidth,h=this.canvas.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
+  private updateCamera() {this.camera.position.set(Math.sin(this.angle)*5.3,4.3,Math.cos(this.angle)*5.3);this.camera.lookAt(0,this.body.cage.radii[1]*.95,0);this.camera.updateMatrixWorld();this.needsRender=true;}
+  private resize() {const w=this.canvas.clientWidth,h=this.canvas.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();this.needsRender=true;}
   applySpec(spec:SquishySpec) {
     this.stopComparison();this.assignSpec(spec);
   }
@@ -68,15 +83,38 @@ export class SquishyScene {
     const shapeChanged=JSON.stringify(spec.proportions)!==JSON.stringify(this.body.spec.proportions);
     if(shapeChanged) {
       // Allocate and validate an entire new generation before the atomic swap.
-      const next=new SoftBody(spec),surface=createSurface(next.cage),old=this.geometry;
-      this.release();this.body=next;this.surface=surface;this.geometry=this.makeGeometry();this.mesh.geometry=this.geometry;old.dispose();this.updateCamera();
-      this.visibleProbe=surfacePoint(this.surface,STANDARD_GESTURE.logicalPoint);this.internalProbe=cagePoint(this.body.cage,STANDARD_GESTURE.logicalPoint);
+      this.rebuildBody(spec);
     } else this.body.setMaterial(spec);
-    this.mesh.material.color.set(spec.color);this.mesh.material.roughness=compileSpec(spec).roughness;
+    this.updateMaterial(spec);
+  }
+  setAppearance(next:Appearance){
+    this.stopComparison();const changed=this.appearance.shape!==next.shape;this.appearance={...next};this.samples=[];
+    if(changed)this.rebuildBody(this.body.spec);else this.rebuildDecorations();
+    this.updateMaterial(this.body.spec);this.refreshSurface();
+  }
+  private rebuildBody(spec:SquishySpec){
+    const next=new SoftBody(spec,this.appearance.shape),surface=createSurface(next.cage),old=this.geometry;
+    this.release();this.body=next;this.surface=surface;this.geometry=this.makeGeometry();this.mesh.geometry=this.geometry;old.dispose();this.clock.pause();this.updateCamera();
+    this.visibleProbe=surfacePoint(this.surface,STANDARD_GESTURE.logicalPoint);this.internalProbe=cagePoint(this.body.cage,STANDARD_GESTURE.logicalPoint);this.rebuildDecorations();
+  }
+  private rebuildDecorations(){
+    this.needsRender=true;
+    if(this.decorations){this.scene.remove(this.decorations.group);this.decorations.dispose();this.decorations=undefined;}
+    if(!this.detailLibrary)return;
+    this.decorations=new Decorations(this.surface,this.appearance,this.detailLibrary);this.scene.add(this.decorations.group);
+    this.decorations.update(this.geometry.getAttribute('position').array,this.geometry.getAttribute('normal').array);
+  }
+  private updateMaterial(spec:SquishySpec){
+    const m=this.mesh.material,clear=this.appearance.effect==='clear',glitter=this.appearance.effect==='glitter';
+    m.color.set(spec.color);m.roughness=clear?.09:glitter?.4:compileSpec(spec).roughness;m.transmission=clear?.91:0;m.ior=1.38;m.thickness=.9;m.attenuationColor.set(spec.color);m.attenuationDistance=clear?2.8:Infinity;m.clearcoat=clear?1:glitter?.35:0;m.clearcoatRoughness=.12;m.envMapIntensity=clear?1.1:.25;
+    if(clear&&!this.environment){const generator=new THREE.PMREMGenerator(this.renderer),room=new RoomEnvironment();this.environment=generator.fromScene(room,.04);room.dispose();generator.dispose();}
+    m.envMap=clear?this.environment!.texture:null;m.needsUpdate=true;this.clearFloor.visible=clear;this.needsRender=true;
   }
   private refreshSurface(){
+    this.needsRender=true;
     embedSurface(this.body.cage,this.body.positions,this.surface,this.geometry.getAttribute('position').array as Float32Array);
     this.geometry.getAttribute('position').needsUpdate=true;this.geometry.computeVertexNormals();this.geometry.computeBoundingSphere();
+    this.decorations?.update(this.geometry.getAttribute('position').array,this.geometry.getAttribute('normal').array);
   }
   reset(){this.stopComparison();this.release();this.body.reset();this.refreshSurface();this.onState('rest');}
   rotate(){this.stopComparison();this.release();this.angle+=Math.PI/2;this.updateCamera();}
@@ -93,7 +131,7 @@ export class SquishyScene {
   }
   release() {
     if(this.pointer!==null&&this.canvas.hasPointerCapture(this.pointer))this.canvas.releasePointerCapture(this.pointer);
-    this.pointer=null;this.keyboard=false;this.held=false;this.pointerPoint=null;this.body.setContact(null);this.halo.visible=false;this.haloEmbedding=null;this.onState('recovering');
+    this.pointer=null;this.keyboard=false;this.held=false;this.pointerPoint=null;this.body.setContact(null);this.halo.visible=false;this.haloEmbedding=null;this.needsRender=true;this.onState('recovering');
   }
   private hit(clientX:number,clientY:number) {
     const rect=this.canvas.getBoundingClientRect();this.raycaster.setFromCamera(new THREE.Vector2((clientX-rect.left)/rect.width*2-1,1-(clientY-rect.top)/rect.height*2),this.camera);
@@ -124,7 +162,9 @@ export class SquishyScene {
   private moveHalo(world:THREE.Vector3,normal:Vec3){this.halo.visible=true;this.halo.position.copy(world).addScaledVector(new THREE.Vector3(...normal),.022);this.halo.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),new THREE.Vector3(...normal));}
   private animate(t:number) {
     const elapsed=this.previous?(t-this.previous)/1000:0;this.previous=t;
-    const start=performance.now();this.clock.advance(elapsed,()=>{
+    const start=performance.now(),moving=this.held||!!this.comparison||this.body.maxDisplacement()>1e-5;
+    if(!moving)this.clock.pause();
+    if(moving)this.clock.advance(elapsed,()=>{
       const comparison=this.comparison;
       if(comparison){
         this.body.setContact(standardContact(this.body.cage,comparison.elapsed,STANDARD_GESTURE.holdSeconds));
@@ -147,14 +187,14 @@ export class SquishyScene {
         }
       }
     });const solved=performance.now();
-    this.refreshSurface();
+    if(moving)this.refreshSurface();
     if(this.haloEmbedding){const world=new THREE.Vector3(),normal=new THREE.Vector3();for(let i=0;i<3;i++){world.addScaledVector(new THREE.Vector3().fromBufferAttribute(this.geometry.getAttribute('position'),this.haloEmbedding.nodes[i]),this.haloEmbedding.weights[i]);normal.addScaledVector(new THREE.Vector3().fromBufferAttribute(this.geometry.getAttribute('normal'),this.haloEmbedding.nodes[i]),this.haloEmbedding.weights[i]);}this.moveHalo(world,normal.normalize().toArray() as Vec3);}
     const surfaced=performance.now();
-    this.renderer.render(this.scene,this.camera);const rendered=performance.now();
-    if(elapsed>0&&elapsed<.25) {this.samples.push({solverMs:solved-start,surfaceMs:surfaced-solved,renderMs:rendered-surfaced,frameMs:elapsed*1000});if(this.samples.length>600)this.samples.shift();}
+    if(this.needsRender){this.renderer.render(this.scene,this.camera);this.needsRender=false;}const rendered=performance.now();
+    if(moving&&elapsed>0&&elapsed<.25) {this.samples.push({solverMs:solved-start,surfaceMs:surfaced-solved,renderMs:rendered-surfaced,frameMs:elapsed*1000});if(this.samples.length>600)this.samples.shift();}
     if(!this.held&&!this.comparison&&this.body.maxDisplacement()<.009)this.onState('rest');
     this.frame=requestAnimationFrame(next=>this.animate(next));
   }
-  diagnostics() {return {spec:this.body.spec,gesture:STANDARD_GESTURE,renderedSurfaceDepthUnits:pointDepth(this.surface.rest,this.geometry.getAttribute('position').array,this.visibleProbe,STANDARD_GESTURE.normal),internalCageDepthUnits:pointDepth(this.body.cage.rest,this.body.positions,this.internalProbe,STANDARD_GESTURE.normal),maxDisplacement:this.body.maxDisplacement(),minVolumeRatio:this.body.minVolumeRatio(),safetyBackoffs:this.body.safetyBackoffs,physicsTime:this.body.time,vertices:this.surface.rest.length/3,tetrahedra:this.body.cage.volumes.length,particles:this.body.cage.inverseMass.length,triangles:this.surface.indices.length/3,samples:this.samples,renderer:this.renderer.info,webgl:this.renderer.getContext().getParameter(this.renderer.getContext().VERSION) as string};}
-  dispose(){cancelAnimationFrame(this.frame);this.observer.disconnect();this.geometry.dispose();this.mesh.material.dispose();this.renderer.dispose();}
+  diagnostics() {return {appearance:{...this.appearance},detailsReady:!!this.detailLibrary,decorationVertices:this.decorations?.vertices??0,spec:this.body.spec,gesture:STANDARD_GESTURE,renderedSurfaceDepthUnits:pointDepth(this.surface.rest,this.geometry.getAttribute('position').array,this.visibleProbe,STANDARD_GESTURE.normal),internalCageDepthUnits:pointDepth(this.body.cage.rest,this.body.positions,this.internalProbe,STANDARD_GESTURE.normal),maxDisplacement:this.body.maxDisplacement(),minVolumeRatio:this.body.minVolumeRatio(),safetyBackoffs:this.body.safetyBackoffs,physicsTime:this.body.time,vertices:this.surface.rest.length/3,tetrahedra:this.body.cage.volumes.length,particles:this.body.cage.inverseMass.length,triangles:this.surface.indices.length/3,samples:this.samples,renderer:this.renderer.info,webgl:this.renderer.getContext().getParameter(this.renderer.getContext().VERSION) as string};}
+  dispose(){this.disposed=true;this.decorations?.dispose();this.environment?.dispose();this.clearFloor.geometry.dispose();const floorMaterial=this.clearFloor.material as THREE.MeshStandardMaterial;floorMaterial.map?.dispose();floorMaterial.dispose();cancelAnimationFrame(this.frame);this.observer.disconnect();this.geometry.dispose();this.mesh.material.dispose();this.renderer.dispose();}
 }

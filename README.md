@@ -1,6 +1,6 @@
 # Squishy Lab
 
-A small, playable 3D material lab. Press a rounded mochi, hold a dent, release it, and watch the foam slowly rise. Describe a different color or feel, then compare it under the same gesture.
+A small, playable 3D material lab. Choose a mochi, a Butter or Strawberry bar with raised lettering, a smiling strawberry, or a clear Jelly cube. Hold a dent, release it, and watch the foam slowly rise. Describe a different color or feel, then compare it under the same gesture.
 
 **Try it locally, without an AI account:**
 
@@ -29,7 +29,7 @@ After a material edit, **Confronta prima e dopo** repeats a two-second press and
 
 ## What is implemented
 
-- One honest procedural archetype: a rounded, volume-normalized mochi/blob. Three local material presets, including an elastic comparison. No animal catalog, holes or imported meshes.
+- Five local collection entries using four coherent body geometries: mochi, rounded butter bar, tapered strawberry and jelly cube. Blender-authored relief lettering, berry icon, seeds, leaves and an optional face are bound to the actual deforming render triangles. Soft-touch, glitter and refractive transparent finishes are local visual controls. Three local material presets remain available.
 - A 216-particle / 750-tetrahedron CPU cage with XPBD distance and volume constraints; a welded 5,402-vertex visual surface follows the cage. Local dents, material-dependent bulging, dissipated motion and per-particle delayed deformation, with an immutable reference.
 - Fixed 120 Hz physics, bounded catch-up, floor/support, inversion barriers and rejected unsafe steps. Mouse/touch pointer capture, cancellation, outside release and keyboard control.
 - A versioned data-only spec and contextual patch contract, deterministic compiler, strict server validation and defensive client validation. A shape change swaps the entire cage and embedding atomically; color/finish changes retain deformation.
@@ -39,6 +39,21 @@ After a material edit, **Confronta prima e dopo** repeats a two-second press and
 **The real phrase → model → material loop is now verified.** Llama 3B and 8B had semantic misses, so the selected model is **Qwen3-30B-A3B-FP8**, on the same Cloudflare Workers AI service. Its last full campaign passed 26/26; separate paraphrase regressions passed 8/8 and 5/5, with one bounded repair in the last set. The initial unseen run had a recovery-direction miss, preserved in the history. A later user report exposed an Italian “molto duro” interpretation miss, even without a typo: clarified firmness vocabulary now passes six targeted live cases and three prior smoke cases, including the exact “monchi” phrase in the real browser. Real browser A/B evidence shows lower surface indentation after “meno molle.” See [verification](docs/VERIFICATION.md). Cloudflare deployment and real public Turnstile/rate-limit integration remain external steps; the prepared Worker still has AI disabled.
 
 For an intentional live local session, authenticate with `npx wrangler login`, keep Workers Free, and run `npm run dev:ai`. Open **http://127.0.0.1:5174**. This separate loopback adapter uses real inference, keeps credentials in the Node process and caps the session at 12 model calls. If subscription access returns 403, the documented Free-plan confirmation flag is required; see [Cloudflare setup](docs/CLOUDFLARE.md). Ordinary development and CI remain explicitly mock.
+
+## Local collection and Blender workshop
+
+Use **Scegli una forma**, then choose **Soft touch**, **Glitter** or **Trasparente** and optionally **Con il viso**. Selecting a collection entry sets its silhouette, print and base color while retaining your material parameters. Changing an effect or face retains the current dent. Reload restores both material and local appearance; the footer clears both. The AI continues to use its unchanged v1 material contract. It does not generate these assets or interpret the local collection controls.
+
+Open [the editable Blender workshop](assets/blender/squishy-collection.blend). It contains five separately named collections, editable reference skin meshes, print meshes, and hidden cage references. The browser uses the generated small triangle library in `public/assets/collection-details.json`; Blender is only needed for authoring. The runtime body and cage use the same shape map, rather than squeezing a sphere under a rigid imported object.
+
+Rebuild from the repository root (Blender 5.2.2 LTS tested):
+
+```sh
+npx tsx scripts/export-workshop.ts
+blender -b --factory-startup --python scripts/blender-collection.py
+```
+
+On this Windows machine the executable is `E:\blender.exe`. The script uses installed Arial Bold when present, otherwise Blender's built-in font. Fonts and product photos are not bundled. These are original geometry and generic lettering inspired by commercially familiar squishy silhouettes, with no claim of brand affiliation. See [collection implementation and evidence](docs/COLLECTION.md).
 
 ## Checks and evidence
 

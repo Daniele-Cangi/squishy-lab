@@ -9,7 +9,10 @@ function el<T extends HTMLElement=HTMLElement>(id:string){return document.getEle
 let spec=structuredClone(DEFAULT_SPEC),name='Nuvola viola';
 try {const saved=localStorage.getItem('squishy-spec-v1');if(saved){spec=validateSpec(JSON.parse(saved));name='Il tuo mochi';}}catch{try{localStorage.removeItem('squishy-spec-v1');}catch{/* Storage can be disabled. */}}
 const status=el('status'),prompt=el<HTMLTextAreaElement>('prompt'),submit=el<HTMLButtonElement>('generate'),canvas=el<HTMLCanvasElement>('squishy'),gate=new RequestGate();
-const updateViewport=()=>document.documentElement.style.setProperty('--visible-height',`${window.visualViewport?.height??innerHeight}px`);
+const updateViewport=()=>{
+  const visibleHeight=window.visualViewport?.height??innerHeight;document.documentElement.style.setProperty('--visible-height',`${visibleHeight}px`);
+  if(document.activeElement===prompt&&matchMedia('(max-width:720px)').matches)requestAnimationFrame(()=>{if(document.activeElement===prompt)window.scrollBy({top:prompt.getBoundingClientRect().bottom-visibleHeight+12,behavior:'instant'});});
+};
 window.visualViewport?.addEventListener('resize',updateViewport);window.addEventListener('resize',updateViewport);updateViewport();
 prompt.addEventListener('focus',()=>{document.body.dataset.composing='true';updateViewport();});
 prompt.addEventListener('blur',()=>{delete document.body.dataset.composing;});

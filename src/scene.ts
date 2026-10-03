@@ -3,9 +3,9 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { DEFAULT_APPEARANCE, type Appearance } from './collection';
 import { Decorations,loadDetails,type DetailLibrary } from './decorations';
 import { compileSpec, type SquishySpec } from './shared/spec';
-import { createSurface, embedSurface, cagePoint,surfacePoint,pointDepth,type MaterialPoint,type SurfaceEmbedding, type Vec3 } from './physics/cage';
+import { createSurface, embedSurface, cagePoint,surfacePoint,pointDepth,shapeTint,type MaterialPoint,type SurfaceEmbedding, type Vec3 } from './physics/cage';
 import { FixedClock, SoftBody } from './physics/solver';
-import { pressureAt,standardContact,STANDARD_GESTURE } from './physics/gesture';
+import { pressureAt,sustainedPressureAt,standardContact,STANDARD_GESTURE } from './physics/gesture';
 export class SquishyScene {
   readonly renderer:THREE.WebGLRenderer;
   readonly scene=new THREE.Scene();
@@ -72,12 +72,17 @@ export class SquishyScene {
     void loadDetails().then(assets=>{if(this.disposed)return;this.detailLibrary=assets;this.rebuildDecorations();}).catch(()=>{this.canvas.dispatchEvent(new CustomEvent('details-error'));});
   }
   private makeGeometry() {
-    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(this.surface.rest.slice(),3));geometry.setIndex(new THREE.BufferAttribute(this.surface.indices,1));geometry.computeVertexNormals();this.referenceNormals=(geometry.getAttribute('normal').array as Float32Array).slice();geometry.computeBoundingSphere();return geometry;
+    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(this.surface.rest.slice(),3));geometry.setIndex(new THREE.BufferAttribute(this.surface.indices,1));
+    if(this.body.cage.shape==='peanut'){
+      const colors=new Float32Array(this.surface.rest.length);for(let i=0;i<colors.length;i+=3)colors.set(shapeTint('peanut',Array.from(this.surface.logical.slice(i,i+3)) as Vec3),i);
+      geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
+    }
+    geometry.computeVertexNormals();this.referenceNormals=(geometry.getAttribute('normal').array as Float32Array).slice();geometry.computeBoundingSphere();return geometry;
   }
   private updateCamera() {
     const banana=this.appearance.shape==='banana',targetY=this.body.cage.radii[1]*(banana?1.45:.95);
-    const distance=banana?Math.max(1,1.05/this.camera.aspect):1;
-    this.camera.position.set(Math.sin(this.angle)*5.3*distance,targetY+(4.3-targetY)*distance,Math.cos(this.angle)*5.3*distance);this.camera.lookAt(0,targetY,0);this.camera.updateMatrixWorld();this.needsRender=true;
+    const distance=banana?Math.max(1,1.38/this.camera.aspect):1;
+    this.camera.position.set(Math.sin(this.angle)*5.3*distance,targetY+((banana?2.65:4.3)-targetY)*distance,Math.cos(this.angle)*5.3*distance);this.camera.lookAt(0,targetY,0);this.camera.updateMatrixWorld();this.needsRender=true;
   }
   private resize() {const w=this.canvas.clientWidth,h=this.canvas.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();this.updateCamera();}
   applySpec(spec:SquishySpec) {
@@ -110,6 +115,7 @@ export class SquishyScene {
   }
   private updateMaterial(spec:SquishySpec){
     const m=this.mesh.material,clear=this.appearance.effect==='clear',glitter=this.appearance.effect==='glitter';
+    m.vertexColors=this.appearance.shape==='peanut';
     m.color.set(spec.color);m.roughness=clear?.09:glitter?.4:compileSpec(spec).roughness;m.transmission=clear?.91:0;m.ior=1.38;m.thickness=.9;m.attenuationColor.set(spec.color);m.attenuationDistance=clear?2.8:Infinity;m.clearcoat=clear?1:glitter?.35:0;m.clearcoatRoughness=.12;m.envMapIntensity=clear?1.1:.25;
     if(clear&&!this.environment){const generator=new THREE.PMREMGenerator(this.renderer),room=new RoomEnvironment();this.environment=generator.fromScene(room,.04);room.dispose();generator.dispose();}
     m.envMap=clear?this.environment!.texture:null;m.needsUpdate=true;this.clearFloor.visible=clear;this.needsRender=true;
@@ -179,7 +185,7 @@ export class SquishyScene {
         else if(this.pointerPoint){
           const n=this.pointerNormal.map((v,i)=>v+(this.targetNormal[i]-v)*(1-Math.exp(-(1/120)/.12))) as Vec3,length=Math.hypot(...n);
           this.pointerNormal=n.map(v=>v/length) as Vec3;
-          this.body.setContact({point:this.pointerPoint,normal:this.pointerNormal,intensity:pressureAt(age,(this.currentY-this.startY)/220)});
+          this.body.setContact({point:this.pointerPoint,normal:this.pointerNormal,intensity:pressureAt(age,(this.currentY-this.startY)/220),sustain:sustainedPressureAt(age)});
         }
       }
       this.body.step();
@@ -199,6 +205,6 @@ export class SquishyScene {
     if(!this.held&&!this.comparison&&this.body.maxDisplacement()<.009)this.onState('rest');
     this.frame=requestAnimationFrame(next=>this.animate(next));
   }
-  diagnostics() {return {appearance:{...this.appearance},detailsReady:!!this.detailLibrary,decorationVertices:this.decorations?.vertices??0,spec:this.body.spec,gesture:STANDARD_GESTURE,renderedSurfaceDepthUnits:pointDepth(this.surface.rest,this.geometry.getAttribute('position').array,this.visibleProbe,STANDARD_GESTURE.normal),internalCageDepthUnits:pointDepth(this.body.cage.rest,this.body.positions,this.internalProbe,STANDARD_GESTURE.normal),maxDisplacement:this.body.maxDisplacement(),minVolumeRatio:this.body.minVolumeRatio(),safetyBackoffs:this.body.safetyBackoffs,physicsTime:this.body.time,vertices:this.surface.rest.length/3,tetrahedra:this.body.cage.volumes.length,particles:this.body.cage.inverseMass.length,triangles:this.surface.indices.length/3,samples:this.samples,renderer:this.renderer.info,webgl:this.renderer.getContext().getParameter(this.renderer.getContext().VERSION) as string};}
+  diagnostics() {return {contactDepthUnits:this.haloEmbedding?pointDepth(this.surface.rest,this.geometry.getAttribute('position').array,this.haloEmbedding,this.keyboard?[0,1,0]:this.pointerNormal):0,contact:this.body.contact,appearance:{...this.appearance},detailsReady:!!this.detailLibrary,decorationVertices:this.decorations?.vertices??0,spec:this.body.spec,gesture:STANDARD_GESTURE,renderedSurfaceDepthUnits:pointDepth(this.surface.rest,this.geometry.getAttribute('position').array,this.visibleProbe,STANDARD_GESTURE.normal),internalCageDepthUnits:pointDepth(this.body.cage.rest,this.body.positions,this.internalProbe,STANDARD_GESTURE.normal),maxDisplacement:this.body.maxDisplacement(),minVolumeRatio:this.body.minVolumeRatio(),safetyBackoffs:this.body.safetyBackoffs,physicsTime:this.body.time,vertices:this.surface.rest.length/3,tetrahedra:this.body.cage.volumes.length,particles:this.body.cage.inverseMass.length,triangles:this.surface.indices.length/3,samples:this.samples,renderer:this.renderer.info,webgl:this.renderer.getContext().getParameter(this.renderer.getContext().VERSION) as string};}
   dispose(){this.disposed=true;this.decorations?.dispose();this.environment?.dispose();this.clearFloor.geometry.dispose();const floorMaterial=this.clearFloor.material as THREE.MeshStandardMaterial;floorMaterial.map?.dispose();floorMaterial.dispose();cancelAnimationFrame(this.frame);this.observer.disconnect();this.geometry.dispose();this.mesh.material.dispose();this.renderer.dispose();}
 }

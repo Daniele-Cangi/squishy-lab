@@ -20,7 +20,21 @@ export const CHEESE_POCKETS=[
   {axis:1,u:-.36,v:.43,radius:.2,depth:.2},{axis:1,u:.39,v:.65,radius:.17,depth:.19},
   {axis:1,u:.1,v:-.32,radius:.15,depth:.17},
 ];
-const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.42,.42,.4],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.2,.78,.67]};
+const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.28,.55,.39],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.05,.82,.63]};
+export function shellRelief(x:number,angle:number){
+  const lengthwise=((1+Math.cos(10*angle+.6*Math.sin(7*x)))/2)**6;
+  const crosswise=((1+Math.cos(25*x+.9*Math.sin(4*angle)))/2)**8;
+  return .018*lengthwise+.014*crosswise+.003*Math.sin(43*x+8*angle);
+}
+export function shapeTint(shape:ShapeId,q:Vec3):Vec3{
+  if(shape!=='peanut')return [1,1,1];
+  const p=roundedPoint(...q,[1,1,1]),angle=Math.atan2(p[2],p[1]-1.04);
+  const shade=.8+6*shellRelief(p[0],angle)+.025*Math.sin(61*p[0]+13*angle);
+  return [shade,shade*.99,shade*.96];
+}
+export function axialCoordinate(shape:ShapeId,q:Vec3){
+  const sx=roundedPoint(...q,[1,1,1])[0];return shape==='banana'?.4*q[0]+.6*sx:sx;
+}
 export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='mochi'):Vec3{
   if(shape==='mochi')return roundedPoint(x,y,z,r);
   const unit=roundedPoint(x,y,z,[1,1,1]),sx=unit[0],sy=unit[1]-1.04,sz=unit[2];
@@ -29,13 +43,15 @@ export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='moch
     return [sx*r[0]*taper,(sy+1)*r[1]+.04,sz*r[2]*taper];
   }
   if(shape==='banana'){
-    // Constant-x slices keep the coarse tetrahedra oriented through the bend.
-    const taper=.12+.88*Math.cos(x*Math.PI/2),dy=y*Math.sqrt(1-z*z/2),dz=z*Math.sqrt(1-y*y/2);
-    return [x*r[0],(dy*taper+1+1.8*x*x)*r[1]+.04,dz*r[2]*taper];
+    // Rotate each rounded cross section along the arc, including the stem.
+    const axis=axialCoordinate(shape,[x,y,z]),t=Math.max(0,Math.min(1,(-axis-.72)/.28)),stem=t*t*(3-2*t);
+    const profile=(1-.6*stem)/Math.sqrt(1-(.55+.3*stem)*axis*axis),theta=1.15*axis,radial=sy*profile;
+    return [(1.25*Math.sin(theta)-.2*Math.sin(theta)*radial-.3*stem)*r[0],(1+2.7*(1-Math.cos(theta))+Math.cos(theta)*radial+.3*stem)*r[1]+.04,sz*r[2]*profile];
   }
   if(shape==='peanut'){
-    const waist=.58+.42*(1-Math.exp(-7*x*x));
-    return [sx*r[0],(sy*waist+1)*r[1]+.04,sz*r[2]*waist];
+    const angle=Math.atan2(sz,sy),waist=(.45+.55*(1-Math.exp(-6*sx*sx)))/Math.sqrt(1-.5*sx*sx);
+    const profile=waist*(1+.05*sx)*(1+shellRelief(sx,angle));
+    return [sx*r[0],(sy*profile+.9)*r[1]+.04,sz*r[2]*profile];
   }
   const round=shape==='butter'||shape==='chocolate'?.22:shape==='cat'?.5:shape==='cheese'?.14:.35;
   const p:Vec3=[(x*(1-round)+sx*round)*r[0],(y*(1-round)+sy*round+1)*r[1]+.04,(z*(1-round)+sz*round)*r[2]];
@@ -75,7 +91,7 @@ export function generateCage(spec: SquishySpec, cells=5,shape:ShapeId='mochi'): 
   }
   // Curved forms seat on their lowest cage nodes rather than a guessed height.
   const minimumY=Math.min(...Array.from({length:count},(_,i)=>rest[i*3+1]));
-  for(let i=0;i<count;i++)if(rest[i*3+1]<(shape==='banana'?minimumY:.04)+radii[1]*.16)inverseMass[i]=0;
+  for(let i=0;i<count;i++)if(rest[i*3+1]<(['banana','peanut'].includes(shape)?minimumY:.04)+radii[1]*.16)inverseMass[i]=0;
   const ts:number[]=[], vs:number[]=[], edgeSet=new Set<string>();
   for(let z=0;z<cells;z++) for(let y=0;y<cells;y++) for(let x=0;x<cells;x++) {
     for(const order of permutations) {

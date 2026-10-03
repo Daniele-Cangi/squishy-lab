@@ -10,10 +10,10 @@ The collection is authored locally and works without a provider or a network AI 
 | Fragolina | Tapered strawberry, narrow underside | Face, seeds, five leaves |
 | Jelly cube | Rounded cube | Refractive transmission and attached flecks |
 | Cioccolato | Low rounded slab with six integral raised squares | COCOA relief and groove lines |
-| Banana | Upward curve with tapered circular cross sections | Brown tips and subtle peel seams |
+| Banana | Rounded cross sections rotated along an upward arc, extended stem | Olive stem, brown ends, peel seams and small freckles |
 | Gatto | Rounded head with two integral soft ears | Pink inner ears, stripes, optional eyes, nose, mouth and whiskers |
 | Formaggio | Rounded triangular wedge with seven recessed pockets | Subdivided pocket linings follow the bowls |
-| Peanut | One shell containing two lobes and a narrow waist | Relief lattice across all six material faces and a seam |
+| Peanut | Two slightly unequal rounded lobes and a narrow waist | Sculpted shell grain, material-bound color variation and a seam |
 
 Every entry supports soft-touch, glitter or transparent appearance, and a face. Collection selection applies the entry's base color while retaining material softness, recovery, damping, compressibility and proportions. Effects and faces preserve deformation. Switching body geometry releases contact and atomically replaces cage, welded render mesh and probes. The two bar prints share a body, so switching between their labels preserves its dent. Reset explicitly restores the current reference.
 
@@ -27,17 +27,19 @@ Every entry supports soft-touch, glitter or transparent appearance, and a face. 
 
 The Python script is the reproducible source for the print library. Editing only the saved workshop does not automatically update the app: change the script and rebuild, or extend its export path for manual mesh edits. Windows Arial Bold is used if available, otherwise Blender's built-in font; rebuilding with a different font changes lettering geometry. The prebuilt library is committed, and neither Blender nor a font installation is a build dependency.
 
-Bodies remain analytic so a new body cannot silently diverge from its physical cage. Each new shape maps both the 216 cage particles and the welded 5,402-vertex render surface with the same function. Existing positive sparse deformation weights remain in use. The unchanged solver operates on each shape's own edge lengths and rest tetrahedron volumes.
+Bodies remain analytic so a new body cannot silently diverge from its physical cage. Each new shape maps both the 216 cage particles and the welded 5,402-vertex render surface with the same function. Existing positive sparse deformation weights remain in use. The solver operates on each shape's own edge lengths and rest tetrahedron volumes.
 
-The curved banana uses constant-x cross sections so bending cannot reverse the reference tetrahedra. Its invisible support uses its actual lowest cage height. Cat ears stretch the same head surface; chocolate squares and cheese recesses are in the body map, not rigid attachments. Cage construction checks orientation against logical cells and rejects folded maps before normalizing tetrahedron winding. The banana camera backs away on narrow viewports. Other entries retain their framing.
+The banana rotates rounded cross sections along its arc, with a separate continuous stem profile and fuller ends. A blend of logical and rounded axial coordinates keeps the coarse reference cells oriented through the bend. The peanut's waist, unequal lobes and shallow shell grain are part of the same body map; its color variation stays in material coordinates. Both shapes anchor their support at their actual lowest cage height. Cat ears stretch the same head surface; chocolate squares and cheese recesses are in the body map, not rigid attachments. Cage construction checks orientation against logical cells and rejects folded maps before normalizing tetrahedron winding. The banana camera shows the curved profile and backs away on narrow viewports. Other entries retain their framing.
 
-The workshop export now includes surface face grids and vertex normals. Blender projects details with the same triangle barycentrics and interpolated normals as the browser, instead of maintaining a second copy of shape equations. This keeps the editable rest workshop coherent for every shape. The cheese lining uses five radial rings to follow its concave pockets; the peanut lattice is subdivided before projection.
+The workshop export includes surface face grids, vertex normals, axial coordinates and color multipliers. Blender projects details with the same triangle barycentrics and interpolated normals as the browser, instead of maintaining a second copy of shape equations. This keeps the editable rest workshop coherent for every shape. The cheese lining uses five radial rings to follow its concave pockets. Banana tip pigment is clipped at the axial boundary before projection, avoiding jagged triangle edges. The workshop peanut has a matching vertex-color attribute.
 
 ## Details and effects
 
 Each print vertex locates one actual render triangle in material coordinates. Each frame it samples that triangle's current Float32 vertex positions and interpolated normal; relief height is applied along that normal. This attaches text, eyes, mouth, leaves and seeds to the same visible dent without a second simulation. Meshes are batched by color and disposed when replaced. The asynchronously loaded library always attaches to the current generation.
 
 At rest, physics, surface embedding and GPU rendering sleep. Resize, rotation, material or appearance changes, asset loading and pressure wake the scene. Recovery continues at the existing bounded fixed timestep until the displacement is below 0.00001 scene units; there is no change to the material's recovery law.
+
+A stationary hold now adds a bounded smooth load from physical second one to six. It increases the nominal depth by up to 95% and contact radius by up to 22%, while the actual dent remains constrained by the material, shape and existing volume barriers. This applies to mouse, touch and keyboard. Release retains the existing delayed memory and recovery. Gesture metadata is versioned as `material-press-v3`; older recordings retain their original v2 metadata.
 
 Glitter is a deterministic set of 360 small colored flecks bound to the visible surface. Transparent appearance uses Three.js physical transmission, thickness, IOR, tint attenuation and a generated room environment. A local checker plane makes transmission visible. It does not implement liquid flow or loose particles inside a gel. Appearance controls do not change solver parameters, and a material A/B comparison keeps the local collection appearance equal throughout both phases.
 
@@ -55,7 +57,13 @@ Two initial remote runs passed 16/17 but timed out creating the browser context 
 
 Normal-time recording on Chrome 154 / AMD Vega 8, 1366×1100, DPR 1 completed without browser errors. Across the final 120 active samples for each entry, bars and strawberry had a **16.6 ms median / 25 ms P95** frame interval; the transparent cube had **24.9 ms median / 41.7 ms P95**. These short samples include video recording and press/recovery and do not establish sustained phone performance. Transparent transmission costs more than the opaque finish. At held snapshots, minimum tet ratios were 0.683 (bars), 0.757 (strawberry), and 0.771 (cube); rendered depths were about 0.204, 0.479 and 0.384 scene units respectively. Snapshots, not screenshot wait labels, identify actual achieved simulation time.
 
-## Expanded collection verification
+## Shape refinement and long-hold verification
+
+`evidence/shape-refinement/` contains a separate normal-time real-mouse recording, 17 PNGs and metadata for the final banana, peanut and progressive contact load. Short and long snapshots record their actual physics ages and rendered triangle contact depth. On the recorded Chrome 154 / AMD Vega 8 desktop, the long/short depth ratios were 2.07× for mochi, 2.64× for banana and 2.04× for peanut, with zero backoffs and no browser errors. Both banana ends remain visible in the 390×844 mobile capture. See [verification conditions and measurements](VERIFICATION.md).
+
+All 114 unit tests, typecheck, lint and the production build passed, together with all 25 installed-Chrome browser tests. New numerical regressions check sustained pressure and recovery for all nine bodies; the existing thin-proportion cases now include maximum sustained load. Three new browser cases use an actual stationary mouse contact to compare short and long dents and release. The saved Blender workshop was reopened and checked for matching skins, upright orientation, peanut color attributes and absent external fonts. Historical collection recordings below remain tied to their original source hashes and gesture version.
+
+## Prior expanded collection verification
 
 The five added entries were verified with **104 unit tests**, typecheck, lint and the production build; **22 browser tests** passed using installed Chrome and the desktop GPU. All five new pressure/recovery browser cases also passed separately in default SwiftShader, using the same assertions. The prebuilt detail library matches the production copy by SHA-256, and Worker dry-run packaging completed with the provider disabled.
 

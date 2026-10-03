@@ -2,13 +2,26 @@ import { describe,it,expect } from 'vitest';
 import { DEFAULT_SPEC, type SquishySpec } from '../../src/shared/spec';
 import { createSurface, embedSurface, generateCage, roundedPoint, signedVolume,surfacePoint,pointDepth,sampledSurfaceDepth, type Vec3 } from '../../src/physics/cage';
 import { FIXED_DT, FixedClock, SoftBody } from '../../src/physics/solver';
-import { STANDARD_GESTURE,standardContact } from '../../src/physics/gesture';
+import { STANDARD_GESTURE,standardContact,sustainedPressureAt } from '../../src/physics/gesture';
+import {SHAPE_IDS} from '../../src/collection';
 function press(body:SoftBody,steps=240) {
   const point=roundedPoint(0,.55,1,body.cage.radii),normal:Vec3=[0,.48,.88];
   for(let i=0;i<steps;i++){body.setContact({point,normal,intensity:Math.min(1,i/102)*.88});body.step();}
   return body.maxDisplacement();
 }
 describe('Volumetric mochi',()=>{
+  for(const shape of SHAPE_IDS)it(`${shape}: sustained hold deepens the visible dent, stays safe and recovers`,()=>{
+    const body=new SoftBody(DEFAULT_SPEC,shape),surface=createSurface(body.cage),probe=surfacePoint(surface,STANDARD_GESTURE.logicalPoint);
+    const depth=()=>sampledSurfaceDepth(body.cage,body.positions,surface,probe,STANDARD_GESTURE.normal);let short=0;
+    for(let i=0;i<840;i++){body.setContact(standardContact(body.cage,i*FIXED_DT));body.step();if(i===119)short=depth();if(i%60===0)expect(body.minVolumeRatio()).toBeGreaterThan(.17);}
+    expect(depth()).toBeGreaterThan(short*1.35);const held=body.maxDisplacement();body.setContact(null);
+    for(let i=0;i<1440;i++)body.step();expect(body.maxDisplacement()).toBeLessThan(held*.02);expect(body.minVolumeRatio()).toBeGreaterThan(.17);
+  });
+  it('sustained loading is continuous, bounded, and rejects invalid contact data',()=>{
+    expect(sustainedPressureAt(0)).toBe(0);expect(sustainedPressureAt(1)).toBe(0);expect(sustainedPressureAt(1.001)).toBeLessThan(.000001);expect(sustainedPressureAt(6)).toBe(1);expect(sustainedPressureAt(100)).toBe(1);
+    const body=new SoftBody(DEFAULT_SPEC);body.setContact({point:[0,1,0],normal:[0,1,0],intensity:1,sustain:NaN});expect(body.contact).toBeNull();
+    body.setContact({point:[0,1,0],normal:[0,1,0],intensity:1,sustain:10});expect(body.contact?.sustain).toBe(1);
+  });
   it('persistent material probes measure exactly the visible Float32 surface',()=>{
     const body=new SoftBody(DEFAULT_SPEC),surface=createSurface(body.cage),shown=surface.rest.slice(),probe=surfacePoint(surface,STANDARD_GESTURE.logicalPoint);
     const nodes=[...probe.nodes],weights=[...probe.weights];

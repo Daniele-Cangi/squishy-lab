@@ -1,7 +1,7 @@
 import { compileSpec, type SquishySpec } from '../shared/spec';
 import { generateCage, signedVolume, type Vec3 } from './cage';
 import type { ShapeId } from '../collection';
-export interface Contact { point:Vec3; normal:Vec3; intensity:number }
+export interface Contact { point:Vec3; normal:Vec3; intensity:number;sustain?:number }
 export const FIXED_DT=1/120;
 export class SoftBody {
   readonly cage;
@@ -33,8 +33,8 @@ export class SoftBody {
   setMaterial(spec:SquishySpec) { this.spec=spec; this.config=compileSpec(spec); }
   reset() { this.positions.set(this.cage.rest); this.velocity.fill(0); this.memory.fill(0); this.contact=null; this.time=0; }
   setContact(contact:Contact|null) {
-    if(contact && (![...contact.point,...contact.normal,contact.intensity].every(Number.isFinite)||Math.hypot(...contact.normal)<0.5)) { this.contact=null; return; }
-    this.contact=contact ? {point:[...contact.point],normal:contact.normal.map(v=>v/Math.hypot(...contact.normal)) as Vec3,intensity:Math.max(0,Math.min(1,contact.intensity))} : null;
+    if(contact && (![...contact.point,...contact.normal,contact.intensity,contact.sustain??0].every(Number.isFinite)||Math.hypot(...contact.normal)<0.5)) { this.contact=null; return; }
+    this.contact=contact ? {point:[...contact.point],normal:contact.normal.map(v=>v/Math.hypot(...contact.normal)) as Vec3,intensity:Math.max(0,Math.min(1,contact.intensity)),sustain:Math.max(0,Math.min(1,contact.sustain??0))} : null;
   }
   step(h=FIXED_DT) {
     if(h!==FIXED_DT) throw new Error('Use fixed physics timestep');
@@ -58,7 +58,7 @@ export class SoftBody {
     const contact=this.contact;
     if(contact) for(let i=0;i<mass.length;i++) {
       const d=Math.hypot(rest[i*3]-contact.point[0],rest[i*3+1]-contact.point[1],rest[i*3+2]-contact.point[2]);
-      const radius=Math.min(...this.cage.radii)*(.65+.48*Math.sqrt(contact.intensity));
+      const radius=Math.min(...this.cage.radii)*(.65+.48*Math.sqrt(contact.intensity))*(1+.22*(contact.sustain??0));
       this.influence[i]=Math.exp(-2.5*d*d/(radius*radius));
     }
     this.edgeLambda.fill(0); this.volumeLambda.fill(0);
@@ -71,7 +71,7 @@ export class SoftBody {
         if(!mass[i]) { p[j]=rest[j];p[j+1]=rest[j+1];p[j+2]=rest[j+2]; continue; }
         for(let a=0;a<3;a++) p[j+a]+=(this.targets[j+a]-p[j+a])*tether;
         if(contact && this.influence[i]>0.012) {
-          const w=this.influence[i],depth=Math.min(...this.cage.radii)*0.65*contact.intensity*w;
+          const w=this.influence[i],depth=Math.min(...this.cage.radii)*0.65*contact.intensity*w*(1+.95*(contact.sustain??0));
           const along=(p[j]-rest[j])*contact.normal[0]+(p[j+1]-rest[j+1])*contact.normal[1]+(p[j+2]-rest[j+2])*contact.normal[2];
           // A finger pushes inward; it cannot pull recovering foam outward.
           // Unilateral contact keeps a new light press continuous with its dent.

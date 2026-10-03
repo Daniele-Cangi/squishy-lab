@@ -22,17 +22,19 @@ describe('local collection geometry',()=>{
     const held=body.maxDisplacement();expect(held).toBeGreaterThan(.08);expect(minimum).toBeGreaterThan(.17);
     body.setContact(null);for(let i=0;i<960;i++)body.step();expect(body.maxDisplacement()).toBeLessThan(held*.15);expect(body.minVolumeRatio()).toBeGreaterThan(.17);
   });
-  for(const shape of ['chocolate','banana','cat','cheese','peanut'] as ShapeId[])it(`${shape}: thin proportions tolerate off-center maximum pressure`,()=>{
+  for(const shape of ['chocolate','banana','cat','cheese','peanut'] as ShapeId[])it(`${shape}: thin proportions tolerate off-center maximum sustained pressure`,()=>{
     const body=new SoftBody({...DEFAULT_SPEC,proportions:{width:1.55,height:.65,depth:.9},softness:1,compressibility:.95},shape);
     for(const q of [[.6,1,-.6],[-.6,.4,1]] as [number,number,number][]){
       const point=shapePoint(...q,body.cage.radii,shape),normal:[number,number,number]=q[1]===1?[0,1,0]:[0,0,1];
-      for(let i=0;i<180;i++){body.setContact({point,normal,intensity:i/90});body.step();expect(body.minVolumeRatio()).toBeGreaterThan(.17);}
+      for(let i=0;i<180;i++){body.setContact({point,normal,intensity:i/90,sustain:1});body.step();expect(body.minVolumeRatio()).toBeGreaterThan(.17);}
       expect(body.maxDisplacement()).toBeGreaterThan(.01);body.reset();
     }
   });
   it('distinct silhouettes and cheese pockets belong to the physical reference',()=>{
     const p=(shape:ShapeId,x:number,y:number,z:number)=>shapePoint(x,y,z,[1,1,1],shape);
-    expect(p('banana',.85,0,0)[1]).toBeGreaterThan(p('banana',0,0,0)[1]+1);
+    expect(p('banana',.85,0,0)[1]).toBeGreaterThan(p('banana',0,0,0)[1]+.7);
+    expect(Math.abs(p('banana',-1,0,0)[0])).toBeGreaterThan(Math.abs(p('banana',1,0,0)[0])*1.1);
+    for(const shape of ['banana','peanut'] as ShapeId[])expect(new SoftBody(DEFAULT_SPEC,shape).cage.inverseMass.some(m=>m===0)).toBe(true);
     expect(p('cat',.67,1,0)[1]).toBeGreaterThan(p('cat',0,1,0)[1]+.25);
     expect(p('peanut',.55,0,1)[2]).toBeGreaterThan(p('peanut',0,0,1)[2]+.1);
     expect(p('chocolate',0,1,.5)[1]).toBeGreaterThan(p('chocolate',1/3,1,.5)[1]+.1);

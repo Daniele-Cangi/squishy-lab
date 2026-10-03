@@ -21,7 +21,7 @@ The page immediately shows a local preset. The **Demo locale · senza AI** descr
 - `Lo voglio più schiacciato, non più piccolo.`
 - `Un mochi giallo molto duro.`
 
-Hold the object to increase pressure over 0.85 seconds; drag to move the contact and drag down to add depth. Pressure does not depend on hardware pressure sensors. Hold **Space/Enter** on the canvas or on **Tieni per premere**; release to recover. **Escape** on the canvas and **Ripristina forma** restore the current material's shape. **Ruota la vista** is separate from deformation. The final footer action removes the optional saved spec. Prompts are never saved.
+Hold the object to increase pressure over 0.85 seconds. After the first second, a stationary hold progressively deepens and widens the dent until second six; drag to move the contact and drag down to add depth. Pressure does not depend on hardware pressure sensors. Hold **Space/Enter** on the canvas or on **Tieni per premere**; release to recover. **Escape** on the canvas and **Ripristina forma** restore the current material's shape. **Ruota la vista** is separate from deformation. The final footer action removes the optional saved spec. Prompts are never saved.
 
 After a material edit, **Confronta prima e dopo** repeats a two-second press and five-second recovery on both materials. Shape, color, finish, camera and gesture are held equal; deformation memory is reset between phases. Stop the comparison or press the object to return to the actual edited squishy. Descriptions of changes come from the applied parameters.
 
@@ -29,7 +29,7 @@ After a material edit, **Confronta prima e dopo** repeats a two-second press and
 
 ## What is implemented
 
-- Ten local collection entries using nine coherent body geometries. Chocolate has six raised squares; the banana bends upward with small brown tips; the cat has integral soft ears and an optional muzzle; the cheese wedge has actual recessed pockets; the peanut has two lobes and a shell lattice. Blender-authored details and lettering follow the actual deforming render triangles. All entries support soft-touch, glitter and refractive transparency. Three local material presets remain available.
+- Ten local collection entries using nine coherent body geometries. Chocolate has six raised squares; the banana has a rounded curved body, extended stem, brown end and peel markings; the cat has integral soft ears and an optional muzzle; the cheese wedge has actual recessed pockets; the peanut has two unequal rounded lobes, a narrow waist, shell grain and a seam. Blender-authored details and lettering follow the actual deforming render triangles. All entries support soft-touch, glitter and refractive transparency. Three local material presets remain available.
 - A 216-particle / 750-tetrahedron CPU cage with XPBD distance and volume constraints; a welded 5,402-vertex visual surface follows the cage. Local dents, material-dependent bulging, dissipated motion and per-particle delayed deformation, with an immutable reference.
 - Fixed 120 Hz physics, bounded catch-up, floor/support, inversion barriers and rejected unsafe steps. Mouse/touch pointer capture, cancellation, outside release and keyboard control.
 - A versioned data-only spec and contextual patch contract, deterministic compiler, strict server validation and defensive client validation. A shape change swaps the entire cage and embedding atomically; color/finish changes retain deformation.
@@ -66,12 +66,13 @@ npm run measure:physics # numerical traces, recovery, 12 cycles, 30/60/144 Hz co
 npm run measure:surface # persistent rendered-surface probes and indentation profiles
 npm run record:experience # normal-time Chrome press/release/drag video
 npm run record:collection -- --expanded # new five shapes, press/recovery, effects, mobile
+npx tsx scripts/record-shape-refinement.ts # real mouse short/long holds, revised banana/peanut
 npm run measure:browser # requires npm run dev + installed Chrome; records actual GPU
 npm run worker:check    # local bundle/dry run; does not publish
 npm run worker:dev      # local workerd preview of built assets + MOCK, normally port 8787
 ```
 
-See [verification report](docs/VERIFICATION.md), [deformation notes](docs/TECHNICAL-NOTES.md), [deployment instructions](docs/CLOUDFLARE.md), [current physics CSV](evidence/refined/physics.csv), [surface profiles](evidence/refined/surface.json), [live semantic results](evidence/refined/ai-live-qwen-corpus.json), [normal-time video](evidence/refined/experience.webm), [real AI comparison video](evidence/refined/ai-live-browser.webm), and [performance sample](evidence/refined/browser-performance.json). The original root evidence and the recorded `baseline-b169dc8` remain intact. New browser smoke screenshots live in `evidence/refined/browser-smoke/`.
+See [verification report](docs/VERIFICATION.md), [deformation notes](docs/TECHNICAL-NOTES.md), [deployment instructions](docs/CLOUDFLARE.md), [revised shapes and long-hold recording](evidence/shape-refinement/shape-refinement.webm), [recorded contact depths](evidence/shape-refinement/shape-refinement.json), [historical physics CSV](evidence/refined/physics.csv), [surface profiles](evidence/refined/surface.json), [live semantic results](evidence/refined/ai-live-qwen-corpus.json), [normal-time video](evidence/refined/experience.webm), [real AI comparison video](evidence/refined/ai-live-browser.webm), and [performance sample](evidence/refined/browser-performance.json). The prior physics traces use gesture v2; the progressive hold is v3. The original root evidence and the recorded `baseline-b169dc8` remain intact. Browser smoke screenshots live in `evidence/refined/browser-smoke/`.
 
 The GitHub Actions workflow runs checks and Chromium smoke on Linux. It does not deploy or run live inference. Current remote results are available in [GitHub Actions](https://github.com/Daniele-Cangi/squishy-lab/actions/workflows/ci.yml); the measurements in the verification report were collected locally.
 

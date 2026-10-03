@@ -2,7 +2,7 @@
 Run from repository: blender -b --factory-startup --python scripts/blender-collection.py
 The body reference is exported by scripts/export-workshop.ts, not a hidden blob.
 """
-import bpy, json, math, os
+import bpy, json, math, random
 from pathlib import Path
 ROOT=Path.cwd()
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
@@ -73,11 +73,34 @@ def line(name,points,width,color,axis=2,sign=1,height=.012):
 for u in [-1/3,1/3]:line('chocolate',[(u,-.96+i*1.92/32) for i in range(33)],.007,'#5d3427',1,height=.005)
 line('chocolate',[(-.96+i*1.92/48,0) for i in range(49)],.007,'#5d3427',1,height=.005)
 text('chocolate','COCOA',.48,0,-.56,'#b27d59')
-for sign in [-1,1]:
-    ellipse('banana',0,0,.68,.68,'#79573c',axis=0,sign=sign,height=.012)
-    ellipse('banana',0,0,.33,.36,'#a98449',axis=0,sign=sign,height=.017)
+references={r['shape']:r for r in json.loads((ROOT/'work'/'workshop-reference.json').read_text())}
+def paint_region(name,ref,threshold,less_than,color):
+    n=ref['subdivisions']
+    for face in ref['faceGrids']:
+        verts=[];indices=[];grid=face['grid']
+        for y in range(n):
+            for x in range(n):
+                for corners in [[(x,y),(x+1,y),(x,y+1)],[(x+1,y),(x+1,y+1),(x,y+1)]]:
+                    polygon=[(2*u/n-1,2*v/n-1,ref['axial'][grid[u+(n+1)*v]]) for u,v in corners];clipped=[]
+                    # Clip pigment at the exact axial boundary, avoiding stair-step tips.
+                    for a,b in zip(polygon,polygon[1:]+polygon[:1]):
+                        inside_a=(a[2]<threshold) if less_than else (a[2]>threshold)
+                        inside_b=(b[2]<threshold) if less_than else (b[2]>threshold)
+                        if inside_a:clipped.append(a)
+                        if inside_a!=inside_b:
+                            t=(threshold-a[2])/(b[2]-a[2]);clipped.append(tuple(a[i]+t*(b[i]-a[i]) for i in range(3)))
+                    if len(clipped)>=3:
+                        start=len(verts)//3;verts.extend([value for u,v,_ in clipped for value in (u,v,.004)])
+                        for i in range(1,len(clipped)-1):indices.extend([start,start+i,start+i+1])
+        if verts:add_group(name,'peel pigment',verts,indices,color,face['axis'],face['sign'])
+banana=references['banana']
+paint_region('banana',banana,-.87,True,'#8a8140')
+paint_region('banana',banana,-.97,True,'#615237')
+paint_region('banana',banana,.97,False,'#735039')
 for v in [-.53,.53]:
-    for sign in [-1,1]:line('banana',[(-.92+i*1.84/48,v) for i in range(49)],.01,'#e1b63a',sign=sign,height=.006)
+    for sign in [-1,1]:line('banana',[(-.88+i*1.76/48,v) for i in range(49)],.007,'#dfb43c',sign=sign,height=.004)
+random.seed(391)
+for i in range(17):ellipse('banana',random.uniform(-.65,.65),random.uniform(-.5,.5),.008,.012,'#c69b40',height=.004)
 for side in [-1,1]:
     polygon('cat',[(side*.49,.69),(side*.66,.97),(side*.82,.71)],'#df8e91',2,height=.013)
     for v in [-.15,.1,.35]:line('cat',[(side*(.76+i*.19/12),v-i*.075/12) for i in range(13)],.022,'#bd794c')
@@ -89,7 +112,6 @@ polygon('cat-face',[(-.075,.005),(.075,.005),(0,-.075)],'#af6b6b',2)
 for side in [-1,1]:
     line('cat-face',[(0,-.07),(side*.025,-.12),(side*.09,-.13),(side*.14,-.08)],.009,'#423545')
     for v in [-.02,-.1]:line('cat-face',[(side*.19,v),(side*.59,v-.035)],.008,'#795b50')
-references={r['shape']:r for r in json.loads((ROOT/'work'/'workshop-reference.json').read_text())}
 for pocket in references['cheese']['pockets']:
     # Radial subdivisions conform to the bowl instead of spanning its concavity.
     verts=[pocket['u'],pocket['v'],.01];indices=[];segments=32;rings=5
@@ -101,13 +123,7 @@ for pocket in references['cheese']['pockets']:
             if ring==1:indices.extend([0,a,b])
             else:c=a-segments;d=b-segments;indices.extend([c,a,d,a,b,d])
     add_group('cheese','recess lining',verts,indices,'#ce932f',pocket['axis'])
-for axis,sign in [(2,1),(2,-1),(1,1),(1,-1),(0,1),(0,-1)]:
-    for slope in [-.8,.8]:
-        for offset in [i*.25 for i in range(-7,8)]:
-            points=[(-.98+i*1.96/64,slope*(-.98+i*1.96/64)+offset) for i in range(65)]
-            points=[p for p in points if abs(p[1])<.97]
-            if len(points)>1:line('peanut',points,.012,'#b78350',axis,sign,height=.011)
-line('peanut',[(-.98+i*1.96/64,0) for i in range(65)],.018,'#edc693',1,height=.015)
+for sign in [-1,1]:line('peanut',[(-.98+i*1.96/64,0) for i in range(65)],.008,'#a87c4c',1,sign,height=.005)
 out=ROOT/'public'/'assets';out.mkdir(parents=True,exist_ok=True)
 (out/'collection-details.json').write_text(json.dumps(dict(version=1,blender=bpy.app.version_string,groups=assets),separators=(',',':')),encoding='utf8')
 # The editable workshop contains the exact runtime reference surfaces.
@@ -127,6 +143,11 @@ for i,(name,shape,groups,color) in enumerate(items):
     location=((i%5)*4.5,(i//5)*-5,0)
     obj=bpy.data.objects.new(name+' - reference skin',mesh);collection.objects.link(obj);obj.location=location;obj.rotation_euler.x=math.pi/2
     mat=material(name+' surface',color);obj.data.materials.append(mat)
+    if shape=='peanut':
+        attribute=mesh.color_attributes.new(name='Shell grain',type='FLOAT_COLOR',domain='POINT')
+        for j,entry in enumerate(attribute.data):entry.color=(*ref['colors'][j*3:j*3+3],1)
+        nodes=mat.node_tree.nodes;grain=nodes.new('ShaderNodeVertexColor');grain.layer_name='Shell grain';mix=nodes.new('ShaderNodeMixRGB');mix.blend_type='MULTIPLY';mix.inputs[0].default_value=1;mix.inputs[1].default_value=(*color,1)
+        mat.node_tree.links.new(grain.outputs['Color'],mix.inputs[2]);mat.node_tree.links.new(mix.outputs[0],nodes['Principled BSDF'].inputs['Base Color'])
     if shape=='cube':
         bsdf=mat.node_tree.nodes['Principled BSDF'];bsdf.inputs['Transmission Weight'].default_value=.91;bsdf.inputs['IOR'].default_value=1.38;bsdf.inputs['Roughness'].default_value=.09
     for p in mesh.polygons:p.use_smooth=True

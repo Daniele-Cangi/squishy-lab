@@ -1,6 +1,26 @@
-# Refinement verification — 3 October 2026
+# Refinement verification — 4 October 2026
 
-## Expanded local collection
+## Banana, peanut and progressive hold
+
+The banana now has a fuller curved body with rotated rounded cross sections, a distinct extended stem, smooth tip pigment and subtle peel markings. The peanut has two unequal lobes, a stronger waist, shallow sculpted grain, material-bound color variation and a small shell seam. Both use their actual lowest cage nodes for support. Their exact runtime references and colors were regenerated in Blender 5.2.2 LTS; reopening the saved workshop confirmed ten upright 5,402-vertex skins, the peanut color attribute and no external fonts. Mobile banana framing was inspected at 390×844 with both ends visible.
+
+The initial pressure ramp is retained. From physical second one to six, a stationary hold smoothly increases nominal depth and radius; mouse, touch and keyboard use the same bounded load. The delayed recovery law and volume safeguards are unchanged. Gesture metadata is now `material-press-v3`. The backend, selected model, prompts and `SquishySpec v1` are unchanged, and this follow-up made no remote inference calls or deployment.
+
+The [normal-time video](../evidence/shape-refinement/shape-refinement.webm), [snapshots and source/GPU metadata](../evidence/shape-refinement/shape-refinement.json), [banana](../evidence/shape-refinement/banana-rest.png), [peanut](../evidence/shape-refinement/peanut-rest.png) and [mobile capture](../evidence/shape-refinement/mobile-interface.png) use real stationary mouse input on installed Chrome 154 / AMD Vega 8, 1366×1100, DPR 1. The recording used neither injected deformation nor an accelerated clock. Screenshot capture takes time: the short snapshots occur at physical ages 1.44–1.46 s and long snapshots at 6.90–6.97 s; the JSON retains exact achieved times.
+
+| Shape | Short rendered contact depth | Long rendered contact depth | Long / short | Minimum held tet ratio |
+|---|---:|---:|---:|---:|
+| Mochi | 0.36645 | 0.75697 | 2.07× | 0.3913 |
+| Banana | 0.08864 | 0.23367 | 2.64× | 0.3564 |
+| Peanut | 0.30837 | 0.63023 | 2.04× | 0.2200 |
+
+Depth is measured on the actual rendered triangle at the mouse contact, along its reference force normal, in arbitrary scene units. All recorded holds and releases had zero safety backoffs and no browser errors; release reduced maximum displacement on all three forms. The unit regressions separately check seven-second holds and twelve-second recovery for all nine body shapes. These scoped desktop observations do not establish physical material accuracy or phone performance. Earlier recordings and absolute v2 depth/recovery measurements remain intact below and are not presented as current v3 benchmarks.
+
+Local `npm run check` passed strict TypeScript, lint, all **114 unit tests** and the production build. The five thin-proportion stress cases were strengthened to maximum sustained load and passed again. Production detail bytes match the source SHA-256, the recording's runtime hash matches the final source, and local Worker dry-run packaging passed with the provider disabled.
+
+All **25 installed-Chrome browser tests** passed with the same assertions used by software CI. This includes new stationary real-mouse hold/release cases on mochi, banana and peanut, plus the retained collection, material, keyboard, cancellation, storage and mobile flows.
+
+## Prior expanded local collection
 
 The ten-entry collection now includes chocolate, banana, cat, cheese and peanut. Each new silhouette uses its own coherent cage/surface reference and Blender-authored details. Chocolate squares, cat ears, banana curvature, peanut lobes and cheese bowls deform with the body. The AI backend and material contract are unchanged. The workshop was reopened successfully in Blender 5.2.2 LTS: ten upright 5,402-vertex body meshes, with no external font dependencies.
 
@@ -49,7 +69,7 @@ The choice of Qwen3 is an engineering response to measured Llama misses, within 
 
 ## Surface and physical behavior
 
-Current `evidence/refined/physics.*` and `surface.json` distinguish the persistent **rendered Float32 surface** probe from the internal tetrahedral cage probe. The top press is defined in `src/physics/gesture.ts`; the baseline front-side press used a different location/ramp, so these are not identical-force baseline comparisons. Baseline images/video/profile data in `baseline-b169dc8` and the older root files are retained.
+Retained pre-v3 `evidence/refined/physics.*` and `surface.json` distinguish the persistent **rendered Float32 surface** probe from the internal tetrahedral cage probe. These used the v2 top press; the baseline front-side press used a different location/ramp, so these are not identical-force baseline comparisons. Baseline images/video/profile data in `baseline-b169dc8` and the older root files are retained.
 
 | Material | Rendered peak | Internal cage peak | Rendered T90 after release | Residual after 12 s | Minimum sampled tet ratio |
 |---|---:|---:|---:|---:|---:|

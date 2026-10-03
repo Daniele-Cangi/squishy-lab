@@ -1,6 +1,6 @@
 # Delivery verification — 3 October 2026
 
-This report distinguishes observed behavior from prepared integration. All ordinary checks used synthetic prompts and an explicitly identified mock. No Cloudflare inference quota was consumed, and no deployment or publication was performed.
+This report distinguishes observed behavior from prepared integration. All ordinary checks used synthetic prompts and an explicitly identified mock. No Cloudflare inference quota was consumed, and no Cloudflare deployment or DEV submission was performed. After the initial local delivery, the user authorized source publication to [Daniele-Cangi/squishy-lab](https://github.com/Daniele-Cangi/squishy-lab) on 3 October 2026.
 
 ## Observed application behavior
 
@@ -62,4 +62,4 @@ During development, checks found a softness comparison that was too weak, angula
 - **Public deployment and challenge submission:** prepared only. Keep Workers Free, configure Turnstile and obtain publication authorization. Recheck the official deadline/rules before submitting.
 - **Physical mobile devices, cross-browser/long-duration performance, arbitrary self-collision and offline restart:** no such claims are made.
 
-The local preview stays at `http://127.0.0.1:5173/`. Source control contains only this newly created project; no earlier work was replaced. Local Git commits retain actual creation times before the 5 October deadline, and no remote repository is configured. The source archive includes `history.bundle`; recover the repository with `git clone history.bundle squishy-lab-restored` if needed.
+The local preview stays at `http://127.0.0.1:5173/`. Source control contains only this newly created project; no earlier work was replaced. Git commits retain actual creation times before the 5 October deadline. The initially empty GitHub repository is now the `origin` remote, with publication on `main` authorized by the user. The original source archive includes `history.bundle`; recover that local-delivery snapshot with `git clone history.bundle squishy-lab-restored` if needed.

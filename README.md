@@ -5,6 +5,8 @@ A small, playable 3D material lab. Press a rounded mochi, hold a dent, release i
 **Try it locally, without an AI account:**
 
 ```sh
+git clone https://github.com/Daniele-Cangi/squishy-lab.git
+cd squishy-lab
 npm ci
 npm run dev
 ```
@@ -31,7 +33,7 @@ Hold the object to increase pressure over 0.85 seconds; drag to move the contact
 - `POST /api/squishy`, explicit local mock, Cloudflare Workers AI binding adapter, one repair at most, quota/rate/timeout/unavailable states, stale-response protection and an object that stays interactive while a request runs or the network fails.
 - Cloudflare Static Assets configuration, server-validated Turnstile, Workers rate-limiting bindings, tests, essential CI and recorded evidence.
 
-**Live AI inference has not been verified.** No Cloudflare credentials were available for this delivery. The remote adapter and evaluation harness are implemented; mock tests are not evidence of Llama's semantic understanding. Nothing has been deployed, published, pushed or billed.
+**Live AI inference has not been verified.** No Cloudflare credentials were available for this delivery. The remote adapter and evaluation harness are implemented; mock tests are not evidence of Llama's semantic understanding. Source publication to [GitHub](https://github.com/Daniele-Cangi/squishy-lab) was authorized on 3 October 2026. Cloudflare deployment and DEV submission have not been performed, and no paid resources have been activated.
 
 ## Checks and evidence
 
@@ -90,4 +92,4 @@ The independently written solver follows the XPBD method described by Macklin, M
 
 ## Challenge context
 
-The [official DEV challenge](https://dev.to/challenges/hacktoberfest-weekend-2026-10-01), checked on 3 October 2026, states **5 October 2026, 06:59 UTC**, which is **08:59 Europe/Copenhagen** and **08:59 Europe/Paris**. Recheck the rules and eligibility immediately before any submission. Squishy Lab is a working name. The local Git history records this delivery without backdating; future changes after the deadline should be identified separately. No repository or DEV article has been published, and no feedback from the child is claimed.
+The [official DEV challenge](https://dev.to/challenges/hacktoberfest-weekend-2026-10-01), checked again before source publication on 3 October 2026, states **5 October 2026, 06:59 UTC**, which is **08:59 Europe/Copenhagen** and **08:59 Europe/Paris**. Recheck the rules and eligibility immediately before any submission. Squishy Lab is a working name. Git history records this delivery without backdating; future changes after the deadline should be identified separately. The repository is published with the user's authorization; no DEV article has been submitted, and no feedback from the child is claimed.

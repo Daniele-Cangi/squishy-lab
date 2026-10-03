@@ -1,0 +1,143 @@
+{
+  "measuredAt": "2026-10-03T17:50:10.729Z",
+  "revision": "b169dc8ebcb2ec80c3f33b8ed68997c0e04d4b9b",
+  "runtimeSourceSha256": "27281799a2a462005702c51fc5c3651b539f4acac6278be42b903030c67642ba",
+  "node": "v22.19.0",
+  "platform": "win32",
+  "provider": "LIVE Workers AI",
+  "model": "@cf/meta/llama-3.2-3b-instruct",
+  "suite": "smoke",
+  "promptSha256": "423454515554bdbddbdeb19325f18f1cd97a3f18df639b01b7b9a20f1657824d",
+  "freeCheck": "Workers Free confirmed by the user; subscription API returned HTTP 403",
+  "calls": [
+    {
+      "model": "@cf/meta/llama-3.2-3b-instruct",
+      "durationMs": 612,
+      "usage": {
+        "prompt_tokens": 729,
+        "completion_tokens": 29,
+        "total_tokens": 758,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.2550883293151855
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/meta/llama-3.2-3b-instruct",
+      "durationMs": 327,
+      "usage": {
+        "prompt_tokens": 734,
+        "completion_tokens": 33,
+        "total_tokens": 767,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.400110244750977
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/meta/llama-3.2-3b-instruct",
+      "durationMs": 430,
+      "usage": {
+        "prompt_tokens": 658,
+        "completion_tokens": 27,
+        "total_tokens": 685,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 3.865793228149414
+      },
+      "status": 200
+    }
+  ],
+  "planned": 3,
+  "total": 3,
+  "schemaValid": 0,
+  "schemaValidBeforeRepair": 0,
+  "semanticPass": 0,
+  "preserved": 0,
+  "repairNeeded": 0,
+  "rows": [
+    {
+      "id": "it-less-soft",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Uguale, ma meno molle.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "schemaValid": false,
+      "schemaValidBeforeRepair": false,
+      "semanticPass": false,
+      "preserved": false,
+      "repaired": false,
+      "modelCalls": 1,
+      "error": "Cannot read properties of undefined (reading 'map')",
+      "durationMs": 1064
+    },
+    {
+      "id": "it-protect-color",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Non cambiare colore: fallo riprendere più velocemente.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "schemaValid": false,
+      "schemaValidBeforeRepair": false,
+      "semanticPass": false,
+      "preserved": false,
+      "repaired": false,
+      "modelCalls": 1,
+      "error": "Cannot read properties of undefined (reading 'map')",
+      "durationMs": 694
+    },
+    {
+      "id": "it-shark",
+      "request": {
+        "version": 1,
+        "mode": "create",
+        "prompt": "Fammi uno squalo blu."
+      },
+      "schemaValid": false,
+      "schemaValidBeforeRepair": false,
+      "semanticPass": false,
+      "preserved": false,
+      "repaired": false,
+      "modelCalls": 1,
+      "error": "Cannot read properties of undefined (reading 'map')",
+      "durationMs": 750
+    }
+  ]
+}

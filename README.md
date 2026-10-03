@@ -22,7 +22,9 @@ The page immediately shows a local preset. The **Demo locale · senza AI** descr
 
 Hold the object to increase pressure over 0.85 seconds; drag to move the contact and drag down to add depth. Pressure does not depend on hardware pressure sensors. Hold **Space/Enter** on the canvas or on **Tieni per premere**; release to recover. **Escape** on the canvas and **Ripristina forma** restore the current material's shape. **Ruota la vista** is separate from deformation. The final footer action removes the optional saved spec. Prompts are never saved.
 
-![The local lab](evidence/rest.png)
+After a material edit, **Confronta prima e dopo** repeats a two-second press and five-second recovery on both materials. Shape, color, finish, camera and gesture are held equal; deformation memory is reset between phases. Stop the comparison or press the object to return to the actual edited squishy. Descriptions of changes come from the applied parameters.
+
+![The refined local lab](evidence/refined/rest.png)
 
 ## What is implemented
 
@@ -33,22 +35,26 @@ Hold the object to increase pressure over 0.85 seconds; drag to move the contact
 - `POST /api/squishy`, explicit local mock, Cloudflare Workers AI binding adapter, one repair at most, quota/rate/timeout/unavailable states, stale-response protection and an object that stays interactive while a request runs or the network fails.
 - Cloudflare Static Assets configuration, server-validated Turnstile, Workers rate-limiting bindings, tests, essential CI and recorded evidence.
 
-**Live AI inference has not been verified.** No Cloudflare credentials were available for this delivery. The remote adapter and evaluation harness are implemented; mock tests are not evidence of Llama's semantic understanding. Source publication to [GitHub](https://github.com/Daniele-Cangi/squishy-lab) was authorized on 3 October 2026. Cloudflare deployment and DEV submission have not been performed, and no paid resources have been activated.
+**The real phrase → model → material loop is now verified.** Llama 3B and 8B had semantic misses, so the selected model is **Qwen3-30B-A3B-FP8**, on the same Cloudflare Workers AI service. Its final corpus passed 26/26; separate paraphrase regressions passed 8/8 and 5/5, with one bounded repair in the last set. The initial unseen run had a recovery-direction miss, preserved in the history. Real browser A/B evidence shows lower surface indentation after “meno molle.” See [verification](docs/VERIFICATION.md). Cloudflare deployment and real public Turnstile/rate-limit integration remain external steps; the prepared Worker still has AI disabled.
+
+For an intentional live local session, authenticate with `npx wrangler login`, keep Workers Free, and run `npm run dev:ai`. Open **http://127.0.0.1:5174**. This separate loopback adapter uses real inference, keeps credentials in the Node process and caps the session at 12 model calls. If subscription access returns 403, the documented Free-plan confirmation flag is required; see [Cloudflare setup](docs/CLOUDFLARE.md). Ordinary development and CI remain explicitly mock.
 
 ## Checks and evidence
 
 ```sh
-npm run check           # strict typecheck, lint, 62 unit tests, production build
+npm run check           # strict typecheck, lint, unit tests, production build
 npx playwright install chromium  # only if Chromium is not already installed
 npm run test:browser    # browser smoke + interaction/API/error flows; software rendering
 npm run evaluate:ai     # 26 synthetic cases, explicitly MOCK; zero remote calls
 npm run measure:physics # numerical traces, recovery, 12 cycles, 30/60/144 Hz comparison
+npm run measure:surface # persistent rendered-surface probes and indentation profiles
+npm run record:experience # normal-time Chrome press/release/drag video
 npm run measure:browser # requires npm run dev + installed Chrome; records actual GPU
 npm run worker:check    # local bundle/dry run; does not publish
 npm run worker:dev      # local workerd preview of built assets + MOCK, normally port 8787
 ```
 
-See [verification report](docs/VERIFICATION.md), [deformation notes](docs/TECHNICAL-NOTES.md), [deployment instructions](docs/CLOUDFLARE.md), [physics CSV](evidence/physics.csv), [physics JSON](evidence/physics.json), [mock semantic report](evidence/ai-mock.json), and [performance sample](evidence/browser-performance.json). Browser screenshots include rest, compression, recovery, mobile and a **mock** before/after material edit. A remote AI before/after is deliberately absent.
+See [verification report](docs/VERIFICATION.md), [deformation notes](docs/TECHNICAL-NOTES.md), [deployment instructions](docs/CLOUDFLARE.md), [current physics CSV](evidence/refined/physics.csv), [surface profiles](evidence/refined/surface.json), [live semantic results](evidence/refined/ai-live-qwen-corpus.json), [normal-time video](evidence/refined/experience.webm), [real AI comparison video](evidence/refined/ai-live-browser.webm), and [performance sample](evidence/refined/browser-performance.json). The original root evidence and the recorded `baseline-b169dc8` remain intact. New browser smoke screenshots live in `evidence/refined/browser-smoke/`.
 
 The GitHub Actions workflow runs checks and Chromium smoke on Linux. It does not deploy or run live inference. Current remote results are available in [GitHub Actions](https://github.com/Daniele-Cangi/squishy-lab/actions/workflows/ci.yml); the measurements in the verification report were collected locally.
 
@@ -68,7 +74,7 @@ The model chooses semantic material data; it never supplies code, shaders, meshe
 
 `src/shared/` is the portable contract/compiler/prompt. `src/physics/` has no renderer, browser or hosting dependency. `src/scene.ts` owns rendering and pointer mapping. `worker/` is a small hosting/provider adapter, independent of Vite. Vite's development-only middleware calls the same API handler with the explicit mock. The frontend can be served elsewhere with a same-origin `/api` proxy; cross-origin requests are intentionally refused. A static-only preview retains presets and manipulation, and reports that the description service is unavailable.
 
-The candidate is `@cf/meta/llama-3.2-3b-instruct`, using compact prompted JSON. Cloudflare's model page exposes a response-format parameter, but its current JSON Mode supported-model list does not include that model. We therefore do not assume schema-constrained generation on the 3B. An intentionally selectable alternative, `@cf/meta/llama-3.1-8b-instruct`, uses documented JSON Schema mode. Neither has been declared the semantic winner without live measurements. See the comparison procedure in [Cloudflare instructions](docs/CLOUDFLARE.md).
+The initial `@cf/meta/llama-3.2-3b-instruct` uses prompted JSON; `@cf/meta/llama-3.1-8b-instruct` uses documented JSON Schema mode. Live comparisons favored `@cf/qwen/qwen3-30b-a3b-fp8`, a mixture-of-experts model with about 3.3B active parameters and the same listed neuron rates as the initial 3B. Its documented non-thinking chat template keeps generation within 420 output tokens. Explicit protection checks reject recognized protected-field edits and contradictory recovery directions; they never invent a patch or substitute a mock. One repair shares the original 18-second budget. There is no automatic model/provider failover. See [Cloudflare instructions](docs/CLOUDFLARE.md).
 
 ## Limits, privacy and costs
 
@@ -76,11 +82,13 @@ This is a tuned toy foam, not a calibrated engineering material. Recovery is an 
 
 After loading, manipulation and presets need no network. There is no service worker or guaranteed offline restart. Optional fonts use Google Fonts with a system-font fallback. Live descriptions go to Cloudflare Workers AI; the UI says so and asks users not to include personal data. Worker observability is off; the application does not log prompts, conversations, IP addresses or child information. Turnstile validation uses an IP transiently and rate limits use the edge-provided IP as an unlogged key.
 
-The prepared configuration defaults to **AI disabled**. Cloudflare's Workers AI documentation, checked on **3 October 2026**, gives a Free allocation of **10,000 neurons/day**, resetting at 00:00 UTC, with further operations failing after the allowance. Request costs depend on input/output tokens and the model, and a repair can double the calls. Keep the account on Workers Free; do not enable Paid or prepaid credits. Turnstile offers a Free plan. Endpoint rate limits are per Cloudflare location and eventually consistent, not a global accounting limit; the Free provider quota is the final daily stop. No paid services are required or activated by this project. Availability on a real account remains to be checked.
+The prepared configuration defaults to **AI disabled**. Cloudflare's Workers AI documentation, checked on **3 October 2026**, gives a Free allocation of **10,000 neurons/day**, resetting at 00:00 UTC, with further operations failing after the allowance. Request costs depend on input/output tokens and the model, and a repair can double the calls. Keep the account on Workers Free; do not enable Paid or prepaid credits. Turnstile offers a Free plan. Endpoint rate limits are per Cloudflare location and eventually consistent, not a global accounting limit; the Free provider quota is the final daily stop. No paid services were activated. The Free plan was confirmed by the user because the subscription API returned 403; real inference returned usage metadata.
 
 ## Licenses and attribution
 
 Our application code is under [MIT](LICENSE). Three.js is MIT; dependencies retain their own licenses. No model weights or third-party sample code are bundled. Meta's Llama 3.2 / 3.1 models use their respective **Llama Community Licenses**, separately from this code's MIT license; they are described here as **open-weight**, not as OSI-licensed open-source weights. Review the model terms before publication. If the remote model is enabled, attribution is also shown in the interface.
+
+The selected [Qwen3 FP8 model](https://huggingface.co/Qwen/Qwen3-30B-A3B-FP8) declares Apache-2.0. Its weights remain on the provider; the UI displays Qwen attribution when that model is selected.
 
 The independently written solver follows the XPBD method described by Macklin, Müller and Chentanez, and the physical/visual mesh separation demonstrated by Matthias Müller. The delay-state and semantic compiler are application-specific approximations. Sources:
 

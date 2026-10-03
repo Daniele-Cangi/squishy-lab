@@ -1,0 +1,2174 @@
+{
+  "revision": "b169dc8ebcb2ec80c3f33b8ed68997c0e04d4b9b",
+  "measuredAt": "2026-10-03T17:13:14.223Z",
+  "units": "scene units along fixed normalized contact axis; logical profile coordinates are dimensionless",
+  "gesture": "Baseline: fixed logical [0,.55,1], normalized [0,.48,.88]; linear 0.85 s ramp to .88, release at 2 s. The runtime baseline uses a different ramp; this is recorded rather than claimed identical.",
+  "results": [
+    {
+      "name": "soft",
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "trace": [
+        {
+          "timeSeconds": 0.1,
+          "internalCageDepthUnits": 0.03209571187197453,
+          "renderedSurfaceDepthUnits": 0.03119994100112767,
+          "minVolumeRatio": 0.9717834350861676
+        },
+        {
+          "timeSeconds": 0.2,
+          "internalCageDepthUnits": 0.06789589766722658,
+          "renderedSurfaceDepthUnits": 0.0660087680804188,
+          "minVolumeRatio": 0.9408039780718108
+        },
+        {
+          "timeSeconds": 0.3,
+          "internalCageDepthUnits": 0.1043174073877856,
+          "renderedSurfaceDepthUnits": 0.10142554644684854,
+          "minVolumeRatio": 0.9098420506829458
+        },
+        {
+          "timeSeconds": 0.4,
+          "internalCageDepthUnits": 0.1412487699566243,
+          "renderedSurfaceDepthUnits": 0.1373403972598486,
+          "minVolumeRatio": 0.8768512400048136
+        },
+        {
+          "timeSeconds": 0.5,
+          "internalCageDepthUnits": 0.17859032672674363,
+          "renderedSurfaceDepthUnits": 0.17365517355287152,
+          "minVolumeRatio": 0.8403143323683772
+        },
+        {
+          "timeSeconds": 0.6,
+          "internalCageDepthUnits": 0.21625410335983092,
+          "renderedSurfaceDepthUnits": 0.2102837099748237,
+          "minVolumeRatio": 0.8023131742321287
+        },
+        {
+          "timeSeconds": 0.7,
+          "internalCageDepthUnits": 0.2541633089069721,
+          "renderedSurfaceDepthUnits": 0.24715153023656586,
+          "minVolumeRatio": 0.7634461419966834
+        },
+        {
+          "timeSeconds": 0.8,
+          "internalCageDepthUnits": 0.29225139660306043,
+          "renderedSurfaceDepthUnits": 0.28419498491030915,
+          "minVolumeRatio": 0.7243332498984116
+        },
+        {
+          "timeSeconds": 0.9,
+          "internalCageDepthUnits": 0.3161943907715561,
+          "renderedSurfaceDepthUnits": 0.307489236651409,
+          "minVolumeRatio": 0.6998866347057948
+        },
+        {
+          "timeSeconds": 1,
+          "internalCageDepthUnits": 0.31970889515109874,
+          "renderedSurfaceDepthUnits": 0.31091750179167876,
+          "minVolumeRatio": 0.6922883829188797
+        },
+        {
+          "timeSeconds": 1.1,
+          "internalCageDepthUnits": 0.3227892651306142,
+          "renderedSurfaceDepthUnits": 0.3139230294134644,
+          "minVolumeRatio": 0.6850031916760613
+        },
+        {
+          "timeSeconds": 1.2,
+          "internalCageDepthUnits": 0.325492849203876,
+          "renderedSurfaceDepthUnits": 0.3165613928008569,
+          "minVolumeRatio": 0.6780776328508105
+        },
+        {
+          "timeSeconds": 1.3,
+          "internalCageDepthUnits": 0.3278667486817391,
+          "renderedSurfaceDepthUnits": 0.31887834328726805,
+          "minVolumeRatio": 0.6715420224807124
+        },
+        {
+          "timeSeconds": 1.4,
+          "internalCageDepthUnits": 0.3299521010315223,
+          "renderedSurfaceDepthUnits": 0.32091395238586706,
+          "minVolumeRatio": 0.6654097475919549
+        },
+        {
+          "timeSeconds": 1.5,
+          "internalCageDepthUnits": 0.33178486276739017,
+          "renderedSurfaceDepthUnits": 0.32270314100218905,
+          "minVolumeRatio": 0.6596820075177933
+        },
+        {
+          "timeSeconds": 1.6,
+          "internalCageDepthUnits": 0.33339648995000004,
+          "renderedSurfaceDepthUnits": 0.324276624881716,
+          "minVolumeRatio": 0.6543516403370303
+        },
+        {
+          "timeSeconds": 1.7,
+          "internalCageDepthUnits": 0.33481451174646476,
+          "renderedSurfaceDepthUnits": 0.32566119883873224,
+          "minVolumeRatio": 0.6494058855858056
+        },
+        {
+          "timeSeconds": 1.8,
+          "internalCageDepthUnits": 0.3360630221668468,
+          "renderedSurfaceDepthUnits": 0.32688035040516417,
+          "minVolumeRatio": 0.644828380346163
+        },
+        {
+          "timeSeconds": 1.9,
+          "internalCageDepthUnits": 0.33716310648851977,
+          "renderedSurfaceDepthUnits": 0.3279546594159761,
+          "minVolumeRatio": 0.6406005988357967
+        },
+        {
+          "timeSeconds": 2,
+          "internalCageDepthUnits": 0.33813321353469383,
+          "renderedSurfaceDepthUnits": 0.3289021012658837,
+          "minVolumeRatio": 0.6367028850787728
+        },
+        {
+          "timeSeconds": 2.1,
+          "internalCageDepthUnits": 0.26479825573157684,
+          "renderedSurfaceDepthUnits": 0.2577044798028524,
+          "minVolumeRatio": 0.7807600877351786
+        },
+        {
+          "timeSeconds": 2.2,
+          "internalCageDepthUnits": 0.2516122056942819,
+          "renderedSurfaceDepthUnits": 0.24486872900318338,
+          "minVolumeRatio": 0.7921909861483768
+        },
+        {
+          "timeSeconds": 2.3,
+          "internalCageDepthUnits": 0.23918690112742513,
+          "renderedSurfaceDepthUnits": 0.23277562423931092,
+          "minVolumeRatio": 0.8029189224813245
+        },
+        {
+          "timeSeconds": 2.4,
+          "internalCageDepthUnits": 0.22737138042951918,
+          "renderedSurfaceDepthUnits": 0.22127592037990135,
+          "minVolumeRatio": 0.8075512155989922
+        },
+        {
+          "timeSeconds": 2.5,
+          "internalCageDepthUnits": 0.21613857358598978,
+          "renderedSurfaceDepthUnits": 0.21034334111991082,
+          "minVolumeRatio": 0.8122349351573608
+        },
+        {
+          "timeSeconds": 2.6,
+          "internalCageDepthUnits": 0.20545962178185595,
+          "renderedSurfaceDepthUnits": 0.19994982153418306,
+          "minVolumeRatio": 0.8171864954407516
+        },
+        {
+          "timeSeconds": 2.7,
+          "internalCageDepthUnits": 0.19530699302597346,
+          "renderedSurfaceDepthUnits": 0.19006857870075183,
+          "minVolumeRatio": 0.8223401605566719
+        },
+        {
+          "timeSeconds": 2.8,
+          "internalCageDepthUnits": 0.1856545791916094,
+          "renderedSurfaceDepthUnits": 0.18067424727414128,
+          "minVolumeRatio": 0.8276391368176953
+        },
+        {
+          "timeSeconds": 2.9,
+          "internalCageDepthUnits": 0.17647761106288565,
+          "renderedSurfaceDepthUnits": 0.1717426107167627,
+          "minVolumeRatio": 0.83303448415833
+        },
+        {
+          "timeSeconds": 3,
+          "internalCageDepthUnits": 0.16775258496267564,
+          "renderedSurfaceDepthUnits": 0.16325091763740154,
+          "minVolumeRatio": 0.8384841591419935
+        },
+        {
+          "timeSeconds": 3.1,
+          "internalCageDepthUnits": 0.15945719376900047,
+          "renderedSurfaceDepthUnits": 0.15517739776955447,
+          "minVolumeRatio": 0.8439521732518523
+        },
+        {
+          "timeSeconds": 3.2,
+          "internalCageDepthUnits": 0.15157026142289082,
+          "renderedSurfaceDepthUnits": 0.14750142251923226,
+          "minVolumeRatio": 0.849407852120615
+        },
+        {
+          "timeSeconds": 3.3,
+          "internalCageDepthUnits": 0.14407168099525708,
+          "renderedSurfaceDepthUnits": 0.1402034740445315,
+          "minVolumeRatio": 0.8548251832012479
+        },
+        {
+          "timeSeconds": 3.4,
+          "internalCageDepthUnits": 0.1369423563051277,
+          "renderedSurfaceDepthUnits": 0.13326490978579583,
+          "minVolumeRatio": 0.8601822409996597
+        },
+        {
+          "timeSeconds": 3.5,
+          "internalCageDepthUnits": 0.13016414701342421,
+          "renderedSurfaceDepthUnits": 0.12666815869047332,
+          "minVolumeRatio": 0.8654606803979142
+        },
+        {
+          "timeSeconds": 3.6,
+          "internalCageDepthUnits": 0.123719817067548,
+          "renderedSurfaceDepthUnits": 0.12039636087284092,
+          "minVolumeRatio": 0.8706452898155475
+        },
+        {
+          "timeSeconds": 3.6999999999999997,
+          "internalCageDepthUnits": 0.11759298633763657,
+          "renderedSurfaceDepthUnits": 0.11443358286686675,
+          "minVolumeRatio": 0.8757235970112958
+        },
+        {
+          "timeSeconds": 3.8,
+          "internalCageDepthUnits": 0.1117680852636431,
+          "renderedSurfaceDepthUnits": 0.10876471416196658,
+          "minVolumeRatio": 0.8806855212396664
+        },
+        {
+          "timeSeconds": 3.9,
+          "internalCageDepthUnits": 0.10623031232134,
+          "renderedSurfaceDepthUnits": 0.10337526741044813,
+          "minVolumeRatio": 0.8855230662659906
+        },
+        {
+          "timeSeconds": 4,
+          "internalCageDepthUnits": 0.10096559411278758,
+          "renderedSurfaceDepthUnits": 0.09825162816841626,
+          "minVolumeRatio": 0.890230049427096
+        },
+        {
+          "timeSeconds": 4.1,
+          "internalCageDepthUnits": 0.09596054789051639,
+          "renderedSurfaceDepthUnits": 0.09338071715083902,
+          "minVolumeRatio": 0.894801862517198
+        },
+        {
+          "timeSeconds": 4.2,
+          "internalCageDepthUnits": 0.091202446332776,
+          "renderedSurfaceDepthUnits": 0.08875015077942919,
+          "minVolumeRatio": 0.8992352607934145
+        },
+        {
+          "timeSeconds": 4.3,
+          "internalCageDepthUnits": 0.08667918439812632,
+          "renderedSurfaceDepthUnits": 0.0843481793418843,
+          "minVolumeRatio": 0.9035281768426088
+        },
+        {
+          "timeSeconds": 4.4,
+          "internalCageDepthUnits": 0.08237924810012322,
+          "renderedSurfaceDepthUnits": 0.08016354309363721,
+          "minVolumeRatio": 0.9076795564414192
+        },
+        {
+          "timeSeconds": 4.5,
+          "internalCageDepthUnits": 0.07829168505590406,
+          "renderedSurfaceDepthUnits": 0.07618565659054083,
+          "minVolumeRatio": 0.9116892138814325
+        },
+        {
+          "timeSeconds": 4.6,
+          "internalCageDepthUnits": 0.0744060766755037,
+          "renderedSurfaceDepthUnits": 0.07240425072668337,
+          "minVolumeRatio": 0.9155577045289864
+        },
+        {
+          "timeSeconds": 4.7,
+          "internalCageDepthUnits": 0.07071251187118999,
+          "renderedSurfaceDepthUnits": 0.068809828214447,
+          "minVolumeRatio": 0.9192862126496145
+        },
+        {
+          "timeSeconds": 4.8,
+          "internalCageDepthUnits": 0.06720156217777444,
+          "renderedSurfaceDepthUnits": 0.06539314983167005,
+          "minVolumeRatio": 0.9228764527553758
+        },
+        {
+          "timeSeconds": 4.9,
+          "internalCageDepthUnits": 0.06386425818555319,
+          "renderedSurfaceDepthUnits": 0.06214541042956742,
+          "minVolumeRatio": 0.9263305829342394
+        },
+        {
+          "timeSeconds": 5,
+          "internalCageDepthUnits": 0.060692067197203645,
+          "renderedSurfaceDepthUnits": 0.05905839234505416,
+          "minVolumeRatio": 0.9296511287968371
+        },
+        {
+          "timeSeconds": 5.1,
+          "internalCageDepthUnits": 0.057676872028619375,
+          "renderedSurfaceDepthUnits": 0.05612414787283567,
+          "minVolumeRatio": 0.9328409168315824
+        },
+        {
+          "timeSeconds": 5.2,
+          "internalCageDepthUnits": 0.0548109508813378,
+          "renderedSurfaceDepthUnits": 0.0533352085724577,
+          "minVolumeRatio": 0.9359030160961179
+        },
+        {
+          "timeSeconds": 5.3,
+          "internalCageDepthUnits": 0.05208695822099962,
+          "renderedSurfaceDepthUnits": 0.05068444374794874,
+          "minVolumeRatio": 0.9388406872940656
+        },
+        {
+          "timeSeconds": 5.4,
+          "internalCageDepthUnits": 0.04949790660222658,
+          "renderedSurfaceDepthUnits": 0.04816495936273693,
+          "minVolumeRatio": 0.9416573383929974
+        },
+        {
+          "timeSeconds": 5.5,
+          "internalCageDepthUnits": 0.047037149385529574,
+          "renderedSurfaceDepthUnits": 0.045770373943481484,
+          "minVolumeRatio": 0.9443564860342687
+        },
+        {
+          "timeSeconds": 5.6,
+          "internalCageDepthUnits": 0.04469836429643988,
+          "renderedSurfaceDepthUnits": 0.043494423751874976,
+          "minVolumeRatio": 0.9469417220690178
+        },
+        {
+          "timeSeconds": 5.7,
+          "internalCageDepthUnits": 0.042475537781066816,
+          "renderedSurfaceDepthUnits": 0.04133134334204271,
+          "minVolumeRatio": 0.9494166846289651
+        },
+        {
+          "timeSeconds": 5.8,
+          "internalCageDepthUnits": 0.04036295011581417,
+          "renderedSurfaceDepthUnits": 0.0392755658715701,
+          "minVolumeRatio": 0.9517850332065654
+        },
+        {
+          "timeSeconds": 5.9,
+          "internalCageDepthUnits": 0.038355161232081866,
+          "renderedSurfaceDepthUnits": 0.037321794456000965,
+          "minVolumeRatio": 0.9540504272773654
+        },
+        {
+          "timeSeconds": 6,
+          "internalCageDepthUnits": 0.036446997219543614,
+          "renderedSurfaceDepthUnits": 0.03546493081425565,
+          "minVolumeRatio": 0.9562165080495342
+        },
+        {
+          "timeSeconds": 6.1,
+          "internalCageDepthUnits": 0.03463353747399857,
+          "renderedSurfaceDepthUnits": 0.03370030241401782,
+          "minVolumeRatio": 0.9582868829714846
+        },
+        {
+          "timeSeconds": 6.2,
+          "internalCageDepthUnits": 0.032910102457986604,
+          "renderedSurfaceDepthUnits": 0.032023255750829954,
+          "minVolumeRatio": 0.9602651126696418
+        },
+        {
+          "timeSeconds": 6.3,
+          "internalCageDepthUnits": 0.03127224204428734,
+          "renderedSurfaceDepthUnits": 0.03042940252113983,
+          "minVolumeRatio": 0.9621547000248556
+        },
+        {
+          "timeSeconds": 6.4,
+          "internalCageDepthUnits": 0.029715724414186143,
+          "renderedSurfaceDepthUnits": 0.028914793251892845,
+          "minVolumeRatio": 0.9639590811283788
+        },
+        {
+          "timeSeconds": 6.5,
+          "internalCageDepthUnits": 0.028236525483965304,
+          "renderedSurfaceDepthUnits": 0.027475420197110627,
+          "minVolumeRatio": 0.9656816178872654
+        },
+        {
+          "timeSeconds": 6.6,
+          "internalCageDepthUnits": 0.026830818834533872,
+          "renderedSurfaceDepthUnits": 0.026107570542786805,
+          "minVolumeRatio": 0.9673255920747487
+        },
+        {
+          "timeSeconds": 6.7,
+          "internalCageDepthUnits": 0.025494966120438296,
+          "renderedSurfaceDepthUnits": 0.024807663480870015,
+          "minVolumeRatio": 0.9688942006441004
+        },
+        {
+          "timeSeconds": 6.8,
+          "internalCageDepthUnits": 0.024225507935698873,
+          "renderedSurfaceDepthUnits": 0.023572379836570137,
+          "minVolumeRatio": 0.9703905521447741
+        },
+        {
+          "timeSeconds": 6.8999999999999995,
+          "internalCageDepthUnits": 0.023019155115067504,
+          "renderedSurfaceDepthUnits": 0.022398563361267103,
+          "minVolumeRatio": 0.9718176640979641
+        },
+        {
+          "timeSeconds": 7,
+          "internalCageDepthUnits": 0.021872780450344353,
+          "renderedSurfaceDepthUnits": 0.021283054238620182,
+          "minVolumeRatio": 0.9731784612047862
+        },
+        {
+          "timeSeconds": 7.1,
+          "internalCageDepthUnits": 0.020783410802363702,
+          "renderedSurfaceDepthUnits": 0.02022296617789079,
+          "minVolumeRatio": 0.9744757742747566
+        },
+        {
+          "timeSeconds": 7.2,
+          "internalCageDepthUnits": 0.019748219590197097,
+          "renderedSurfaceDepthUnits": 0.01921575539028849,
+          "minVolumeRatio": 0.9757123397751376
+        },
+        {
+          "timeSeconds": 7.3,
+          "internalCageDepthUnits": 0.018764519639970185,
+          "renderedSurfaceDepthUnits": 0.018258505853977404,
+          "minVolumeRatio": 0.9768907999130814
+        },
+        {
+          "timeSeconds": 7.3999999999999995,
+          "internalCageDepthUnits": 0.017829756376519217,
+          "renderedSurfaceDepthUnits": 0.017348902114549102,
+          "minVolumeRatio": 0.9780137031728615
+        },
+        {
+          "timeSeconds": 7.5,
+          "internalCageDepthUnits": 0.01694150134187657,
+          "renderedSurfaceDepthUnits": 0.016484615635952778,
+          "minVolumeRatio": 0.9790835052393787
+        },
+        {
+          "timeSeconds": 7.6,
+          "internalCageDepthUnits": 0.016097446025313756,
+          "renderedSurfaceDepthUnits": 0.01566324414899916,
+          "minVolumeRatio": 0.9801025702474258
+        },
+        {
+          "timeSeconds": 7.7,
+          "internalCageDepthUnits": 0.015295395990358993,
+          "renderedSurfaceDepthUnits": 0.01488288248792036,
+          "minVolumeRatio": 0.9810731723032431
+        },
+        {
+          "timeSeconds": 7.8,
+          "internalCageDepthUnits": 0.01453326528488276,
+          "renderedSurfaceDepthUnits": 0.014141313905169445,
+          "minVolumeRatio": 0.9819974972314321
+        },
+        {
+          "timeSeconds": 7.8999999999999995,
+          "internalCageDepthUnits": 0.013809071120950499,
+          "renderedSurfaceDepthUnits": 0.013436635613550824,
+          "minVolumeRatio": 0.982877644505923
+        },
+        {
+          "timeSeconds": 8,
+          "internalCageDepthUnits": 0.013120928811775703,
+          "renderedSurfaceDepthUnits": 0.012766990016660318,
+          "minVolumeRatio": 0.9837156293288747
+        },
+        {
+          "timeSeconds": 8.1,
+          "internalCageDepthUnits": 0.012467046953649258,
+          "renderedSurfaceDepthUnits": 0.012130757366826225,
+          "minVolumeRatio": 0.984513384825749
+        },
+        {
+          "timeSeconds": 8.2,
+          "internalCageDepthUnits": 0.011845722841300397,
+          "renderedSurfaceDepthUnits": 0.011526184721120334,
+          "minVolumeRatio": 0.9852727643290146
+        },
+        {
+          "timeSeconds": 8.3,
+          "internalCageDepthUnits": 0.011255338105629908,
+          "renderedSurfaceDepthUnits": 0.010951697522922643,
+          "minVolumeRatio": 0.9859955437263574
+        },
+        {
+          "timeSeconds": 8.4,
+          "internalCageDepthUnits": 0.010694354563310644,
+          "renderedSurfaceDepthUnits": 0.010405873438682494,
+          "minVolumeRatio": 0.9866834238524758
+        },
+        {
+          "timeSeconds": 8.5,
+          "internalCageDepthUnits": 0.010161310268175835,
+          "renderedSurfaceDepthUnits": 0.009887187859945567,
+          "minVolumeRatio": 0.9873380329064141
+        },
+        {
+          "timeSeconds": 8.6,
+          "internalCageDepthUnits": 0.00965481575480732,
+          "renderedSurfaceDepthUnits": 0.009394280293759683,
+          "minVolumeRatio": 0.9879609288787831
+        },
+        {
+          "timeSeconds": 8.7,
+          "internalCageDepthUnits": 0.009173550465176431,
+          "renderedSurfaceDepthUnits": 0.008926078043718658,
+          "minVolumeRatio": 0.9885536019755002
+        },
+        {
+          "timeSeconds": 8.8,
+          "internalCageDepthUnits": 0.008716259349581834,
+          "renderedSurfaceDepthUnits": 0.008481096935535563,
+          "minVolumeRatio": 0.9891174770265945
+        },
+        {
+          "timeSeconds": 8.9,
+          "internalCageDepthUnits": 0.008281749633563745,
+          "renderedSurfaceDepthUnits": 0.008058264272896078,
+          "minVolumeRatio": 0.989653915870388
+        },
+        {
+          "timeSeconds": 9,
+          "internalCageDepthUnits": 0.007868887742840554,
+          "renderedSurfaceDepthUnits": 0.007656607255756008,
+          "minVolumeRatio": 0.990164219704779
+        },
+        {
+          "timeSeconds": 9.1,
+          "internalCageDepthUnits": 0.007476596378679649,
+          "renderedSurfaceDepthUnits": 0.0072748652873261205,
+          "minVolumeRatio": 0.9906496313989169
+        },
+        {
+          "timeSeconds": 9.2,
+          "internalCageDepthUnits": 0.007103851736475953,
+          "renderedSurfaceDepthUnits": 0.006912144057676855,
+          "minVolumeRatio": 0.9911113377594583
+        },
+        {
+          "timeSeconds": 9.3,
+          "internalCageDepthUnits": 0.00674968086064331,
+          "renderedSurfaceDepthUnits": 0.006567563527500966,
+          "minVolumeRatio": 0.9915504717468652
+        },
+        {
+          "timeSeconds": 9.4,
+          "internalCageDepthUnits": 0.0064131591292400595,
+          "renderedSurfaceDepthUnits": 0.006240100948649822,
+          "minVolumeRatio": 0.9919681146380416
+        },
+        {
+          "timeSeconds": 9.5,
+          "internalCageDepthUnits": 0.006093407862072542,
+          "renderedSurfaceDepthUnits": 0.005928969042813417,
+          "minVolumeRatio": 0.9923652981323174
+        },
+        {
+          "timeSeconds": 9.6,
+          "internalCageDepthUnits": 0.005789592046296103,
+          "renderedSurfaceDepthUnits": 0.005633382910162186,
+          "minVolumeRatio": 0.9927430063986438
+        },
+        {
+          "timeSeconds": 9.7,
+          "internalCageDepthUnits": 0.005500918173822825,
+          "renderedSurfaceDepthUnits": 0.005352469646906745,
+          "minVolumeRatio": 0.9931021780623505
+        },
+        {
+          "timeSeconds": 9.8,
+          "internalCageDepthUnits": 0.005226632185116552,
+          "renderedSurfaceDepthUnits": 0.005085572791497837,
+          "minVolumeRatio": 0.9934437081304054
+        },
+        {
+          "timeSeconds": 9.9,
+          "internalCageDepthUnits": 0.004966017514212495,
+          "renderedSurfaceDepthUnits": 0.004831997826530836,
+          "minVolumeRatio": 0.9937684498545241
+        },
+        {
+          "timeSeconds": 10,
+          "internalCageDepthUnits": 0.004718393230027621,
+          "renderedSurfaceDepthUnits": 0.0045910240711479105,
+          "minVolumeRatio": 0.9940772165319474
+        },
+        {
+          "timeSeconds": 10.1,
+          "internalCageDepthUnits": 0.004483112269281821,
+          "renderedSurfaceDepthUnits": 0.004362166314727944,
+          "minVolumeRatio": 0.9943707832439631
+        },
+        {
+          "timeSeconds": 10.2,
+          "internalCageDepthUnits": 0.004259559756570731,
+          "renderedSurfaceDepthUnits": 0.0041446134939881665,
+          "minVolumeRatio": 0.9946498885325903
+        },
+        {
+          "timeSeconds": 10.3,
+          "internalCageDepthUnits": 0.004047151407319295,
+          "renderedSurfaceDepthUnits": 0.003937923210878732,
+          "minVolumeRatio": 0.9949152360160561
+        },
+        {
+          "timeSeconds": 10.4,
+          "internalCageDepthUnits": 0.003845332009590984,
+          "renderedSurfaceDepthUnits": 0.0037415817129214457,
+          "minVolumeRatio": 0.9951674959439293
+        },
+        {
+          "timeSeconds": 10.5,
+          "internalCageDepthUnits": 0.0036535739808792322,
+          "renderedSurfaceDepthUnits": 0.003555006271307416,
+          "minVolumeRatio": 0.995407306692987
+        },
+        {
+          "timeSeconds": 10.6,
+          "internalCageDepthUnits": 0.0034713759962172724,
+          "renderedSurfaceDepthUnits": 0.0033776736195601544,
+          "minVolumeRatio": 0.9956352762048594
+        },
+        {
+          "timeSeconds": 10.7,
+          "internalCageDepthUnits": 0.003298261684116372,
+          "renderedSurfaceDepthUnits": 0.003209303096559661,
+          "minVolumeRatio": 0.9958519833668853
+        },
+        {
+          "timeSeconds": 10.8,
+          "internalCageDepthUnits": 0.003133778387003394,
+          "renderedSurfaceDepthUnits": 0.0030492358621843803,
+          "minVolumeRatio": 0.9960579793374882
+        },
+        {
+          "timeSeconds": 10.9,
+          "internalCageDepthUnits": 0.002977495982993815,
+          "renderedSurfaceDepthUnits": 0.002897105629773688,
+          "minVolumeRatio": 0.9962537888174955
+        },
+        {
+          "timeSeconds": 11,
+          "internalCageDepthUnits": 0.0028290057659865224,
+          "renderedSurfaceDepthUnits": 0.002752660280034045,
+          "minVolumeRatio": 0.996439911268996
+        },
+        {
+          "timeSeconds": 11.1,
+          "internalCageDepthUnits": 0.002687919381215857,
+          "renderedSurfaceDepthUnits": 0.002615414602206537,
+          "minVolumeRatio": 0.9966168220832456
+        },
+        {
+          "timeSeconds": 11.2,
+          "internalCageDepthUnits": 0.002553867813535242,
+          "renderedSurfaceDepthUnits": 0.0024849499830303544,
+          "minVolumeRatio": 0.9967849736991542
+        },
+        {
+          "timeSeconds": 11.3,
+          "internalCageDepthUnits": 0.0024265004258328744,
+          "renderedSurfaceDepthUnits": 0.0023610666298121414,
+          "minVolumeRatio": 0.9969447966740602
+        },
+        {
+          "timeSeconds": 11.4,
+          "internalCageDepthUnits": 0.0023054840451131706,
+          "renderedSurfaceDepthUnits": 0.002243255546958017,
+          "minVolumeRatio": 0.9970967007082803
+        },
+        {
+          "timeSeconds": 11.5,
+          "internalCageDepthUnits": 0.0021905020938958798,
+          "renderedSurfaceDepthUnits": 0.0021314073241076982,
+          "minVolumeRatio": 0.9972410756250898
+        },
+        {
+          "timeSeconds": 11.6,
+          "internalCageDepthUnits": 0.00208125376469783,
+          "renderedSurfaceDepthUnits": 0.002025112862121157,
+          "minVolumeRatio": 0.9973782923077313
+        },
+        {
+          "timeSeconds": 11.7,
+          "internalCageDepthUnits": 0.0019774532354709445,
+          "renderedSurfaceDepthUnits": 0.0019241010136164002,
+          "minVolumeRatio": 0.9975087035949569
+        },
+        {
+          "timeSeconds": 11.8,
+          "internalCageDepthUnits": 0.0018788289239740673,
+          "renderedSurfaceDepthUnits": 0.001828093496045728,
+          "minVolumeRatio": 0.9976326451367441
+        },
+        {
+          "timeSeconds": 11.9,
+          "internalCageDepthUnits": 0.0017851227791605413,
+          "renderedSurfaceDepthUnits": 0.0017369523573601976,
+          "minVolumeRatio": 0.9977504362116069
+        },
+        {
+          "timeSeconds": 12,
+          "internalCageDepthUnits": 0.0016960896077437475,
+          "renderedSurfaceDepthUnits": 0.001650306553846448,
+          "minVolumeRatio": 0.997862380507087
+        },
+        {
+          "timeSeconds": 12.1,
+          "internalCageDepthUnits": 0.0016114964342131193,
+          "renderedSurfaceDepthUnits": 0.001568006241145229,
+          "minVolumeRatio": 0.9979687668648044
+        },
+        {
+          "timeSeconds": 12.2,
+          "internalCageDepthUnits": 0.0015311218926364904,
+          "renderedSurfaceDepthUnits": 0.0014898254631865381,
+          "minVolumeRatio": 0.9980698699915381
+        },
+        {
+          "timeSeconds": 12.3,
+          "internalCageDepthUnits": 0.0014547556486800709,
+          "renderedSurfaceDepthUnits": 0.0014155263715900654,
+          "minVolumeRatio": 0.99816595113771
+        },
+        {
+          "timeSeconds": 12.4,
+          "internalCageDepthUnits": 0.0013821978503515432,
+          "renderedSurfaceDepthUnits": 0.0013449020381139742,
+          "minVolumeRatio": 0.9982572587446072
+        },
+        {
+          "timeSeconds": 12.5,
+          "internalCageDepthUnits": 0.0013132586060423353,
+          "renderedSurfaceDepthUnits": 0.0012778240247382376,
+          "minVolumeRatio": 0.9983440290616714
+        },
+        {
+          "timeSeconds": 12.6,
+          "internalCageDepthUnits": 0.0012477574885146503,
+          "renderedSurfaceDepthUnits": 0.001214078267795026,
+          "minVolumeRatio": 0.9984264867350846
+        },
+        {
+          "timeSeconds": 12.7,
+          "internalCageDepthUnits": 0.0011855230635533266,
+          "renderedSurfaceDepthUnits": 0.0011535268152353959,
+          "minVolumeRatio": 0.9985048453689219
+        },
+        {
+          "timeSeconds": 12.8,
+          "internalCageDepthUnits": 0.0011263924420559105,
+          "renderedSurfaceDepthUnits": 0.0010959579819638191,
+          "minVolumeRatio": 0.9985793080600192
+        },
+        {
+          "timeSeconds": 12.9,
+          "internalCageDepthUnits": 0.0010702108544008312,
+          "renderedSurfaceDepthUnits": 0.0010412932779575298,
+          "minVolumeRatio": 0.9986500679077167
+        },
+        {
+          "timeSeconds": 13,
+          "internalCageDepthUnits": 0.0010168312459809556,
+          "renderedSurfaceDepthUnits": 0.0009893971297398859,
+          "minVolumeRatio": 0.9987173084995747
+        },
+        {
+          "timeSeconds": 13.1,
+          "internalCageDepthUnits": 0.0009661138928696775,
+          "renderedSurfaceDepthUnits": 0.0009400530950707568,
+          "minVolumeRatio": 0.998781204374119
+        },
+        {
+          "timeSeconds": 13.2,
+          "internalCageDepthUnits": 0.00091792603660422,
+          "renderedSurfaceDepthUnits": 0.0008931731700975048,
+          "minVolumeRatio": 0.9988419214616588
+        },
+        {
+          "timeSeconds": 13.299999999999999,
+          "internalCageDepthUnits": 0.0008721415371388105,
+          "renderedSurfaceDepthUnits": 0.00084859323940985,
+          "minVolumeRatio": 0.9988996175041337
+        },
+        {
+          "timeSeconds": 13.4,
+          "internalCageDepthUnits": 0.0008286405430800486,
+          "renderedSurfaceDepthUnits": 0.0008062467054637553,
+          "minVolumeRatio": 0.998954442454932
+        },
+        {
+          "timeSeconds": 13.5,
+          "internalCageDepthUnits": 0.0007873091783255316,
+          "renderedSurfaceDepthUnits": 0.0007660265364712389,
+          "minVolumeRatio": 0.9990065388596543
+        },
+        {
+          "timeSeconds": 13.6,
+          "internalCageDepthUnits": 0.0007480392443093378,
+          "renderedSurfaceDepthUnits": 0.0007278257005524537,
+          "minVolumeRatio": 0.999056042218579
+        },
+        {
+          "timeSeconds": 13.7,
+          "internalCageDepthUnits": 0.0007107279370641654,
+          "renderedSurfaceDepthUnits": 0.0006915371660878387,
+          "minVolumeRatio": 0.9991030813317796
+        },
+        {
+          "timeSeconds": 13.799999999999999,
+          "internalCageDepthUnits": 0.0006752775783776193,
+          "renderedSurfaceDepthUnits": 0.0006570562796014263,
+          "minVolumeRatio": 0.9991477786276055
+        },
+        {
+          "timeSeconds": 13.9,
+          "internalCageDepthUnits": 0.0006415953603293562,
+          "renderedSurfaceDepthUnits": 0.0006242189257594914,
+          "minVolumeRatio": 0.9991902504753665
+        },
+        {
+          "timeSeconds": 14,
+          "internalCageDepthUnits": 0.0006095931025523254,
+          "renderedSurfaceDepthUnits": 0.000593122622443588,
+          "minVolumeRatio": 0.9992306074829107
+        }
+      ],
+      "profiles": [
+        {
+          "timeSeconds": 2,
+          "points": [
+            {
+              "logicalX": -0.6,
+              "renderedSurfaceDepthUnits": 0.1193364825163982
+            },
+            {
+              "logicalX": -0.525,
+              "renderedSurfaceDepthUnits": 0.15104986707491116
+            },
+            {
+              "logicalX": -0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.18984083422868567
+            },
+            {
+              "logicalX": -0.375,
+              "renderedSurfaceDepthUnits": 0.23069502112539816
+            },
+            {
+              "logicalX": -0.3,
+              "renderedSurfaceDepthUnits": 0.2694631430612975
+            },
+            {
+              "logicalX": -0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.30075784336471034
+            },
+            {
+              "logicalX": -0.15,
+              "renderedSurfaceDepthUnits": 0.3195963912761457
+            },
+            {
+              "logicalX": -0.075,
+              "renderedSurfaceDepthUnits": 0.32708874813322963
+            },
+            {
+              "logicalX": 0,
+              "renderedSurfaceDepthUnits": 0.3289021012658837
+            },
+            {
+              "logicalX": 0.075,
+              "renderedSurfaceDepthUnits": 0.3278484127720522
+            },
+            {
+              "logicalX": 0.15,
+              "renderedSurfaceDepthUnits": 0.32050032559721686
+            },
+            {
+              "logicalX": 0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.300332797901273
+            },
+            {
+              "logicalX": 0.3,
+              "renderedSurfaceDepthUnits": 0.26647128305089424
+            },
+            {
+              "logicalX": 0.375,
+              "renderedSurfaceDepthUnits": 0.22493659519809564
+            },
+            {
+              "logicalX": 0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.1815800499645116
+            },
+            {
+              "logicalX": 0.525,
+              "renderedSurfaceDepthUnits": 0.14052397198109445
+            },
+            {
+              "logicalX": 0.6,
+              "renderedSurfaceDepthUnits": 0.10658102445433411
+            }
+          ]
+        },
+        {
+          "timeSeconds": 2.5,
+          "points": [
+            {
+              "logicalX": -0.6,
+              "renderedSurfaceDepthUnits": 0.08399136915805172
+            },
+            {
+              "logicalX": -0.525,
+              "renderedSurfaceDepthUnits": 0.10327348214252993
+            },
+            {
+              "logicalX": -0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.1266155862737681
+            },
+            {
+              "logicalX": -0.375,
+              "renderedSurfaceDepthUnits": 0.15117508325127008
+            },
+            {
+              "logicalX": -0.3,
+              "renderedSurfaceDepthUnits": 0.1745356772658126
+            },
+            {
+              "logicalX": -0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.19343034697458297
+            },
+            {
+              "logicalX": -0.15,
+              "renderedSurfaceDepthUnits": 0.2047931323023807
+            },
+            {
+              "logicalX": -0.075,
+              "renderedSurfaceDepthUnits": 0.20928386510793648
+            },
+            {
+              "logicalX": 0,
+              "renderedSurfaceDepthUnits": 0.21034334111991082
+            },
+            {
+              "logicalX": 0.075,
+              "renderedSurfaceDepthUnits": 0.20964075663946888
+            },
+            {
+              "logicalX": 0.15,
+              "renderedSurfaceDepthUnits": 0.20507756674852898
+            },
+            {
+              "logicalX": 0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.19268795916238834
+            },
+            {
+              "logicalX": 0.3,
+              "renderedSurfaceDepthUnits": 0.17193982013703593
+            },
+            {
+              "logicalX": 0.375,
+              "renderedSurfaceDepthUnits": 0.1464825434674925
+            },
+            {
+              "logicalX": 0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.11985342548265257
+            },
+            {
+              "logicalX": 0.525,
+              "renderedSurfaceDepthUnits": 0.09453984569461017
+            },
+            {
+              "logicalX": 0.6,
+              "renderedSurfaceDepthUnits": 0.07342938717294364
+            }
+          ]
+        },
+        {
+          "timeSeconds": 3,
+          "points": [
+            {
+              "logicalX": -0.6,
+              "renderedSurfaceDepthUnits": 0.06499844116726258
+            },
+            {
+              "logicalX": -0.525,
+              "renderedSurfaceDepthUnits": 0.08000297243957871
+            },
+            {
+              "logicalX": -0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.09817716502712698
+            },
+            {
+              "logicalX": -0.375,
+              "renderedSurfaceDepthUnits": 0.11730197078216376
+            },
+            {
+              "logicalX": -0.3,
+              "renderedSurfaceDepthUnits": 0.13549074141184164
+            },
+            {
+              "logicalX": -0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.15019263499455598
+            },
+            {
+              "logicalX": -0.15,
+              "renderedSurfaceDepthUnits": 0.15901410644846165
+            },
+            {
+              "logicalX": -0.075,
+              "renderedSurfaceDepthUnits": 0.16247115192696732
+            },
+            {
+              "logicalX": 0,
+              "renderedSurfaceDepthUnits": 0.16325091763740154
+            },
+            {
+              "logicalX": 0.075,
+              "renderedSurfaceDepthUnits": 0.16266302304310334
+            },
+            {
+              "logicalX": 0.15,
+              "renderedSurfaceDepthUnits": 0.1590864693317596
+            },
+            {
+              "logicalX": 0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.1494486519119678
+            },
+            {
+              "logicalX": 0.3,
+              "renderedSurfaceDepthUnits": 0.13333712911741025
+            },
+            {
+              "logicalX": 0.375,
+              "renderedSurfaceDepthUnits": 0.11357756894943023
+            },
+            {
+              "logicalX": 0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.09290865821788484
+            },
+            {
+              "logicalX": 0.525,
+              "renderedSurfaceDepthUnits": 0.07326070595443761
+            },
+            {
+              "logicalX": 0.6,
+              "renderedSurfaceDepthUnits": 0.05688010869170473
+            }
+          ]
+        }
+      ],
+      "residual": 0.0006256954068027121,
+      "backoffs": 0
+    },
+    {
+      "name": "firm",
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.22,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "trace": [
+        {
+          "timeSeconds": 0.1,
+          "internalCageDepthUnits": 0.004793876612994362,
+          "renderedSurfaceDepthUnits": 0.004618980750954129,
+          "minVolumeRatio": 0.9924341097262533
+        },
+        {
+          "timeSeconds": 0.2,
+          "internalCageDepthUnits": 0.010683391973485123,
+          "renderedSurfaceDepthUnits": 0.010294412855289384,
+          "minVolumeRatio": 0.9833492099898139
+        },
+        {
+          "timeSeconds": 0.3,
+          "internalCageDepthUnits": 0.01724081357917654,
+          "renderedSurfaceDepthUnits": 0.01661399795965645,
+          "minVolumeRatio": 0.9734429991189574
+        },
+        {
+          "timeSeconds": 0.4,
+          "internalCageDepthUnits": 0.02445581446401711,
+          "renderedSurfaceDepthUnits": 0.023567627506008902,
+          "minVolumeRatio": 0.9627629657557987
+        },
+        {
+          "timeSeconds": 0.5,
+          "internalCageDepthUnits": 0.03231852441218712,
+          "renderedSurfaceDepthUnits": 0.031145769718831554,
+          "minVolumeRatio": 0.9513563456611837
+        },
+        {
+          "timeSeconds": 0.6,
+          "internalCageDepthUnits": 0.040819412731786506,
+          "renderedSurfaceDepthUnits": 0.03933941608923884,
+          "minVolumeRatio": 0.9392704361075003
+        },
+        {
+          "timeSeconds": 0.7,
+          "internalCageDepthUnits": 0.04994914858331234,
+          "renderedSurfaceDepthUnits": 0.04813932620589025,
+          "minVolumeRatio": 0.9265529141938925
+        },
+        {
+          "timeSeconds": 0.8,
+          "internalCageDepthUnits": 0.05969843974228975,
+          "renderedSurfaceDepthUnits": 0.0575367876811816,
+          "minVolumeRatio": 0.913252154034599
+        },
+        {
+          "timeSeconds": 0.9,
+          "internalCageDepthUnits": 0.06786624400934471,
+          "renderedSurfaceDepthUnits": 0.06541290759701573,
+          "minVolumeRatio": 0.9027460695641663
+        },
+        {
+          "timeSeconds": 1,
+          "internalCageDepthUnits": 0.07301639124803595,
+          "renderedSurfaceDepthUnits": 0.0703844237272801,
+          "minVolumeRatio": 0.8969991591490292
+        },
+        {
+          "timeSeconds": 1.1,
+          "internalCageDepthUnits": 0.07801972260809259,
+          "renderedSurfaceDepthUnits": 0.07521542971138546,
+          "minVolumeRatio": 0.8915908839883838
+        },
+        {
+          "timeSeconds": 1.2,
+          "internalCageDepthUnits": 0.08288074449356432,
+          "renderedSurfaceDepthUnits": 0.07991028887857925,
+          "minVolumeRatio": 0.8865065928788111
+        },
+        {
+          "timeSeconds": 1.3,
+          "internalCageDepthUnits": 0.087603265950379,
+          "renderedSurfaceDepthUnits": 0.08447270452888467,
+          "minVolumeRatio": 0.8817320985427093
+        },
+        {
+          "timeSeconds": 1.4,
+          "internalCageDepthUnits": 0.09219104959261076,
+          "renderedSurfaceDepthUnits": 0.08890603270346205,
+          "minVolumeRatio": 0.8772537081024835
+        },
+        {
+          "timeSeconds": 1.5,
+          "internalCageDepthUnits": 0.09664780527331587,
+          "renderedSurfaceDepthUnits": 0.09321402902898875,
+          "minVolumeRatio": 0.8730582102818037
+        },
+        {
+          "timeSeconds": 1.6,
+          "internalCageDepthUnits": 0.10097718515772419,
+          "renderedSurfaceDepthUnits": 0.0974000067338854,
+          "minVolumeRatio": 0.8691328630435602
+        },
+        {
+          "timeSeconds": 1.7,
+          "internalCageDepthUnits": 0.10518277951990257,
+          "renderedSurfaceDepthUnits": 0.1014674610008692,
+          "minVolumeRatio": 0.8654653815792739
+        },
+        {
+          "timeSeconds": 1.8,
+          "internalCageDepthUnits": 0.10926811319888424,
+          "renderedSurfaceDepthUnits": 0.10541970862608914,
+          "minVolumeRatio": 0.8620439266059993
+        },
+        {
+          "timeSeconds": 1.9,
+          "internalCageDepthUnits": 0.11323664265327592,
+          "renderedSurfaceDepthUnits": 0.10925999624052146,
+          "minVolumeRatio": 0.8588570929265897
+        },
+        {
+          "timeSeconds": 2,
+          "internalCageDepthUnits": 0.11709175355745217,
+          "renderedSurfaceDepthUnits": 0.112991612098726,
+          "minVolumeRatio": 0.8558938982120624
+        },
+        {
+          "timeSeconds": 2.1,
+          "internalCageDepthUnits": 0.07900284984889153,
+          "renderedSurfaceDepthUnits": 0.07626864403908074,
+          "minVolumeRatio": 0.9109569300899276
+        },
+        {
+          "timeSeconds": 2.2,
+          "internalCageDepthUnits": 0.07508728591003823,
+          "renderedSurfaceDepthUnits": 0.07248763063716494,
+          "minVolumeRatio": 0.9152441116093986
+        },
+        {
+          "timeSeconds": 2.3,
+          "internalCageDepthUnits": 0.07136376432268277,
+          "renderedSurfaceDepthUnits": 0.06889213781850131,
+          "minVolumeRatio": 0.9193324314387868
+        },
+        {
+          "timeSeconds": 2.4,
+          "internalCageDepthUnits": 0.06782399476116287,
+          "renderedSurfaceDepthUnits": 0.06547408825044278,
+          "minVolumeRatio": 0.9232303588444333
+        },
+        {
+          "timeSeconds": 2.5,
+          "internalCageDepthUnits": 0.06445897657836033,
+          "renderedSurfaceDepthUnits": 0.06222494436379659,
+          "minVolumeRatio": 0.9269460770416869
+        },
+        {
+          "timeSeconds": 2.6,
+          "internalCageDepthUnits": 0.06126014766915909,
+          "renderedSurfaceDepthUnits": 0.059136276810290406,
+          "minVolumeRatio": 0.9304874885040555
+        },
+        {
+          "timeSeconds": 2.7,
+          "internalCageDepthUnits": 0.05821936189777135,
+          "renderedSurfaceDepthUnits": 0.05620026156596438,
+          "minVolumeRatio": 0.9338622165700005
+        },
+        {
+          "timeSeconds": 2.8,
+          "internalCageDepthUnits": 0.05532886873014903,
+          "renderedSurfaceDepthUnits": 0.053409440893457324,
+          "minVolumeRatio": 0.9370776082136372
+        },
+        {
+          "timeSeconds": 2.9,
+          "internalCageDepthUnits": 0.0525812939689868,
+          "renderedSurfaceDepthUnits": 0.05075667458296786,
+          "minVolumeRatio": 0.9401407377592578
+        },
+        {
+          "timeSeconds": 3,
+          "internalCageDepthUnits": 0.04996962150624478,
+          "renderedSurfaceDepthUnits": 0.048235151844831195,
+          "minVolumeRatio": 0.9430584113872036
+        },
+        {
+          "timeSeconds": 3.1,
+          "internalCageDepthUnits": 0.04748717601917879,
+          "renderedSurfaceDepthUnits": 0.04583849953048758,
+          "minVolumeRatio": 0.9458371722966198
+        },
+        {
+          "timeSeconds": 3.2,
+          "internalCageDepthUnits": 0.04512760654477729,
+          "renderedSurfaceDepthUnits": 0.04356040276413185,
+          "minVolumeRatio": 0.9484833064066384
+        },
+        {
+          "timeSeconds": 3.3,
+          "internalCageDepthUnits": 0.04288487087505069,
+          "renderedSurfaceDepthUnits": 0.04139518410394087,
+          "minVolumeRatio": 0.9510028484917925
+        },
+        {
+          "timeSeconds": 3.4,
+          "internalCageDepthUnits": 0.04075322072191832,
+          "renderedSurfaceDepthUnits": 0.039337299303049175,
+          "minVolumeRatio": 0.9534015886603496
+        },
+        {
+          "timeSeconds": 3.5,
+          "internalCageDepthUnits": 0.03872718760576856,
+          "renderedSurfaceDepthUnits": 0.037381315903385844,
+          "minVolumeRatio": 0.9556850790954385
+        },
+        {
+          "timeSeconds": 3.6,
+          "internalCageDepthUnits": 0.0368015694262699,
+          "renderedSurfaceDepthUnits": 0.03552238774330266,
+          "minVolumeRatio": 0.957858640989136
+        },
+        {
+          "timeSeconds": 3.6999999999999997,
+          "internalCageDepthUnits": 0.03497141767780177,
+          "renderedSurfaceDepthUnits": 0.03375559492810468,
+          "minVolumeRatio": 0.9599273716085738
+        },
+        {
+          "timeSeconds": 3.8,
+          "internalCageDepthUnits": 0.033232025275127405,
+          "renderedSurfaceDepthUnits": 0.032076517044769146,
+          "minVolumeRatio": 0.9618961514412193
+        },
+        {
+          "timeSeconds": 3.9,
+          "internalCageDepthUnits": 0.03157891495767977,
+          "renderedSurfaceDepthUnits": 0.030480669461194362,
+          "minVolumeRatio": 0.9637696513735676
+        },
+        {
+          "timeSeconds": 4,
+          "internalCageDepthUnits": 0.03000782824323043,
+          "renderedSurfaceDepthUnits": 0.02896401707887696,
+          "minVolumeRatio": 0.9655523398638424
+        },
+        {
+          "timeSeconds": 4.1,
+          "internalCageDepthUnits": 0.028514714903760875,
+          "renderedSurfaceDepthUnits": 0.027522667508292763,
+          "minVolumeRatio": 0.9672484900749451
+        },
+        {
+          "timeSeconds": 4.2,
+          "internalCageDepthUnits": 0.027095722938165208,
+          "renderedSurfaceDepthUnits": 0.026152909124798097,
+          "minVolumeRatio": 0.9688621869388097
+        },
+        {
+          "timeSeconds": 4.3,
+          "internalCageDepthUnits": 0.025747189017985485,
+          "renderedSurfaceDepthUnits": 0.024851139713910536,
+          "minVolumeRatio": 0.970397334127833
+        },
+        {
+          "timeSeconds": 4.4,
+          "internalCageDepthUnits": 0.024465629383798964,
+          "renderedSurfaceDepthUnits": 0.023614071021177456,
+          "minVolumeRatio": 0.9718576609128664
+        },
+        {
+          "timeSeconds": 4.5,
+          "internalCageDepthUnits": 0.0232477311711264,
+          "renderedSurfaceDepthUnits": 0.022438445712407197,
+          "minVolumeRatio": 0.9732467288907541
+        },
+        {
+          "timeSeconds": 4.6,
+          "internalCageDepthUnits": 0.0220903441458615,
+          "renderedSurfaceDepthUnits": 0.02132131803483501,
+          "minVolumeRatio": 0.9745679385674829
+        },
+        {
+          "timeSeconds": 4.7,
+          "internalCageDepthUnits": 0.020990472830270578,
+          "renderedSurfaceDepthUnits": 0.020259599526625066,
+          "minVolumeRatio": 0.9758245357855326
+        },
+        {
+          "timeSeconds": 4.8,
+          "internalCageDepthUnits": 0.019945269001526593,
+          "renderedSurfaceDepthUnits": 0.019250700018373475,
+          "minVolumeRatio": 0.9770196179866292
+        },
+        {
+          "timeSeconds": 4.9,
+          "internalCageDepthUnits": 0.01895202454565309,
+          "renderedSurfaceDepthUnits": 0.018291956797099652,
+          "minVolumeRatio": 0.9781561403028529
+        },
+        {
+          "timeSeconds": 5,
+          "internalCageDepthUnits": 0.018008164650525647,
+          "renderedSurfaceDepthUnits": 0.01738092597011485,
+          "minVolumeRatio": 0.9792369214711766
+        },
+        {
+          "timeSeconds": 5.1,
+          "internalCageDepthUnits": 0.01711124132236829,
+          "renderedSurfaceDepthUnits": 0.016515236188628577,
+          "minVolumeRatio": 0.980264649567786
+        },
+        {
+          "timeSeconds": 5.2,
+          "internalCageDepthUnits": 0.01625892721087016,
+          "renderedSurfaceDepthUnits": 0.01569248518345156,
+          "minVolumeRatio": 0.981241887560134
+        },
+        {
+          "timeSeconds": 5.3,
+          "internalCageDepthUnits": 0.015449009728730478,
+          "renderedSurfaceDepthUnits": 0.014910774924272521,
+          "minVolumeRatio": 0.9821710786757255
+        },
+        {
+          "timeSeconds": 5.4,
+          "internalCageDepthUnits": 0.014679385452071212,
+          "renderedSurfaceDepthUnits": 0.014167936233398199,
+          "minVolumeRatio": 0.9830545515877109
+        },
+        {
+          "timeSeconds": 5.5,
+          "internalCageDepthUnits": 0.013948054788755805,
+          "renderedSurfaceDepthUnits": 0.013462023510663643,
+          "minVolumeRatio": 0.98389452541823
+        },
+        {
+          "timeSeconds": 5.6,
+          "internalCageDepthUnits": 0.013253116902230995,
+          "renderedSurfaceDepthUnits": 0.012791252892971557,
+          "minVolumeRatio": 0.9846931145611436
+        },
+        {
+          "timeSeconds": 5.7,
+          "internalCageDepthUnits": 0.012592764879049494,
+          "renderedSurfaceDepthUnits": 0.01215388570819979,
+          "minVolumeRatio": 0.985452333326546
+        },
+        {
+          "timeSeconds": 5.8,
+          "internalCageDepthUnits": 0.011965281128758961,
+          "renderedSurfaceDepthUnits": 0.01154825463899138,
+          "minVolumeRatio": 0.9861741004098575
+        },
+        {
+          "timeSeconds": 5.9,
+          "internalCageDepthUnits": 0.011369033005332409,
+          "renderedSurfaceDepthUnits": 0.010972716152609984,
+          "minVolumeRatio": 0.9868602431887645
+        },
+        {
+          "timeSeconds": 6,
+          "internalCageDepthUnits": 0.010802468639806046,
+          "renderedSurfaceDepthUnits": 0.010425931162503892,
+          "minVolumeRatio": 0.9875125018517715
+        },
+        {
+          "timeSeconds": 6.1,
+          "internalCageDepthUnits": 0.010264112974236825,
+          "renderedSurfaceDepthUnits": 0.009906294191792137,
+          "minVolumeRatio": 0.9881325333621528
+        },
+        {
+          "timeSeconds": 6.2,
+          "internalCageDepthUnits": 0.00975256398753148,
+          "renderedSurfaceDepthUnits": 0.009412525615857321,
+          "minVolumeRatio": 0.9887219152616636
+        },
+        {
+          "timeSeconds": 6.3,
+          "internalCageDepthUnits": 0.009266489104128774,
+          "renderedSurfaceDepthUnits": 0.008943421921792802,
+          "minVolumeRatio": 0.9892821493182358
+        },
+        {
+          "timeSeconds": 6.4,
+          "internalCageDepthUnits": 0.00880462177690739,
+          "renderedSurfaceDepthUnits": 0.008497639265902263,
+          "minVolumeRatio": 0.9898146650222621
+        },
+        {
+          "timeSeconds": 6.5,
+          "internalCageDepthUnits": 0.008365758236086358,
+          "renderedSurfaceDepthUnits": 0.008074064517550892,
+          "minVolumeRatio": 0.9903208229359727
+        },
+        {
+          "timeSeconds": 6.6,
+          "internalCageDepthUnits": 0.00794875439625048,
+          "renderedSurfaceDepthUnits": 0.007671572653686385,
+          "minVolumeRatio": 0.9908019179006418
+        },
+        {
+          "timeSeconds": 6.7,
+          "internalCageDepthUnits": 0.007552522913995705,
+          "renderedSurfaceDepthUnits": 0.0072891409260682416,
+          "minVolumeRatio": 0.9912591821062527
+        },
+        {
+          "timeSeconds": 6.8,
+          "internalCageDepthUnits": 0.007176030389017929,
+          "renderedSurfaceDepthUnits": 0.006925839347483824,
+          "minVolumeRatio": 0.9916937880282952
+        },
+        {
+          "timeSeconds": 6.8999999999999995,
+          "internalCageDepthUnits": 0.006818294701809385,
+          "renderedSurfaceDepthUnits": 0.006580516731335762,
+          "minVolumeRatio": 0.9921068512364101
+        },
+        {
+          "timeSeconds": 7,
+          "internalCageDepthUnits": 0.006478382481429795,
+          "renderedSurfaceDepthUnits": 0.006252478560387847,
+          "minVolumeRatio": 0.9924994330794111
+        },
+        {
+          "timeSeconds": 7.1,
+          "internalCageDepthUnits": 0.0061554066971186965,
+          "renderedSurfaceDepthUnits": 0.005940711600260074,
+          "minVolumeRatio": 0.9928725432513317
+        },
+        {
+          "timeSeconds": 7.2,
+          "internalCageDepthUnits": 0.005848524367809861,
+          "renderedSurfaceDepthUnits": 0.005644568903233062,
+          "minVolumeRatio": 0.9932271422429192
+        },
+        {
+          "timeSeconds": 7.3,
+          "internalCageDepthUnits": 0.005556934383878899,
+          "renderedSurfaceDepthUnits": 0.005363103832547397,
+          "minVolumeRatio": 0.9935641436830164
+        },
+        {
+          "timeSeconds": 7.3999999999999995,
+          "internalCageDepthUnits": 0.005279875435714192,
+          "renderedSurfaceDepthUnits": 0.005095714631795691,
+          "minVolumeRatio": 0.9938844165741352
+        },
+        {
+          "timeSeconds": 7.5,
+          "internalCageDepthUnits": 0.005016624043960398,
+          "renderedSurfaceDepthUnits": 0.0048415878592912905,
+          "minVolumeRatio": 0.9941887874264155
+        },
+        {
+          "timeSeconds": 7.6,
+          "internalCageDepthUnits": 0.004766492686522504,
+          "renderedSurfaceDepthUnits": 0.004600264467529444,
+          "minVolumeRatio": 0.9944780422940879
+        },
+        {
+          "timeSeconds": 7.7,
+          "internalCageDepthUnits": 0.004528828017637753,
+          "renderedSurfaceDepthUnits": 0.004370826361607818,
+          "minVolumeRatio": 0.9947529287184628
+        },
+        {
+          "timeSeconds": 7.8,
+          "internalCageDepthUnits": 0.004303009174570737,
+          "renderedSurfaceDepthUnits": 0.004152883470214553,
+          "minVolumeRatio": 0.9950141575812477
+        },
+        {
+          "timeSeconds": 7.8999999999999995,
+          "internalCageDepthUnits": 0.0040884461676559125,
+          "renderedSurfaceDepthUnits": 0.003945822144279798,
+          "minVolumeRatio": 0.9952624048720552
+        },
+        {
+          "timeSeconds": 8,
+          "internalCageDepthUnits": 0.0038845783496537813,
+          "renderedSurfaceDepthUnits": 0.00374909533244616,
+          "minVolumeRatio": 0.9954983133736427
+        },
+        {
+          "timeSeconds": 8.1,
+          "internalCageDepthUnits": 0.003690872960554352,
+          "renderedSurfaceDepthUnits": 0.0035620870073317765,
+          "minVolumeRatio": 0.9957224942684898
+        },
+        {
+          "timeSeconds": 8.2,
+          "internalCageDepthUnits": 0.0035068237441463045,
+          "renderedSurfaceDepthUnits": 0.0033844451532198732,
+          "minVolumeRatio": 0.9959355286700805
+        },
+        {
+          "timeSeconds": 8.3,
+          "internalCageDepthUnits": 0.0033319496328631237,
+          "renderedSurfaceDepthUnits": 0.0032157083442324397,
+          "minVolumeRatio": 0.9961379690821599
+        },
+        {
+          "timeSeconds": 8.4,
+          "internalCageDepthUnits": 0.003165793497556248,
+          "renderedSurfaceDepthUnits": 0.003055367584607172,
+          "minVolumeRatio": 0.9963303407891586
+        },
+        {
+          "timeSeconds": 8.5,
+          "internalCageDepthUnits": 0.0030079209590351715,
+          "renderedSurfaceDepthUnits": 0.0029030066397474266,
+          "minVolumeRatio": 0.9965131431808356
+        },
+        {
+          "timeSeconds": 8.6,
+          "internalCageDepthUnits": 0.0028579192583414207,
+          "renderedSurfaceDepthUnits": 0.0027582378166533567,
+          "minVolumeRatio": 0.9966868510140666
+        },
+        {
+          "timeSeconds": 8.7,
+          "internalCageDepthUnits": 0.0027153961828853745,
+          "renderedSurfaceDepthUnits": 0.002620659151442506,
+          "minVolumeRatio": 0.9968519156145627
+        },
+        {
+          "timeSeconds": 8.8,
+          "internalCageDepthUnits": 0.0025799790457032732,
+          "renderedSurfaceDepthUnits": 0.002490006632449783,
+          "minVolumeRatio": 0.9970087660213202
+        },
+        {
+          "timeSeconds": 8.9,
+          "internalCageDepthUnits": 0.002451313715228591,
+          "renderedSurfaceDepthUnits": 0.0023658235906508685,
+          "minVolumeRatio": 0.997157810076328
+        },
+        {
+          "timeSeconds": 9,
+          "internalCageDepthUnits": 0.0023290636931009683,
+          "renderedSurfaceDepthUnits": 0.0022478269863534617,
+          "minVolumeRatio": 0.9972994354620325
+        },
+        {
+          "timeSeconds": 9.1,
+          "internalCageDepthUnits": 0.0022129092376410977,
+          "renderedSurfaceDepthUnits": 0.0021356909673246136,
+          "minVolumeRatio": 0.9974340106890361
+        },
+        {
+          "timeSeconds": 9.2,
+          "internalCageDepthUnits": 0.002102546530759643,
+          "renderedSurfaceDepthUnits": 0.00202912535841541,
+          "minVolumeRatio": 0.9975618860362276
+        },
+        {
+          "timeSeconds": 9.3,
+          "internalCageDepthUnits": 0.0019976868861500234,
+          "renderedSurfaceDepthUnits": 0.0019279351239852292,
+          "minVolumeRatio": 0.997683394445608
+        },
+        {
+          "timeSeconds": 9.4,
+          "internalCageDepthUnits": 0.0018980559967370395,
+          "renderedSurfaceDepthUnits": 0.0018318086824846893,
+          "minVolumeRatio": 0.9977988523738807
+        },
+        {
+          "timeSeconds": 9.5,
+          "internalCageDepthUnits": 0.0018033932194484548,
+          "renderedSurfaceDepthUnits": 0.0017404558589639177,
+          "minVolumeRatio": 0.997908560602897
+        },
+        {
+          "timeSeconds": 9.6,
+          "internalCageDepthUnits": 0.0017134508954642106,
+          "renderedSurfaceDepthUnits": 0.0016536768606376924,
+          "minVolumeRatio": 0.9980128050107557
+        },
+        {
+          "timeSeconds": 9.7,
+          "internalCageDepthUnits": 0.0016279937041940844,
+          "renderedSurfaceDepthUnits": 0.0015711862695016998,
+          "minVolumeRatio": 0.9981118573055671
+        },
+        {
+          "timeSeconds": 9.8,
+          "internalCageDepthUnits": 0.00154679804932414,
+          "renderedSurfaceDepthUnits": 0.001492798563653326,
+          "minVolumeRatio": 0.9982059757234778
+        },
+        {
+          "timeSeconds": 9.9,
+          "internalCageDepthUnits": 0.0014696514753354927,
+          "renderedSurfaceDepthUnits": 0.0014183971974747176,
+          "minVolumeRatio": 0.998295405692802
+        },
+        {
+          "timeSeconds": 10,
+          "internalCageDepthUnits": 0.0013963521130052592,
+          "renderedSurfaceDepthUnits": 0.0013476705894164905,
+          "minVolumeRatio": 0.9983803804657411
+        },
+        {
+          "timeSeconds": 10.1,
+          "internalCageDepthUnits": 0.0013267081524422509,
+          "renderedSurfaceDepthUnits": 0.0012804046759792374,
+          "minVolumeRatio": 0.9984611217193134
+        },
+        {
+          "timeSeconds": 10.2,
+          "internalCageDepthUnits": 0.0012605373423068892,
+          "renderedSurfaceDepthUnits": 0.001216561401399448,
+          "minVolumeRatio": 0.9985378401269234
+        },
+        {
+          "timeSeconds": 10.3,
+          "internalCageDepthUnits": 0.0011976665139090113,
+          "renderedSurfaceDepthUnits": 0.0011558624830375571,
+          "minVolumeRatio": 0.9986107359019906
+        },
+        {
+          "timeSeconds": 10.4,
+          "internalCageDepthUnits": 0.0011379311289628857,
+          "renderedSurfaceDepthUnits": 0.0010982222954141843,
+          "minVolumeRatio": 0.9986799993149634
+        },
+        {
+          "timeSeconds": 10.5,
+          "internalCageDepthUnits": 0.0010811748498170902,
+          "renderedSurfaceDepthUnits": 0.0010434957510543925,
+          "minVolumeRatio": 0.9987458111850258
+        },
+        {
+          "timeSeconds": 10.6,
+          "internalCageDepthUnits": 0.0010272491310559303,
+          "renderedSurfaceDepthUnits": 0.0009913902962675877,
+          "minVolumeRatio": 0.9988083433476685
+        },
+        {
+          "timeSeconds": 10.7,
+          "internalCageDepthUnits": 0.0009760128314045312,
+          "renderedSurfaceDepthUnits": 0.0009419178236243644,
+          "minVolumeRatio": 0.9988677590993268
+        },
+        {
+          "timeSeconds": 10.8,
+          "internalCageDepthUnits": 0.0009273318449382572,
+          "renderedSurfaceDepthUnits": 0.0008949570303622666,
+          "minVolumeRatio": 0.9989242136201699
+        },
+        {
+          "timeSeconds": 10.9,
+          "internalCageDepthUnits": 0.0008810787506311333,
+          "renderedSurfaceDepthUnits": 0.0008503247731509819,
+          "minVolumeRatio": 0.9989778543761187
+        },
+        {
+          "timeSeconds": 11,
+          "internalCageDepthUnits": 0.0008371324793425654,
+          "renderedSurfaceDepthUnits": 0.0008079116417986492,
+          "minVolumeRatio": 0.9990288215010733
+        },
+        {
+          "timeSeconds": 11.1,
+          "internalCageDepthUnits": 0.0007953779973733652,
+          "renderedSurfaceDepthUnits": 0.0007676082259449864,
+          "minVolumeRatio": 0.9990772481603295
+        },
+        {
+          "timeSeconds": 11.2,
+          "internalCageDepthUnits": 0.0007557060057602469,
+          "renderedSurfaceDepthUnits": 0.0007293360357356491,
+          "minVolumeRatio": 0.9991232608961017
+        },
+        {
+          "timeSeconds": 11.3,
+          "internalCageDepthUnits": 0.0007180126545457239,
+          "renderedSurfaceDepthUnits": 0.0006929761468120609,
+          "minVolumeRatio": 0.9991669799559955
+        },
+        {
+          "timeSeconds": 11.4,
+          "internalCageDepthUnits": 0.0006821992712622344,
+          "renderedSurfaceDepthUnits": 0.0006583430374400301,
+          "minVolumeRatio": 0.999208519605296
+        },
+        {
+          "timeSeconds": 11.5,
+          "internalCageDepthUnits": 0.0006481721029341596,
+          "renderedSurfaceDepthUnits": 0.0006255128191618872,
+          "minVolumeRatio": 0.9992479884238266
+        },
+        {
+          "timeSeconds": 11.6,
+          "internalCageDepthUnits": 0.0006158420709238393,
+          "renderedSurfaceDepthUnits": 0.0005943380259303954,
+          "minVolumeRatio": 0.999285489588179
+        },
+        {
+          "timeSeconds": 11.7,
+          "internalCageDepthUnits": 0.0005851245379822091,
+          "renderedSurfaceDepthUnits": 0.0005647306538929166,
+          "minVolumeRatio": 0.9993211211399652
+        },
+        {
+          "timeSeconds": 11.8,
+          "internalCageDepthUnits": 0.0005559390868979766,
+          "renderedSurfaceDepthUnits": 0.0005365527508320862,
+          "minVolumeRatio": 0.9993549762408307
+        },
+        {
+          "timeSeconds": 11.9,
+          "internalCageDepthUnits": 0.0005282093101721163,
+          "renderedSurfaceDepthUnits": 0.0005097638825805144,
+          "minVolumeRatio": 0.9993871434148618
+        },
+        {
+          "timeSeconds": 12,
+          "internalCageDepthUnits": 0.0005018626101630636,
+          "renderedSurfaceDepthUnits": 0.00048436404913820163,
+          "minVolumeRatio": 0.9994177067789765
+        },
+        {
+          "timeSeconds": 12.1,
+          "internalCageDepthUnits": 0.000476830009188876,
+          "renderedSurfaceDepthUnits": 0.0004601701071748353,
+          "minVolumeRatio": 0.9994467462619433
+        },
+        {
+          "timeSeconds": 12.2,
+          "internalCageDepthUnits": 0.00045304596908594995,
+          "renderedSurfaceDepthUnits": 0.00043722011254579136,
+          "minVolumeRatio": 0.9994743378125367
+        },
+        {
+          "timeSeconds": 12.3,
+          "internalCageDepthUnits": 0.0004304482197571522,
+          "renderedSurfaceDepthUnits": 0.00041542843977168946,
+          "minVolumeRatio": 0.9995005535973819
+        },
+        {
+          "timeSeconds": 12.4,
+          "internalCageDepthUnits": 0.00040897759625816473,
+          "renderedSurfaceDepthUnits": 0.0003947498975711605,
+          "minVolumeRatio": 0.9995254621890047
+        },
+        {
+          "timeSeconds": 12.5,
+          "internalCageDepthUnits": 0.00038857788400590177,
+          "renderedSurfaceDepthUnits": 0.0003750203706104797,
+          "minVolumeRatio": 0.9995491287445675
+        },
+        {
+          "timeSeconds": 12.6,
+          "internalCageDepthUnits": 0.00036919567169315444,
+          "renderedSurfaceDepthUnits": 0.00035632072731629213,
+          "minVolumeRatio": 0.999571615175715
+        },
+        {
+          "timeSeconds": 12.7,
+          "internalCageDepthUnits": 0.0003507802115324301,
+          "renderedSurfaceDepthUnits": 0.0003385558283793446,
+          "minVolumeRatio": 0.999592980310036
+        },
+        {
+          "timeSeconds": 12.8,
+          "internalCageDepthUnits": 0.00033328328646899916,
+          "renderedSurfaceDepthUnits": 0.0003216471837768718,
+          "minVolumeRatio": 0.9996132800444754
+        },
+        {
+          "timeSeconds": 12.9,
+          "internalCageDepthUnits": 0.00031665908400309306,
+          "renderedSurfaceDepthUnits": 0.00030556387317135674,
+          "minVolumeRatio": 0.9996325674911652
+        },
+        {
+          "timeSeconds": 13,
+          "internalCageDepthUnits": 0.0003008640763067924,
+          "renderedSurfaceDepthUnits": 0.00029032492449814287,
+          "minVolumeRatio": 0.9996508931160015
+        },
+        {
+          "timeSeconds": 13.1,
+          "internalCageDepthUnits": 0.0002858569063090943,
+          "renderedSurfaceDepthUnits": 0.0002758351983714221,
+          "minVolumeRatio": 0.9996683048703301
+        },
+        {
+          "timeSeconds": 13.2,
+          "internalCageDepthUnits": 0.0002715982794650187,
+          "renderedSurfaceDepthUnits": 0.0002621327505547043,
+          "minVolumeRatio": 0.9996848483161371
+        },
+        {
+          "timeSeconds": 13.299999999999999,
+          "internalCageDepthUnits": 0.00025805086091173113,
+          "renderedSurfaceDepthUnits": 0.00024902016683506906,
+          "minVolumeRatio": 0.9997005667449498
+        },
+        {
+          "timeSeconds": 13.4,
+          "internalCageDepthUnits": 0.00024517917775803886,
+          "renderedSurfaceDepthUnits": 0.00023662826380484457,
+          "minVolumeRatio": 0.9997155012909054
+        },
+        {
+          "timeSeconds": 13.5,
+          "internalCageDepthUnits": 0.00023294952623710422,
+          "renderedSurfaceDepthUnits": 0.00022482622487170263,
+          "minVolumeRatio": 0.9997296910381436
+        },
+        {
+          "timeSeconds": 13.6,
+          "internalCageDepthUnits": 0.00022132988349190996,
+          "renderedSurfaceDepthUnits": 0.00021363545643611042,
+          "minVolumeRatio": 0.9997431731228985
+        },
+        {
+          "timeSeconds": 13.7,
+          "internalCageDepthUnits": 0.00021028982375716833,
+          "renderedSurfaceDepthUnits": 0.00020294179119222718,
+          "minVolumeRatio": 0.9997559828304917
+        },
+        {
+          "timeSeconds": 13.799999999999999,
+          "internalCageDepthUnits": 0.00019980043871860404,
+          "renderedSurfaceDepthUnits": 0.00019282609764325313,
+          "minVolumeRatio": 0.9997681536875148
+        },
+        {
+          "timeSeconds": 13.9,
+          "internalCageDepthUnits": 0.00018983426184197394,
+          "renderedSurfaceDepthUnits": 0.0001832122642315464,
+          "minVolumeRatio": 0.9997797175494384
+        },
+        {
+          "timeSeconds": 14,
+          "internalCageDepthUnits": 0.0001803651964759876,
+          "renderedSurfaceDepthUnits": 0.00017406937072676724,
+          "minVolumeRatio": 0.9997907046838167
+        }
+      ],
+      "profiles": [
+        {
+          "timeSeconds": 2,
+          "points": [
+            {
+              "logicalX": -0.6,
+              "renderedSurfaceDepthUnits": 0.04136878497908764
+            },
+            {
+              "logicalX": -0.525,
+              "renderedSurfaceDepthUnits": 0.05230878200998645
+            },
+            {
+              "logicalX": -0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.0656049033210173
+            },
+            {
+              "logicalX": -0.375,
+              "renderedSurfaceDepthUnits": 0.07957993592575602
+            },
+            {
+              "logicalX": -0.3,
+              "renderedSurfaceDepthUnits": 0.09282381136370328
+            },
+            {
+              "logicalX": -0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.10349348714802642
+            },
+            {
+              "logicalX": -0.15,
+              "renderedSurfaceDepthUnits": 0.10990040242816546
+            },
+            {
+              "logicalX": -0.075,
+              "renderedSurfaceDepthUnits": 0.11241891063510093
+            },
+            {
+              "logicalX": 0,
+              "renderedSurfaceDepthUnits": 0.112991612098726
+            },
+            {
+              "logicalX": 0.075,
+              "renderedSurfaceDepthUnits": 0.11258065115044091
+            },
+            {
+              "logicalX": 0.15,
+              "renderedSurfaceDepthUnits": 0.1099085677258809
+            },
+            {
+              "logicalX": 0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.10261152236811735
+            },
+            {
+              "logicalX": 0.3,
+              "renderedSurfaceDepthUnits": 0.09041298994429933
+            },
+            {
+              "logicalX": 0.375,
+              "renderedSurfaceDepthUnits": 0.07552560045298068
+            },
+            {
+              "logicalX": 0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.060095528804939055
+            },
+            {
+              "logicalX": 0.525,
+              "renderedSurfaceDepthUnits": 0.04562182742002866
+            },
+            {
+              "logicalX": 0.6,
+              "renderedSurfaceDepthUnits": 0.03383835414144222
+            }
+          ]
+        },
+        {
+          "timeSeconds": 2.5,
+          "points": [
+            {
+              "logicalX": -0.6,
+              "renderedSurfaceDepthUnits": 0.023643323938908084
+            },
+            {
+              "logicalX": -0.525,
+              "renderedSurfaceDepthUnits": 0.029548801870599294
+            },
+            {
+              "logicalX": -0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.03669037022990975
+            },
+            {
+              "logicalX": -0.375,
+              "renderedSurfaceDepthUnits": 0.044193817863526684
+            },
+            {
+              "logicalX": -0.3,
+              "renderedSurfaceDepthUnits": 0.051315192709250564
+            },
+            {
+              "logicalX": -0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.05706322322569443
+            },
+            {
+              "logicalX": -0.15,
+              "renderedSurfaceDepthUnits": 0.060523393627755696
+            },
+            {
+              "logicalX": -0.075,
+              "renderedSurfaceDepthUnits": 0.06189537627962398
+            },
+            {
+              "logicalX": 0,
+              "renderedSurfaceDepthUnits": 0.06222494436379659
+            },
+            {
+              "logicalX": 0.075,
+              "renderedSurfaceDepthUnits": 0.06202386438584258
+            },
+            {
+              "logicalX": 0.15,
+              "renderedSurfaceDepthUnits": 0.060596251340167065
+            },
+            {
+              "logicalX": 0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.056659790564678555
+            },
+            {
+              "logicalX": 0.3,
+              "renderedSurfaceDepthUnits": 0.05006269336719807
+            },
+            {
+              "logicalX": 0.375,
+              "renderedSurfaceDepthUnits": 0.042001114748656886
+            },
+            {
+              "logicalX": 0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.033633139756885005
+            },
+            {
+              "logicalX": 0.525,
+              "renderedSurfaceDepthUnits": 0.025765827988993684
+            },
+            {
+              "logicalX": 0.6,
+              "renderedSurfaceDepthUnits": 0.019329505829546505
+            }
+          ]
+        },
+        {
+          "timeSeconds": 3,
+          "points": [
+            {
+              "logicalX": -0.6,
+              "renderedSurfaceDepthUnits": 0.01831044800950182
+            },
+            {
+              "logicalX": -0.525,
+              "renderedSurfaceDepthUnits": 0.022891336490059463
+            },
+            {
+              "logicalX": -0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.028431825618760044
+            },
+            {
+              "logicalX": -0.375,
+              "renderedSurfaceDepthUnits": 0.03425308181693533
+            },
+            {
+              "logicalX": -0.3,
+              "renderedSurfaceDepthUnits": 0.039777558909221446
+            },
+            {
+              "logicalX": -0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.044236033086443485
+            },
+            {
+              "logicalX": -0.15,
+              "renderedSurfaceDepthUnits": 0.04691906772484345
+            },
+            {
+              "logicalX": -0.075,
+              "renderedSurfaceDepthUnits": 0.047981560267432145
+            },
+            {
+              "logicalX": 0,
+              "renderedSurfaceDepthUnits": 0.048235151844831195
+            },
+            {
+              "logicalX": 0.075,
+              "renderedSurfaceDepthUnits": 0.04807750416667445
+            },
+            {
+              "logicalX": 0.15,
+              "renderedSurfaceDepthUnits": 0.04696909674956634
+            },
+            {
+              "logicalX": 0.22499999999999998,
+              "renderedSurfaceDepthUnits": 0.04391574869147819
+            },
+            {
+              "logicalX": 0.3,
+              "renderedSurfaceDepthUnits": 0.038799825688513055
+            },
+            {
+              "logicalX": 0.375,
+              "renderedSurfaceDepthUnits": 0.03254870065458154
+            },
+            {
+              "logicalX": 0.44999999999999996,
+              "renderedSurfaceDepthUnits": 0.026060101782104533
+            },
+            {
+              "logicalX": 0.525,
+              "renderedSurfaceDepthUnits": 0.019960041930169013
+            },
+            {
+              "logicalX": 0.6,
+              "renderedSurfaceDepthUnits": 0.014970138584898804
+            }
+          ]
+        }
+      ],
+      "residual": 0.0001882071859631891,
+      "backoffs": 0
+    }
+  ]
+}

@@ -1,0 +1,849 @@
+{
+  "measuredAt": "2026-10-03T18:32:01.308Z",
+  "revision": "b169dc8ebcb2ec80c3f33b8ed68997c0e04d4b9b",
+  "runtimeSourceSha256": "bf125fc6d4bdd370ae3b7f15034d53e65cfac547f39c89dcdfa911653f4811a1",
+  "node": "v22.19.0",
+  "platform": "win32",
+  "provider": "LIVE Workers AI",
+  "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+  "suite": "holdout",
+  "promptSha256": "bbfca3bbb35f60d852ccccce4489ba6d173abce9b6773dfcf059bae3a5620e5f",
+  "aiAdapterSha256": "b787936e1ffa877394b1683f74993229c7cde05c3f865866dda2a002c656e0e1",
+  "freeCheck": "Workers Free confirmed by the user; subscription API returned HTTP 403",
+  "calls": [
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 307,
+      "usage": {
+        "prompt_tokens": 834,
+        "completion_tokens": 28,
+        "total_tokens": 862,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.7101945877075195
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 388,
+      "usage": {
+        "prompt_tokens": 830,
+        "completion_tokens": 38,
+        "total_tokens": 868,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.996443748474121
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 320,
+      "usage": {
+        "prompt_tokens": 832,
+        "completion_tokens": 34,
+        "total_tokens": 866,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.883793830871582
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 344,
+      "usage": {
+        "prompt_tokens": 827,
+        "completion_tokens": 29,
+        "total_tokens": 856,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.708297252655029
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 587,
+      "usage": {
+        "prompt_tokens": 835,
+        "completion_tokens": 50,
+        "total_tokens": 885,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 5.385263919830322
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 409,
+      "usage": {
+        "prompt_tokens": 843,
+        "completion_tokens": 32,
+        "total_tokens": 875,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.873714923858643
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 381,
+      "usage": {
+        "prompt_tokens": 830,
+        "completion_tokens": 34,
+        "total_tokens": 864,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.874544620513916
+      },
+      "status": 200
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "durationMs": 352,
+      "usage": {
+        "prompt_tokens": 824,
+        "completion_tokens": 21,
+        "total_tokens": 845,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 4.450625419616699
+      },
+      "status": 200
+    }
+  ],
+  "planned": 8,
+  "total": 8,
+  "schemaValid": 8,
+  "schemaValidBeforeRepair": 8,
+  "semanticPass": 8,
+  "preserved": 8,
+  "repairNeeded": 0,
+  "rows": [
+    {
+      "id": "held-it-protect-recovery",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Più morbido, ma con lo stesso tempo di recupero.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "held-it-protect-recovery",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Più morbido, ma con lo stesso tempo di recupero.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "softness"
+        ],
+        "bands": {
+          "softness": [
+            0.89,
+            1
+          ]
+        }
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.99,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "softness": 0.99
+      },
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.3760327096013682,
+        "minVolumeRatio": 0.6986452934553259,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1054
+    },
+    {
+      "id": "held-it-negation",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Non più morbido: deve solo tornare lentamente.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "held-it-negation",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Non più morbido: deve solo tornare lentamente.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "recoverySeconds"
+        ],
+        "bands": {
+          "recoverySeconds": [
+            5.5,
+            12
+          ]
+        }
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 6.75,
+        "damping": 0.88
+      },
+      "patch": {
+        "recoverySeconds": 6.75
+      },
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.36556088879708243,
+        "minVolumeRatio": 0.7149730855764023,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1108
+    },
+    {
+      "id": "held-en-hue",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Leave the hue exactly as it is, but let the dent disappear sooner.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "held-en-hue",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Leave the hue exactly as it is, but let the dent disappear sooner.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "recoverySeconds"
+        ],
+        "bands": {
+          "recoverySeconds": [
+            0.3,
+            3
+          ]
+        }
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 2.025,
+        "damping": 0.88
+      },
+      "patch": {
+        "recoverySeconds": 2.025
+      },
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.3461093898395031,
+        "minVolumeRatio": 0.731084842416124,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1015
+    },
+    {
+      "id": "held-it-typo",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Un po piu sodo, tinta identica.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "held-it-typo",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Un po piu sodo, tinta identica.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "softness"
+        ],
+        "bands": {
+          "softness": [
+            0.1,
+            0.7
+          ]
+        }
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.59,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "softness": 0.59
+      },
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.30356585943615677,
+        "minVolumeRatio": 0.7494065447471461,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1119
+    },
+    {
+      "id": "held-en-compound",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Keep the silhouette and shade, reduce softness and speed up recovery.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "held-en-compound",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Keep the silhouette and shade, reduce softness and speed up recovery.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "softness",
+          "recoverySeconds"
+        ],
+        "bands": {
+          "softness": [
+            0.1,
+            0.7
+          ],
+          "recoverySeconds": [
+            0.3,
+            3
+          ]
+        }
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.59,
+        "compressibility": 0.78,
+        "recoverySeconds": 2.02,
+        "damping": 0.88
+      },
+      "patch": {
+        "softness": 0.59,
+        "recoverySeconds": 2.02
+      },
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.2511591908196599,
+        "minVolumeRatio": 0.7792149439501598,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1297
+    },
+    {
+      "id": "held-it-blue-only",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Cambia solo il colore in blu; non toccare morbidezza e risalita.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "held-it-blue-only",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Cambia solo il colore in blu; non toccare morbidezza e risalita.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "color"
+        ],
+        "color": "blue"
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#77c8ea",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "color": "#77c8ea"
+      },
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.36556088879708243,
+        "minVolumeRatio": 0.7149730855764023,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1248
+    },
+    {
+      "id": "held-en-negation",
+      "request": {
+        "version": 1,
+        "mode": "modify",
+        "prompt": "Don't soften it; just take longer to regain shape.",
+        "current": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#a996ee",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        }
+      },
+      "expected": {
+        "id": "held-en-negation",
+        "request": {
+          "version": 1,
+          "mode": "modify",
+          "prompt": "Don't soften it; just take longer to regain shape.",
+          "current": {
+            "version": 1,
+            "archetype": "mochi",
+            "proportions": {
+              "width": 1.18,
+              "height": 0.88,
+              "depth": 1.08
+            },
+            "color": "#a996ee",
+            "finish": "matte",
+            "softness": 0.84,
+            "compressibility": 0.78,
+            "recoverySeconds": 4.5,
+            "damping": 0.88
+          }
+        },
+        "status": "ok",
+        "affected": [
+          "recoverySeconds"
+        ],
+        "bands": {
+          "recoverySeconds": [
+            5.5,
+            12
+          ]
+        }
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 6.75,
+        "damping": 0.88
+      },
+      "patch": {
+        "recoverySeconds": 6.75
+      },
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.36556088879708243,
+        "minVolumeRatio": 0.7149730855764023,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1217
+    },
+    {
+      "id": "held-en-shark",
+      "request": {
+        "version": 1,
+        "mode": "create",
+        "prompt": "I want a blue shark shaped foam toy."
+      },
+      "expected": {
+        "id": "held-en-shark",
+        "request": {
+          "version": 1,
+          "mode": "create",
+          "prompt": "I want a blue shark shaped foam toy."
+        },
+        "status": "unsupported",
+        "affected": []
+      },
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "validations": [
+        {
+          "schemaValid": true,
+          "protectedFieldsRejected": false
+        }
+      ],
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 1,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {},
+      "engine": {
+        "renderedSurfaceDepthUnits": 0.36556088879708243,
+        "minVolumeRatio": 0.7149730855764023,
+        "safetyBackoffs": 0
+      },
+      "durationMs": 1139
+    }
+  ]
+}

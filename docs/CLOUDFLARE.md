@@ -8,21 +8,31 @@ Ordinary local development needs no credentials. `npm run dev` uses the explicit
 
 The 26-case corpus in `tests/semantic-corpus.ts` has Italian/English descriptions, typo, negations, relative edits, protected fields, unsupported shapes and instruction injection. Expectations were set as semantic bands/directions, not exact float matches. The report separates schema validity, meaning, field preservation, repair and duration. It uses only synthetic descriptions.
 
-If you intentionally want to consume Free inference quota, supply an account ID and a Workers AI scoped token **in environment variables**, never a frontend file or chat message. Then run, separately:
+Authenticate with the project's pinned Wrangler (`npx wrangler login`). The harness reads its OAuth token in memory; it never prints or saves it. Alternatively supply `CLOUDFLARE_ACCOUNT_ID` and a scoped `CLOUDFLARE_API_TOKEN` as environment variables, never a frontend file or chat message. With multiple accounts select the account ID explicitly. A read-only subscription check refuses paid Workers/AI plans. If that read returns 403, first confirm the account is Workers Free, then opt in with `--free-confirmed` or `SQUISHY_WORKERS_FREE_CONFIRMED=1`. In this session the user confirmed Free; the report records that attestation, not an API-verified billing plan.
+
+Intentional live commands, separate from CI:
 
 ```sh
 npm run evaluate:ai -- --live       # 3B, prompted JSON, up to 52 calls for 26 cases
 npm run evaluate:ai -- --live --8b  # 8B, documented JSON Schema mode, same corpus
+npm run evaluate:ai -- --live --qwen # selected model, same corpus
+npm run evaluate:ai -- --live --qwen --holdout
+npm run evaluate:ai -- --live --qwen --fresh # reserved phrases, now also regressions
 ```
 
-The command exits without making calls when `CLOUDFLARE_ACCOUNT_ID` or `CLOUDFLARE_API_TOKEN` is absent. Ordinary tests never activate live mode. Reports are `evidence/ai-live-3b.json` / `ai-live-8b.json` and ignored by Git until explicitly reviewed. Choose the model based on meaning, preservation, repair frequency, latency and neuron cost. Require all protected-field and unsupported-shape cases to pass; investigate every semantic miss. Neither a bigger model nor structured JSON proves understanding. Do not automatically substitute a paid provider on failure.
+Missing authentication or an unconfirmed 403 billing check exits before inference. Calls are bounded to two per case; quota/unavailability/timeout stops the campaign. Reports live in `evidence/refined/`; only synthetic, reviewed evidence is committed. Ordinary tests make zero model calls. Historical misses remain in `ai-history/`. Model selection considers meaning, preservation, repair, latency and reported neurons; JSON validity and model size alone proved insufficient. No automatic provider failover is implemented.
+
+`npm run dev:ai` serves **http://127.0.0.1:5174**, labeled “AI remota · test locale.” It uses selected Qwen3 by default, checks loopback peer/host and origin, limits bodies, allows one request at a time and caps the session at **12 model calls**. Set `SQUISHY_AI_MODEL` only to an allowlisted candidate for explicit comparison. On PowerShell, after confirming Free, use `$env:SQUISHY_WORKERS_FREE_CONFIRMED='1'; npm run dev:ai`. Credentials stay server-side. `npx tsx scripts/verify-live-browser.ts` records the real A/B flow against that already running server. This dev-only adapter is not bundled into the Worker and does not claim production Turnstile coverage. The ordinary `npm run dev` on 5173 remains mock.
 
 Documentation check on 3 October 2026:
 
 | Candidate | Free allocation | Output strategy | Live semantic result |
 |---|---|---|---|
-| `@cf/meta/llama-3.2-3b-instruct` | Listed in Workers AI pricing; not among models requiring a paid billing method | Prompted JSON + validation + one repair. Model page exposes `response_format`, but the supported JSON Mode list omits it | **Not run** |
-| `@cf/meta/llama-3.1-8b-instruct` | Listed in Workers AI pricing; not among models requiring a paid billing method | Documented JSON Mode + same validation/repair | **Not run** |
+| `@cf/meta/llama-3.2-3b-instruct` | Free allocation | Prompted JSON + validation + one repair; no unsupported JSON Mode assumption | Initial 18/26; revised-prompt run 14/26 |
+| `@cf/meta/llama-3.1-8b-instruct` | Free allocation | Documented JSON Schema + same validation/repair | Revised-prompt run 22/26; semantic misses despite valid schema |
+| `@cf/qwen/qwen3-30b-a3b-fp8` | Free allocation, same listed neuron rates as the 3B | Documented raw non-thinking Qwen chat template + strict JSON/protection/direction validation | Corpus 26/26, paraphrase regressions 8/8 + 5/5; one repair in the last set |
+
+Qwen3 has 30.5B total / about 3.3B active parameters; its [model card](https://huggingface.co/Qwen/Qwen3-30B-A3B-FP8) documents non-thinking formatting and Apache-2.0. Reserved delimiters in user content are escaped. Reasoning text is not stripped to manufacture valid JSON: the provider must return a valid data object. [Cloudflare's catalog](https://developers.cloudflare.com/workers-ai/models/) and [pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/) list this model. The prepared config selects it with AI still disabled. Read the history and [verification](VERIFICATION.md) before treating regression passes as unseen generalization.
 
 For context, current pricing lists 4,625 input / 30,475 output neurons per million tokens for 3B, and 25,608 / 75,147 for this 8B. Calls are capped at 420 output tokens, descriptions at 500 characters. The static prompt and a compact current spec also count as input; do not convert the 10,000-neuron allowance into a promise of a fixed number of user requests.
 
@@ -44,5 +54,11 @@ Rate bindings share counters within a Cloudflare location and are eventually con
 Request bodies are stream-limited to 8 KiB and read for at most 5 seconds; Turnstile verification has a 5-second timeout. Model calls plus the one repair share an 18-second deadline; each call is capped at 420 output tokens and model text at 8 KiB. A client timeout cannot guarantee that a binding inference is cancelled on Cloudflare; a bounded already-started call may finish and consume quota. Quota/rate/unavailability errors are not retried. Provider internals are not exposed in error messages. Existing objects remain usable throughout.
 
 The application does not log prompts or identifiers; observability is disabled in the checked-in config. Cloudflare and Turnstile still process submitted descriptions/verification data under their service terms. User texts should not contain personal information.
+
+## Codex Cloudflare setup performed in this session
+
+The requested [official setup prompt](https://developers.cloudflare.com/agent-setup/prompt.md) was fetched and followed after the baseline. Sixteen Cloudflare skills were installed for Codex using its recommended skills installer. Five MCP servers were registered, preserving existing servers: Cloudflare Code Mode, public Docs, Bindings, Builds and Observability. Optional beta `cf` CLI was not needed; this repository keeps Wrangler 4.147.0.
+
+MCP OAuth is **incomplete**: Codex CLI 0.145.0 rejected the authorization callback with “Authorization server response missing required issuer: expected https://mcp.cloudflare.com”. Issuer verification was not bypassed. Docs requires no login; the other registered servers are not authenticated. Start a new/restarted Codex agent to load the installed skills and registrations; retry `codex mcp login cloudflare` when that issuer compatibility issue is resolved. This is separate from the working Wrangler OAuth used for real AI tests. No secrets were placed in the repository or chat.
 
 Official sources: [Static Assets](https://developers.cloudflare.com/workers/static-assets/), [pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/), [JSON Mode supported list](https://developers.cloudflare.com/workers-ai/features/json-mode/), [rate bindings and accuracy](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/), [Turnstile Free plan](https://developers.cloudflare.com/turnstile/plans/), [token validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/).

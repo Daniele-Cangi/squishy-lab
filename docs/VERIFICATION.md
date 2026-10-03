@@ -1,4 +1,57 @@
-# Delivery verification — 3 October 2026
+# Refinement verification — 3 October 2026
+
+## Current result
+
+The real Cloudflare phrase → validated patch → material loop was exercised in Chrome. “Uguale, ma meno molle” changed softness from 0.84 to 0.59 while preserving color and recovery. Normal-time A/B samples around physical second 1.5 measured rendered depth **0.36005 → 0.28512 scene units**, about **21% less**. A second real request accelerated recovery without changing color; a shark request was unsupported and retained the object. The [video](../evidence/refined/ai-live-browser.webm), [screenshots](../evidence/refined/ai-live-before.png) and [response/model/gesture metadata](../evidence/refined/ai-live-browser.json) record the loop. This uses an opt-in loopback REST adapter, not deployed Turnstile or edge-rate verification.
+
+## Reproduced defects and corrections
+
+- A new light contact pulled a recovering dent outward in one step (0.1667 units in the regression). Unilateral inward contact fixes that snap and preserves delayed memory.
+- Runtime pressure and numerical scripts used different ramps and sampling schedules. Both now use the same gesture, sampled at 120 Hz; A/B resets physical state and fixes appearance and camera.
+- A cancelled generation could reuse a spent Turnstile token, and old cleanup could disturb a newer token. The widget is renewed at send; generation checks reject stale callbacks. Controlled browser tests cover cancellation, new tokens, old callbacks and client timeout.
+- Invalid output arriving after the total model deadline could launch another call. Budget/abort checks now prevent repair after expiration or cancellation. Binding inference can still finish remotely; a local promise race is not provider cancellation.
+- A valid-looking AI patch changed explicitly protected softness, and another increased recovery for “accorcia la risalita.” Conservative protection/direction validators reject these contradictions and permit at most one model repair, retaining the object on failure.
+
+## Real AI evidence
+
+All expectations were fixed before each campaign. The original 26-case corpus is separate from eight paraphrases. Five further phrases were reserved after the first protection validator; their initial 4/5 result found the opposite recovery direction. That miss was fixed and the same five became regression cases. They are **not** claimed as unseen evaluation after the fix. No corpus expectations were relaxed. Historical runs and the harness error are preserved in `evidence/refined/ai-history/`.
+
+| Run | Schema-valid | Meaning + preservation | Repair |
+|---|---:|---:|---:|
+| Initial Llama 3B corpus | 24/26 | 18/26 | 3 |
+| Latest pre-protection 3B, revised semantic prompt | 22/26 | 14/26 | 4 |
+| 8B, same revised semantic prompt with JSON Schema | 26/26 | 22/26 | 0 |
+| Qwen3 before guards, corpus | 26/26 | 26/26 | 0 |
+| Qwen3 before guards, eight paraphrases | 8/8 | 7/8 | 0 |
+| Final Qwen3 + validators, corpus | 26/26 | 26/26 | 0 |
+| Final Qwen3 + validators, eight paraphrase regressions | 8/8 | 8/8 | 0 |
+| Five reserved phrases, initial / corrected regression | 5/5 | 4/5 → 5/5 | 0 → 1 |
+
+The choice of Qwen3 is an engineering response to measured Llama misses, within the same Workers AI service. It is not a blinded model leaderboard or a guarantee for arbitrary phrasing. The final corpus used 26 calls and **124.50 neurons** reported by Cloudflare; eight paraphrases used 8 calls / **38.88 neurons**, and five regressions used 6 calls / **29.92 neurons**. These are campaign subtotals, not the account's total usage. Provider call median/P95 for the corpus were **390/621 ms**; script row duration additionally includes a numerical material check. All texts were synthetic. Credentials stayed in process memory. Workers Free was confirmed by the user because subscription read returned 403; no paid plan, Gateway billing, deployment or resource creation was activated.
+
+## Surface and physical behavior
+
+Current `evidence/refined/physics.*` and `surface.json` distinguish the persistent **rendered Float32 surface** probe from the internal tetrahedral cage probe. The top press is defined in `src/physics/gesture.ts`; the baseline front-side press used a different location/ramp, so these are not identical-force baseline comparisons. Baseline images/video/profile data in `baseline-b169dc8` and the older root files are retained.
+
+| Material | Rendered peak | Internal cage peak | Rendered T90 after release | Residual after 12 s | Minimum sampled tet ratio |
+|---|---:|---:|---:|---:|---:|
+| Foam, softness 0.84 | 0.36556 | 0.42471 | 4.383 s | 0.000759 | 0.7149 |
+| Same foam, softness 0.22 | 0.14950 | 0.18081 | 4.442 s | 0.000286 | 0.8458 |
+| Recovery target 0.45 s | 0.33550 | 0.39097 | 0.342 s | <0.000001 | 0.7426 |
+| Elastic comparison | 0.32916 | 0.38355 | 0.308 s | <0.000001 | 0.7547 |
+
+The rendered soft/firm depth ratio is **2.45×**. Twelve cycles left 0.000759 residual with zero backoffs; 30/60/144 Hz schedules produced zero coordinate difference. Regression tests also compare peak and recovery states at identical physical steps, light/held/re-press continuity, reference immutability, locality, compressibility/damping and supported extremes. Units are arbitrary scene units, not a calibrated foam material. Profiles and normal-time recordings were inspected; images alone are not the recovery evidence.
+
+## Performance and checks
+
+Final hardware sample at revision `b63c8fd`: installed Chrome 154, Windows, **AMD Vega 8 / ANGLE D3D11**, viewport 1366×1000, DPR 1, 216 particles / 750 tets / 5,402 vertices / 10,800 triangles. Median/P95 per rendered frame: solver **1.90/2.50 ms**, surface/normals/bounds **3.80/5.20 ms**, renderer CPU submission **0.40/0.70 ms**, actual frame interval **8.30/8.40 ms**, zero backoffs. This final five-second sample ran without concurrent tests, recordings or model evaluation. It clears 60 fps on this device, excludes asynchronous GPU timing and does not claim phone or sustained thermal performance. The baseline surface median was 2.20 ms: the final sample costs 1.60 ms more, while the observed frame interval remains comparable. Separate short runs vary with machine load; this is evidence of adequate current frame timing, not a claim that the refinement has zero CPU cost.
+
+Strict TypeScript, ESLint, **73 unit tests**, production build, **11 browser tests**, and Worker dry run passed. The ordinary mock corpus passed 26/26 with zero remote calls. Browser coverage includes A/B with a controlled multi-field color/shape reply, focus/visibility interruption, mobile viewport reduction, emulated touch, cancelled/new/timed-out generations, unsupported requests, storage denial, exact color-only state retention and stale replies. Browser smoke uses SwiftShader; hardware measurements use a separate Chrome session. No physical phone or real virtual keyboard was tested. Blender was not detected as an installed executable; the procedural geometry remained coherent with its cage.
+
+The remaining external checks are deployed Free Turnstile and edge rate bindings, public hostname behavior and physical mobile devices. The Worker remains `PROVIDER: disabled`. Global Cloudflare skills/MCP registration and its OAuth issuer incompatibility are described in [Cloudflare setup](CLOUDFLARE.md).
+
+<details>
+<summary>Original delivery verification, retained as a historical baseline</summary>
 
 This report distinguishes observed behavior from prepared integration. All ordinary checks used synthetic prompts and an explicitly identified mock. No Cloudflare inference quota was consumed, and no Cloudflare deployment or DEV submission was performed. After the initial local delivery, the user authorized source publication to [Daniele-Cangi/squishy-lab](https://github.com/Daniele-Cangi/squishy-lab) on 3 October 2026.
 
@@ -65,3 +118,5 @@ The first GitHub Linux run passed the build and all 62 unit tests, but exposed a
 - **Physical mobile devices, cross-browser/long-duration performance, arbitrary self-collision and offline restart:** no such claims are made.
 
 The local preview stays at `http://127.0.0.1:5173/`. Source control contains only this newly created project; no earlier work was replaced. Git commits retain actual creation times before the 5 October deadline. The initially empty GitHub repository is now the `origin` remote, with publication on `main` authorized by the user. The original source archive includes `history.bundle`; recover that local-delivery snapshot with `git clone history.bundle squishy-lab-restored` if needed.
+
+</details>

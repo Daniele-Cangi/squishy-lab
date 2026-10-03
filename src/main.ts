@@ -9,6 +9,10 @@ function el<T extends HTMLElement=HTMLElement>(id:string){return document.getEle
 let spec=structuredClone(DEFAULT_SPEC),name='Nuvola viola';
 try {const saved=localStorage.getItem('squishy-spec-v1');if(saved){spec=validateSpec(JSON.parse(saved));name='Il tuo mochi';}}catch{try{localStorage.removeItem('squishy-spec-v1');}catch{/* Storage can be disabled. */}}
 const status=el('status'),prompt=el<HTMLTextAreaElement>('prompt'),submit=el<HTMLButtonElement>('generate'),canvas=el<HTMLCanvasElement>('squishy'),gate=new RequestGate();
+const updateViewport=()=>document.documentElement.style.setProperty('--visible-height',`${window.visualViewport?.height??innerHeight}px`);
+window.visualViewport?.addEventListener('resize',updateViewport);window.addEventListener('resize',updateViewport);updateViewport();
+prompt.addEventListener('focus',()=>{document.body.dataset.composing='true';updateViewport();});
+prompt.addEventListener('blur',()=>{delete document.body.dataset.composing;});
 let scene:SquishyScene;
 try {scene=new SquishyScene(canvas,spec,state=>{const text=copy.states[state];if(el('state').textContent!==text)el('state').textContent=text;el('state').dataset.state=state;});}
 catch {el('canvas-error').hidden=false;for(const id of ['squeeze','rotate'])el<HTMLButtonElement>(id).disabled=true;}

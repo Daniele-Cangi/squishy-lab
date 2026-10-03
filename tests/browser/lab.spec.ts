@@ -21,7 +21,10 @@ test('focus loss and hidden-tab interruption release pressure; resized mobile co
   await ready(page);await page.locator('#squishy').focus();await page.keyboard.down('Space');await expect(page.locator('#state')).toHaveText('Sotto pressione');
   await page.getByRole('textbox').focus();await expect(page.locator('#state')).not.toHaveText('Sotto pressione');await page.keyboard.up('Space');
   await page.evaluate(()=>window.__squishy!.press());await expect(page.locator('#state')).toHaveText('Sotto pressione');await page.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));await expect(page.locator('#state')).not.toHaveText('Sotto pressione');
-  await page.setViewportSize({width:390,height:504});await page.getByRole('textbox').fill('Meno molle');await page.locator('#generate').click();await expect(page.locator('#status')).toContainText('demo locale');
+  await page.setViewportSize({width:390,height:504});await page.getByRole('textbox').fill('Meno molle');
+  const dock=(await page.locator('#squishy').boundingBox())!;expect(dock.height).toBeGreaterThanOrEqual(150);expect(dock.height).toBeLessThan(230);expect(dock.y).toBeGreaterThanOrEqual(-1);expect(dock.y+dock.height).toBeLessThan(504);
+  await page.screenshot({path:'evidence/refined/browser-smoke/mobile-composing.png',fullPage:true});
+  await page.locator('#generate').click();await expect(page.locator('#status')).toContainText('demo locale');await expect(page.locator('body')).not.toHaveAttribute('data-composing','true');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);await page.locator('#squeeze').scrollIntoViewIfNeeded();await page.locator('#squeeze').focus();await page.keyboard.down('Enter');await expect(page.locator('#state')).toHaveText('Sotto pressione');await page.keyboard.up('Enter');
 });
 test('rendered WebGL canvas, local dent, release, keyboard and reset',async({page})=>{

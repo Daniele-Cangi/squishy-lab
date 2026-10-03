@@ -13,15 +13,22 @@ export function standardTrace(spec:SquishySpec,renderHz=60,cycles=1) {
       const time=body.time,phase=time%14;
       body.setContact(phase<2?{point,normal,intensity:Math.min(1,phase/.85)*.88}:null);
       const start=performance.now();body.step();timings.push(performance.now()-start);
-      const depth=body.maxDisplacement();
+      const depth=imprintDepth(body,normal);
       if(time<2)peak=Math.max(peak,depth);
       if(time>=2&&releaseDepth===0)releaseDepth=depth;
       if(time>=2&&t90===null&&depth<=releaseDepth*.1)t90=time-2;
-      if(Math.round(body.time/FIXED_DT)%12===0)trace.push({time:body.time,depth,maxDisplacement:depth,minVolumeRatio:body.minVolumeRatio()});
+      if(Math.round(body.time/FIXED_DT)%12===0)trace.push({time:body.time,depth,maxDisplacement:body.maxDisplacement(),minVolumeRatio:body.minVolumeRatio()});
     });
   }
   timings.sort((a,b)=>a-b);
   return {spec,renderHz,cycles,peak,releaseDepth,t90,residual:body.maxDisplacement(),minVolumeRatio:Math.min(...trace.map(v=>v.minVolumeRatio)),safetyBackoffs:body.safetyBackoffs,solverStepMedianMs:timings[Math.floor(timings.length*.5)],solverStepP95Ms:timings[Math.floor(timings.length*.95)],finalPositions:Array.from(body.positions),trace};
+}
+function imprintDepth(body:SoftBody,normal:Vec3) {
+  const {cage,positions}=body,g=[.5,.775,1].map(v=>v*cage.cells),cell=g.map(v=>Math.min(cage.cells-1,Math.floor(v))),f=g.map((v,i)=>v-cell[i]);
+  const order=[0,1,2].sort((a,b)=>f[b]-f[a]),weights=[1-f[order[0]],f[order[0]]-f[order[1]],f[order[1]]-f[order[2]],f[order[2]]],nodes:number[]=[];
+  const n=cage.cells+1,q=[...cell];nodes.push(q[0]+n*(q[1]+n*q[2]));for(const axis of order){q[axis]++;nodes.push(q[0]+n*(q[1]+n*q[2]));}
+  let depth=0;for(let k=0;k<4;k++)for(let axis=0;axis<3;axis++)depth-=(positions[nodes[k]*3+axis]-cage.rest[nodes[k]*3+axis])*weights[k]*normal[axis]/Math.hypot(...normal);
+  return depth;
 }
 if(process.argv[1]?.endsWith('measure-physics.ts')) {
   const cases={foam:DEFAULT_SPEC,firm:{...DEFAULT_SPEC,softness:.22},fast:{...DEFAULT_SPEC,recoverySeconds:.45},elastic:{...DEFAULT_SPEC,recoverySeconds:.45,compressibility:.2,damping:.38}};

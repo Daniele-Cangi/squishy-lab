@@ -37,7 +37,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML=`
       </aside>
     </div>
   </main>
-  <footer><span>Una forma semplice. Tante sensazioni.</span><button id="forget">Cancella lo squishy salvato</button></footer>
+  <footer><span>Una forma semplice. Tante sensazioni.</span><span id="model-credit" hidden>Built with Llama · Cloudflare Workers AI</span><button id="forget">Cancella lo squishy salvato</button></footer>
 </div>`;
 function el<T extends HTMLElement=HTMLElement>(id:string){return document.getElementById(id) as T;}
 let spec=structuredClone(DEFAULT_SPEC),name='Nuvola viola';
@@ -92,6 +92,7 @@ async function configureProvider() {
     const response=await fetch(`${import.meta.env.VITE_API_BASE??''}/api/config`,{signal:AbortSignal.timeout(4000)});if(!response.ok)throw new Error();
     const config=await response.json() as {provider:string;siteKey?:string};provider=config.provider;
     if(provider==='workers-ai') {
+      el('model-credit').hidden=false;
       el('mode-badge').textContent='AI remota · Cloudflare';el('privacy').textContent='La descrizione viene inviata a Cloudflare Workers AI. Non inserire dati personali. Lo squishy si muove sempre sul tuo dispositivo.';
       if(config.siteKey){const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.async=true;script.onload=()=>{widget=window.turnstile?.render(el('turnstile'),{sitekey:config.siteKey,action:'squishy',callback:(token:string)=>{turnstileToken=token;},'expired-callback':()=>{turnstileToken='';},'error-callback':()=>{turnstileToken='';status.textContent='Verifica non disponibile. I preset funzionano ancora.';}});};script.onerror=()=>{status.textContent='Verifica non disponibile. Usa un preset locale.';};document.head.append(script);}
     } else if(provider!=='mock') {provider='disabled';el('mode-badge').textContent='Preset locali · AI non attiva';el('privacy').textContent='L’AI non è configurata. Usa i tre preset per provare i materiali.';}

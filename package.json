@@ -1,10 +1,11 @@
 {
   "name": "squishy-lab",
   "version": "0.1.0",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": "^22.13.0 || >=24"
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
@@ -15,6 +16,7 @@
     "test": "vitest run",
     "test:browser": "playwright test",
     "measure:physics": "tsx scripts/measure-physics.ts",
+    "measure:browser": "tsx scripts/measure-browser.ts",
     "evaluate:ai": "tsx scripts/evaluate-ai.ts",
     "worker:dev": "npm run build && wrangler dev --local --env mock",
     "worker:check": "wrangler deploy --dry-run --outdir work/worker-build",

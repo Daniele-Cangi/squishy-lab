@@ -52,3 +52,14 @@ test('API validation on the running adapter',async({request})=>{
   expect((await request.post('/api/squishy',{data:{version:1,mode:'create',prompt:''}})).status()).toBe(400);
   expect((await request.post('/api/squishy',{data:'x'.repeat(9000),headers:{'Content-Type':'application/json'}})).status()).toBe(413);
 });
+test('emulated touch drag/cancel and denied storage still allow playing',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const page=await context.newPage();
+  await page.addInitScript(()=>{for(const name of ['getItem','setItem','removeItem'])Object.defineProperty(Storage.prototype,name,{value(){throw new DOMException('Blocked','SecurityError');}});});
+  try{
+    await ready(page);const box=(await page.locator('#squishy').boundingBox())!,session=await context.newCDPSession(page),x=box.x+box.width*.5,y=box.y+box.height*.5;
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});await expect.poll(async()=>(await snapshot(page)).maxDisplacement).toBeGreaterThan(.08);
+    await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+35,y:y+25}]});await page.waitForTimeout(300);expect(await page.evaluate(()=>scrollY)).toBe(0);expect((await snapshot(page)).minVolumeRatio).toBeGreaterThan(.17);
+    await session.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});await expect(page.locator('#state')).not.toHaveText('Sotto pressione');
+    await page.getByRole('button',{name:'Cancella lo squishy salvato'}).click();await expect(page.locator('#status')).toContainText('cancellata');
+  }finally{await context.close();}
+});

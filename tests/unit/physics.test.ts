@@ -39,6 +39,10 @@ describe('Volumetric mochi',()=>{
     function volume(spec:SquishySpec){const body=new SoftBody(spec);press(body);const {tets}=body.cage;let total=0;for(let t=0;t<tets.length;t+=4)total+=signedVolume(body.positions,tets[t],tets[t+1],tets[t+2],tets[t+3]);return total/body.cage.volumes.reduce((a,b)=>a+b);}
     expect(volume({...DEFAULT_SPEC,compressibility:.95})).toBeLessThan(volume({...DEFAULT_SPEC,compressibility:.05})-.005);
   });
+  it('higher damping dissipates the same velocity pulse more strongly',()=>{
+    const energy=(damping:number)=>{const body=new SoftBody({...DEFAULT_SPEC,damping,recoverySeconds:.3});body.velocity[body.velocity.length-1]=5;for(let i=0;i<8;i++)body.step();return body.velocity.reduce((sum,v)=>sum+v*v,0);};
+    expect(energy(1)).toBeLessThan(energy(.2)*.5);
+  });
   it('returns to immutable reference through repeated press/release cycles',()=>{
     const body=new SoftBody(DEFAULT_SPEC),reference=body.cage.rest.slice();
     for(let cycle=0;cycle<4;cycle++){press(body);body.setContact(null);for(let i=0;i<1440;i++)body.step();expect(body.maxDisplacement()).toBeLessThan(.004);}

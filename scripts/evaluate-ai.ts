@@ -14,11 +14,11 @@ const ai:AiBinding={async run(model,input){
 }};
 const rows=[];
 for(const case_ of CORPUS) {
-  const start=Date.now();
+  const start=Date.now(),callsBefore=calls;
   try {
     const response=await infer(case_.request,{PROVIDER:live?'workers-ai':'mock',MODEL:model,AI:live?ai:undefined});
-    rows.push({id:case_.id,schemaValid:true,...assess(case_,response),repaired:response.repaired,corrections:response.corrections,spec:response.spec,patch:response.patch,durationMs:Date.now()-start});
-  } catch(error) {rows.push({id:case_.id,schemaValid:false,semanticPass:false,preserved:false,repaired:null,error:error instanceof Error?error.message:'error',durationMs:Date.now()-start});}
+    rows.push({id:case_.id,schemaValid:true,schemaValidBeforeRepair:!response.repaired,...assess(case_,response),repaired:response.repaired,modelCalls:calls-callsBefore,corrections:response.corrections,spec:response.spec,patch:response.patch,durationMs:Date.now()-start});
+  } catch(error) {rows.push({id:case_.id,schemaValid:false,schemaValidBeforeRepair:false,semanticPass:false,preserved:false,repaired:calls-callsBefore>1,modelCalls:calls-callsBefore,error:error instanceof Error?error.message:'error',durationMs:Date.now()-start});}
 }
 const report={provider:live?'LIVE Workers AI':'MOCK fixture interpreter — NOT inference',model:live?model:null,measuredAt:new Date().toISOString(),calls,total:rows.length,schemaValid:rows.filter(r=>r.schemaValid).length,semanticPass:rows.filter(r=>r.semanticPass).length,preserved:rows.filter(r=>r.preserved).length,repairNeeded:rows.filter(r=>r.repaired).length,rows};
 mkdirSync('evidence',{recursive:true});writeFileSync(`evidence/ai-${live?`live-${process.argv.includes('--8b')?'8b':'3b'}`:'mock'}.json`,JSON.stringify(report,null,2));

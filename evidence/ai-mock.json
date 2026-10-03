@@ -1,0 +1,800 @@
+{
+  "provider": "MOCK fixture interpreter — NOT inference",
+  "model": null,
+  "measuredAt": "2026-10-03T15:40:43.357Z",
+  "calls": 0,
+  "total": 26,
+  "schemaValid": 26,
+  "semanticPass": 26,
+  "preserved": 26,
+  "repairNeeded": 0,
+  "rows": [
+    {
+      "id": "it-create-foam",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.92,
+        "compressibility": 0.78,
+        "recoverySeconds": 6,
+        "damping": 0.88
+      },
+      "patch": {
+        "color": "#a996ee",
+        "softness": 0.92,
+        "recoverySeconds": 6
+      },
+      "durationMs": 3
+    },
+    {
+      "id": "en-create-foam",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.92,
+        "compressibility": 0.78,
+        "recoverySeconds": 6,
+        "damping": 0.88
+      },
+      "patch": {
+        "color": "#a996ee",
+        "softness": 0.92,
+        "recoverySeconds": 6
+      },
+      "durationMs": 2
+    },
+    {
+      "id": "it-less-soft",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.5599999999999999,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "softness": 0.5599999999999999
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-less-soft",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.5599999999999999,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "softness": 0.5599999999999999
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-protect-color",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 1.44,
+        "damping": 0.88
+      },
+      "patch": {
+        "recoverySeconds": 1.44
+      },
+      "durationMs": 1
+    },
+    {
+      "id": "en-protect-color",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 1.44,
+        "damping": 0.88
+      },
+      "patch": {
+        "recoverySeconds": 1.44
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-flatten",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.66,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "proportions": {
+          "height": 0.66
+        }
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-flatten",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.66,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "proportions": {
+          "height": 0.66
+        }
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-softer",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 1,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "softness": 1
+      },
+      "durationMs": 1
+    },
+    {
+      "id": "en-softer",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 1,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "softness": 1
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-slower",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 7.425,
+        "damping": 0.88
+      },
+      "patch": {
+        "recoverySeconds": 7.425
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-slower",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 7.425,
+        "damping": 0.88
+      },
+      "patch": {
+        "recoverySeconds": 7.425
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-blue-only",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#77c8ea",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "color": "#77c8ea"
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-peach-only",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#f6aa8b",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "color": "#f6aa8b"
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-matte",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "finish": "matte"
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-satin",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "satin",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "finish": "satin"
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-taller",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 1.1440000000000001,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "proportions": {
+          "height": 1.1440000000000001
+        }
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-wider",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.4749999999999999,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "proportions": {
+          "width": 1.4749999999999999
+        }
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-compressible",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.88,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "compressibility": 0.88
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-damping",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.95
+      },
+      "patch": {
+        "damping": 0.95
+      },
+      "durationMs": 1
+    },
+    {
+      "id": "it-typo",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.92,
+        "compressibility": 0.78,
+        "recoverySeconds": 6,
+        "damping": 0.88
+      },
+      "patch": {
+        "color": "#a996ee",
+        "softness": 0.92,
+        "recoverySeconds": 6
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "en-pink",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#f49cbe",
+        "finish": "matte",
+        "softness": 0.76,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {
+        "color": "#f49cbe",
+        "softness": 0.76
+      },
+      "durationMs": 0
+    },
+    {
+      "id": "it-shark",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {},
+      "durationMs": 0
+    },
+    {
+      "id": "en-donut",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {},
+      "durationMs": 0
+    },
+    {
+      "id": "it-panda",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {},
+      "durationMs": 0
+    },
+    {
+      "id": "injection-code",
+      "schemaValid": true,
+      "schemaValidBeforeRepair": true,
+      "semanticPass": true,
+      "preserved": true,
+      "failures": [],
+      "repaired": false,
+      "modelCalls": 0,
+      "corrections": [],
+      "spec": {
+        "version": 1,
+        "archetype": "mochi",
+        "proportions": {
+          "width": 1.18,
+          "height": 0.88,
+          "depth": 1.08
+        },
+        "color": "#a996ee",
+        "finish": "matte",
+        "softness": 0.84,
+        "compressibility": 0.78,
+        "recoverySeconds": 4.5,
+        "damping": 0.88
+      },
+      "patch": {},
+      "durationMs": 0
+    }
+  ]
+}

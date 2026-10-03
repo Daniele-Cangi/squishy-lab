@@ -17,6 +17,7 @@ Every entry supports soft-touch, glitter or transparent appearance, and a face. 
 `scripts/export-workshop.ts` exports the exact runtime reference surfaces and cages into ignored `work/`. `scripts/blender-collection.py` runs Blender in background mode and builds triangle assets from editable font meshes and simple drawings. Tested with the installed Blender 5.2.2 LTS at `E:\blender.exe`.
 
 - `assets/blender/squishy-collection.blend`: five editable named collections, original body meshes, separately editable print meshes, hidden cage references and hidden material-coordinate print templates.
+- Workshop objects rotate the runtime Y-up reference into Blender's native Z-up view. The exported browser detail coordinates remain unchanged.
 - `public/assets/collection-details.json`: generated positions in face material coordinates, triangle indices and colors. No external fonts, textures, commercial photographs or logos are required by the browser.
 
 The Python script is the reproducible source for the print library. Editing only the saved workshop does not automatically update the app: change the script and rebuild, or extend its export path for manual mesh edits. Windows Arial Bold is used if available, otherwise Blender's built-in font; rebuilding with a different font changes lettering geometry. The prebuilt library is committed, and neither Blender nor a font installation is a build dependency.

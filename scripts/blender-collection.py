@@ -70,7 +70,7 @@ items=[('Mochi','mochi',[],(.65,.53,.86)),('Butter','butter',['butter'],(.93,.78
 for i,(name,shape,groups,color) in enumerate(items):
     ref=references[shape];collection=bpy.data.collections.new(name);bpy.context.scene.collection.children.link(collection)
     mesh=bpy.data.meshes.new(ref['shape']);mesh.from_pydata([ref['positions'][j:j+3] for j in range(0,len(ref['positions']),3)],[],[ref['indices'][j:j+3] for j in range(0,len(ref['indices']),3)])
-    obj=bpy.data.objects.new(name+' - reference skin',mesh);collection.objects.link(obj);obj.location.x=i*4.5
+    obj=bpy.data.objects.new(name+' - reference skin',mesh);collection.objects.link(obj);obj.location.x=i*4.5;obj.rotation_euler.x=math.pi/2
     mat=material(name+' surface',color);obj.data.materials.append(mat)
     if shape=='cube':
         bsdf=mat.node_tree.nodes['Principled BSDF'];bsdf.inputs['Transmission Weight'].default_value=.91;bsdf.inputs['IOR'].default_value=1.38;bsdf.inputs['Roughness'].default_value=.09
@@ -90,14 +90,15 @@ for i,(name,shape,groups,color) in enumerate(items):
                 else:p=[sx*r[0],(sy+1)*r[1]+.04,sz*r[2]]
                 p[asset['axis']]+=h*asset['sign'];verts.append(p)
             dm=bpy.data.meshes.new(group+' deformable print');dm.from_pydata(verts,[],[asset['indices'][j:j+3] for j in range(0,len(asset['indices']),3)])
-            detail=bpy.data.objects.new(name+' - '+group,dm);collection.objects.link(detail);detail.location.x=i*4.5;detail.data.materials.append(material(asset['color'],tuple(int(asset['color'][j:j+2],16)/255 for j in (1,3,5))))
+            detail=bpy.data.objects.new(name+' - '+group,dm);collection.objects.link(detail);detail.location.x=i*4.5;detail.rotation_euler.x=math.pi/2;detail.data.materials.append(material(asset['color'],tuple(int(asset['color'][j:j+2],16)/255 for j in (1,3,5))))
     # Keep the simulation reference editable without cluttering the skin view.
     cm=bpy.data.meshes.new(name+' cage');cp=ref['cage'];cm.from_pydata([cp[j:j+3] for j in range(0,len(cp),3)],[],[])
-    cage=bpy.data.objects.new(name+' - physics reference',cm);collection.objects.link(cage);cage.location.x=i*4.5;cage.hide_set(True);cage.hide_render=True;cage['tetrahedra']=ref['tets']
+    cage=bpy.data.objects.new(name+' - physics reference',cm);collection.objects.link(cage);cage.location.x=i*4.5;cage.rotation_euler.x=math.pi/2;cage.hide_set(True);cage.hide_render=True;cage['tetrahedra']=ref['tets']
 for screen in bpy.data.screens:
     for area in screen.areas:
         if area.type=='VIEW_3D':
-            area.spaces.active.region_3d.view_distance=23;area.spaces.active.region_3d.view_location=(9,1,0)
+            area.spaces.active.region_3d.view_distance=23;area.spaces.active.region_3d.view_location=(9,0,1);area.spaces.active.shading.color_type='MATERIAL'
 workshop=ROOT/'assets'/'blender';workshop.mkdir(parents=True,exist_ok=True)
+bpy.data.orphans_purge(do_recursive=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(workshop/'squishy-collection.blend'),compress=True)
 print('Exported deformable groups:',{k:sum(len(g['positions'])//3 for g in v) for k,v in assets.items()})

@@ -13,6 +13,14 @@ export function roundedPoint(x: number, y: number, z: number, r: Vec3): Vec3 {
   const pz = z * Math.sqrt(1 - x*x/2 - y*y/2 + x*x*y*y/3);
   return [px*r[0], r[1]*(py + 1) + 0.04, pz*r[2]];
 }
+// Material-coordinate depressions shared with the editable Blender export.
+export const CHEESE_POCKETS=[
+  {axis:2,u:-.57,v:.4,radius:.23,depth:.23},{axis:2,u:.38,v:.24,radius:.26,depth:.25},
+  {axis:2,u:-.18,v:-.48,radius:.2,depth:.22},{axis:2,u:.71,v:-.5,radius:.13,depth:.15},
+  {axis:1,u:-.36,v:.43,radius:.2,depth:.2},{axis:1,u:.39,v:.65,radius:.17,depth:.19},
+  {axis:1,u:.1,v:-.32,radius:.15,depth:.17},
+];
+const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.42,.42,.4],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.2,.78,.67]};
 export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='mochi'):Vec3{
   if(shape==='mochi')return roundedPoint(x,y,z,r);
   const unit=roundedPoint(x,y,z,[1,1,1]),sx=unit[0],sy=unit[1]-1.04,sz=unit[2];
@@ -20,8 +28,34 @@ export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='moch
     const taper=.6+.4*(sy+1)/2;
     return [sx*r[0]*taper,(sy+1)*r[1]+.04,sz*r[2]*taper];
   }
-  const round=shape==='butter'?.22:.35;
-  return [(x*(1-round)+sx*round)*r[0],(y*(1-round)+sy*round+1)*r[1]+.04,(z*(1-round)+sz*round)*r[2]];
+  if(shape==='banana'){
+    // Constant-x slices keep the coarse tetrahedra oriented through the bend.
+    const taper=.12+.88*Math.cos(x*Math.PI/2),dy=y*Math.sqrt(1-z*z/2),dz=z*Math.sqrt(1-y*y/2);
+    return [x*r[0],(dy*taper+1+1.8*x*x)*r[1]+.04,dz*r[2]*taper];
+  }
+  if(shape==='peanut'){
+    const waist=.58+.42*(1-Math.exp(-7*x*x));
+    return [sx*r[0],(sy*waist+1)*r[1]+.04,sz*r[2]*waist];
+  }
+  const round=shape==='butter'||shape==='chocolate'?.22:shape==='cat'?.5:shape==='cheese'?.14:.35;
+  const p:Vec3=[(x*(1-round)+sx*round)*r[0],(y*(1-round)+sy*round+1)*r[1]+.04,(z*(1-round)+sz*round)*r[2]];
+  if(shape==='chocolate'){
+    const tile=(q:number,n:number)=>1-Math.exp(-14*Math.sin((q+1)*n*Math.PI/2)**2);
+    p[1]+=.38*r[1]*tile(x,3)*tile(z,2)*((y+1)/2)**4;
+  }
+  if(shape==='cat'){
+    const bx=p[0]/r[0],by=(p[1]-.04)/r[1];
+    const ears=Math.exp(-(((bx-.58)/.19)**2))+Math.exp(-(((bx+.58)/.19)**2));
+    p[1]+=.4*r[1]*ears*(by/2)**5;
+  }
+  if(shape==='cheese'){
+    p[0]*=.18+.82*(z+1)/2;
+    for(const pocket of CHEESE_POCKETS){
+      const u=x,v=pocket.axis===1?z:y,dist=((u-pocket.u)**2+(v-pocket.v)**2)/pocket.radius**2;
+      p[pocket.axis]-=pocket.depth*r[pocket.axis]*Math.exp(-dist*2)*(((pocket.axis===1?y:z)+1)/2)**4;
+    }
+  }
+  return p;
 }
 export function signedVolume(p: ArrayLike<number>, a: number, b: number, c: number, d: number): number {
   a*=3; b*=3; c*=3; d*=3;
@@ -32,21 +66,23 @@ export function signedVolume(p: ArrayLike<number>, a: number, b: number, c: numb
 }
 export const permutations = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
 export function generateCage(spec: SquishySpec, cells=5,shape:ShapeId='mochi'): Cage {
-  const radii=compileSpec(spec).radii.map((v,a)=>v*(shape==='butter'?[1.35,.65,.74][a]:shape==='strawberry'?[.9,1.2,.9][a]:shape==='cube'?[.82,1.05,.93][a]:1)) as Vec3, n=cells+1, count=n**3;
+  const radii=compileSpec(spec).radii.map((v,a)=>v*SHAPE_SCALE[shape][a]) as Vec3, n=cells+1, count=n**3;
   const rest=new Float64Array(count*3), logical=new Float64Array(count*3), inverseMass=new Float64Array(count).fill(1);
   const id=(x:number,y:number,z:number)=> x + n*(y+n*z);
   for(let z=0;z<n;z++) for(let y=0;y<n;y++) for(let x=0;x<n;x++) {
     const i=id(x,y,z), q:Vec3=[2*x/cells-1,2*y/cells-1,2*z/cells-1];
     logical.set(q,i*3); rest.set(shapePoint(...q,radii,shape),i*3);
-    // The low underside is held on a small invisible soft support.
-    if (rest[i*3+1] < 0.04+radii[1]*0.16) inverseMass[i]=0;
   }
+  // Curved forms seat on their lowest cage nodes rather than a guessed height.
+  const minimumY=Math.min(...Array.from({length:count},(_,i)=>rest[i*3+1]));
+  for(let i=0;i<count;i++)if(rest[i*3+1]<(shape==='banana'?minimumY:.04)+radii[1]*.16)inverseMass[i]=0;
   const ts:number[]=[], vs:number[]=[], edgeSet=new Set<string>();
   for(let z=0;z<cells;z++) for(let y=0;y<cells;y++) for(let x=0;x<cells;x++) {
     for(const order of permutations) {
       const q=[x,y,z], verts=[id(...q as Vec3)];
       for(const axis of order) { q[axis]++; verts.push(id(...q as Vec3)); }
       let v=signedVolume(rest,verts[0],verts[1],verts[2],verts[3]);
+      if(v*signedVolume(logical,verts[0],verts[1],verts[2],verts[3])<=0)throw new Error('Folded procedural tetrahedron');
       if(v<0) { [verts[1],verts[2]]=[verts[2],verts[1]]; v=-v; }
       if(!Number.isFinite(v)||v<1e-7) throw new Error('Degenerate procedural tetrahedron');
       ts.push(...verts); vs.push(v);

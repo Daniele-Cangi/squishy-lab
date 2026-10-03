@@ -74,8 +74,12 @@ export class SquishyScene {
   private makeGeometry() {
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(this.surface.rest.slice(),3));geometry.setIndex(new THREE.BufferAttribute(this.surface.indices,1));geometry.computeVertexNormals();this.referenceNormals=(geometry.getAttribute('normal').array as Float32Array).slice();geometry.computeBoundingSphere();return geometry;
   }
-  private updateCamera() {this.camera.position.set(Math.sin(this.angle)*5.3,4.3,Math.cos(this.angle)*5.3);this.camera.lookAt(0,this.body.cage.radii[1]*.95,0);this.camera.updateMatrixWorld();this.needsRender=true;}
-  private resize() {const w=this.canvas.clientWidth,h=this.canvas.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();this.needsRender=true;}
+  private updateCamera() {
+    const banana=this.appearance.shape==='banana',targetY=this.body.cage.radii[1]*(banana?1.45:.95);
+    const distance=banana?Math.max(1,1.05/this.camera.aspect):1;
+    this.camera.position.set(Math.sin(this.angle)*5.3*distance,targetY+(4.3-targetY)*distance,Math.cos(this.angle)*5.3*distance);this.camera.lookAt(0,targetY,0);this.camera.updateMatrixWorld();this.needsRender=true;
+  }
+  private resize() {const w=this.canvas.clientWidth,h=this.canvas.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();this.updateCamera();}
   applySpec(spec:SquishySpec) {
     this.stopComparison();this.assignSpec(spec);
   }

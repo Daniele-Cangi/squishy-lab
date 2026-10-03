@@ -1,6 +1,14 @@
 # Refinement verification — 3 October 2026
 
-## Local collection follow-up
+## Expanded local collection
+
+The ten-entry collection now includes chocolate, banana, cat, cheese and peanut. Each new silhouette uses its own coherent cage/surface reference and Blender-authored details. Chocolate squares, cat ears, banana curvature, peanut lobes and cheese bowls deform with the body. The AI backend and material contract are unchanged. The workshop was reopened successfully in Blender 5.2.2 LTS: ten upright 5,402-vertex body meshes, with no external font dependencies.
+
+The expanded geometry checks include closed surfaces, positive reference orientation, compression/recovery, thin proportions under maximum off-center pressure, silhouette features and bounded detail bindings. Typecheck, lint, all **104 unit tests** and the production build passed. The [expanded collection recording](../evidence/collection-expanded/collection.webm), [snapshots and metadata](../evidence/collection-expanded/collection.json) and [mobile layout](../evidence/collection-expanded/mobile.png) belong to this follow-up; prior evidence remains intact.
+
+All **22 installed-Chrome browser tests** passed, and the five new shape cases also passed in default SwiftShader with unchanged assertions. The 19 PNGs and normal-time video recorded no browser errors. The production detail asset matches its source byte-for-byte; local Worker dry-run packaging passed with AI disabled. No live model calls or Cloudflare publication were performed for this collection expansion.
+
+## Prior local collection follow-up
 
 The AI backend, model, prompts and v1 material contract are unchanged in this follow-up. The lab adds two printed bars, a smiling strawberry and a refractive cube, with locally selected faces, glitter and transparency. Blender 5.2.2 LTS was found at `E:\blender.exe` and used to generate the editable workshop and relief library. Body and cage geometry remain coherent; labels and facial details follow the actual render triangles. See [implementation and collection evidence](COLLECTION.md). Prior AI and hardware results below refer to their recorded revisions.
 

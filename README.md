@@ -1,6 +1,6 @@
 # Squishy Lab
 
-A small, playable 3D material lab. Choose a mochi, a Butter or Strawberry bar with raised lettering, a smiling strawberry, or a clear Jelly cube. Hold a dent, release it, and watch the foam slowly rise. Describe a different color or feel, then compare it under the same gesture.
+A small, playable 3D material lab. Choose a mochi, printed Butter or Strawberry bar, smiling strawberry, clear Jelly cube, chocolate bar, curved banana, cat, cheese wedge or peanut. Hold a dent, release it, and watch the foam slowly rise. Describe a different color or feel, then compare it under the same gesture.
 
 **Try it locally, without an AI account:**
 
@@ -25,11 +25,11 @@ Hold the object to increase pressure over 0.85 seconds; drag to move the contact
 
 After a material edit, **Confronta prima e dopo** repeats a two-second press and five-second recovery on both materials. Shape, color, finish, camera and gesture are held equal; deformation memory is reset between phases. Stop the comparison or press the object to return to the actual edited squishy. Descriptions of changes come from the applied parameters.
 
-![The refined local lab](evidence/refined/rest.png)
+![The expanded local collection](evidence/collection-expanded/cat-rest.png)
 
 ## What is implemented
 
-- Five local collection entries using four coherent body geometries: mochi, rounded butter bar, tapered strawberry and jelly cube. Blender-authored relief lettering, berry icon, seeds, leaves and an optional face are bound to the actual deforming render triangles. Soft-touch, glitter and refractive transparent finishes are local visual controls. Three local material presets remain available.
+- Ten local collection entries using nine coherent body geometries. Chocolate has six raised squares; the banana bends upward with small brown tips; the cat has integral soft ears and an optional muzzle; the cheese wedge has actual recessed pockets; the peanut has two lobes and a shell lattice. Blender-authored details and lettering follow the actual deforming render triangles. All entries support soft-touch, glitter and refractive transparency. Three local material presets remain available.
 - A 216-particle / 750-tetrahedron CPU cage with XPBD distance and volume constraints; a welded 5,402-vertex visual surface follows the cage. Local dents, material-dependent bulging, dissipated motion and per-particle delayed deformation, with an immutable reference.
 - Fixed 120 Hz physics, bounded catch-up, floor/support, inversion barriers and rejected unsafe steps. Mouse/touch pointer capture, cancellation, outside release and keyboard control.
 - A versioned data-only spec and contextual patch contract, deterministic compiler, strict server validation and defensive client validation. A shape change swaps the entire cage and embedding atomically; color/finish changes retain deformation.
@@ -44,7 +44,7 @@ For an intentional live local session, authenticate with `npx wrangler login`, k
 
 Use **Scegli una forma**, then choose **Soft touch**, **Glitter** or **Trasparente** and optionally **Con il viso**. Selecting a collection entry sets its silhouette, print and base color while retaining your material parameters. Changing an effect or face retains the current dent. Reload restores both material and local appearance; the footer clears both. The AI continues to use its unchanged v1 material contract. It does not generate these assets or interpret the local collection controls.
 
-Open [the editable Blender workshop](assets/blender/squishy-collection.blend). It contains five separately named collections, editable reference skin meshes, print meshes, and hidden cage references. The browser uses the generated small triangle library in `public/assets/collection-details.json`; Blender is only needed for authoring. The runtime body and cage use the same shape map, rather than squeezing a sphere under a rigid imported object.
+Open [the editable Blender workshop](assets/blender/squishy-collection.blend). It contains ten separately named collections in two rows, editable reference skin meshes, print meshes, and hidden cage references. The browser uses the generated triangle library in `public/assets/collection-details.json`; Blender is only needed for authoring. The runtime body and cage use the same shape map. Workshop details sample the exported runtime triangles and normals exactly, including curved silhouettes and cheese recesses.
 
 Rebuild from the repository root (Blender 5.2.2 LTS tested):
 
@@ -65,6 +65,7 @@ npm run evaluate:ai     # 26 synthetic cases, explicitly MOCK; zero remote calls
 npm run measure:physics # numerical traces, recovery, 12 cycles, 30/60/144 Hz comparison
 npm run measure:surface # persistent rendered-surface probes and indentation profiles
 npm run record:experience # normal-time Chrome press/release/drag video
+npm run record:collection -- --expanded # new five shapes, press/recovery, effects, mobile
 npm run measure:browser # requires npm run dev + installed Chrome; records actual GPU
 npm run worker:check    # local bundle/dry run; does not publish
 npm run worker:dev      # local workerd preview of built assets + MOCK, normally port 8787

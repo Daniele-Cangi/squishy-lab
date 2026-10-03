@@ -62,15 +62,70 @@ for side,sign in [(0,-1),(0,1),(2,-1)]:
 for i in range(5):
     angle=i*2*math.pi/5;u=(math.cos(angle),math.sin(angle));v=(-u[1],u[0])
     polygon('leaves',[(0,0),(.24*u[0]+.12*v[0],.24*u[1]+.12*v[1]),(.7*u[0],.7*u[1]),(.24*u[0]-.12*v[0],.24*u[1]-.12*v[1])],'#4b9860',height=.027)
+def line(name,points,width,color,axis=2,sign=1,height=.012):
+    # Dense strips follow the same material triangles as the skin, even on curves.
+    verts=[];indices=[]
+    for i,(u,v) in enumerate(points):
+        a=points[max(0,i-1)];b=points[min(len(points)-1,i+1)];dx=b[0]-a[0];dy=b[1]-a[1];length=math.hypot(dx,dy) or 1
+        for side in [-1,1]:verts.extend([max(-1,min(1,u-side*dy/length*width)),max(-1,min(1,v+side*dx/length*width)),height])
+        if i:indices.extend([2*i-2,2*i-1,2*i,2*i-1,2*i+1,2*i])
+    add_group(name,'relief strip',verts,indices,color,axis,sign)
+for u in [-1/3,1/3]:line('chocolate',[(u,-.96+i*1.92/32) for i in range(33)],.007,'#5d3427',1,height=.005)
+line('chocolate',[(-.96+i*1.92/48,0) for i in range(49)],.007,'#5d3427',1,height=.005)
+text('chocolate','COCOA',.48,0,-.56,'#b27d59')
+for sign in [-1,1]:
+    ellipse('banana',0,0,.68,.68,'#79573c',axis=0,sign=sign,height=.012)
+    ellipse('banana',0,0,.33,.36,'#a98449',axis=0,sign=sign,height=.017)
+for v in [-.53,.53]:
+    for sign in [-1,1]:line('banana',[(-.92+i*1.84/48,v) for i in range(49)],.01,'#e1b63a',sign=sign,height=.006)
+for side in [-1,1]:
+    polygon('cat',[(side*.49,.69),(side*.66,.97),(side*.82,.71)],'#df8e91',2,height=.013)
+    for v in [-.15,.1,.35]:line('cat',[(side*(.76+i*.19/12),v-i*.075/12) for i in range(13)],.022,'#bd794c')
+for u in [-.17,0,.17]:line('cat',[(u,.68-i*.18/16) for i in range(17)],.025,'#bd794c')
+for eye_x in [-.27,.27]:
+    ellipse('cat-face',eye_x,.18,.085,.115,'#423545');ellipse('cat-face',eye_x-.022,.225,.025,.03,'#fff9f4',height=.015)
+    ellipse('cat-face',eye_x*1.42,-.085,.1,.038,'#f58fa9')
+polygon('cat-face',[(-.075,.005),(.075,.005),(0,-.075)],'#af6b6b',2)
+for side in [-1,1]:
+    line('cat-face',[(0,-.07),(side*.025,-.12),(side*.09,-.13),(side*.14,-.08)],.009,'#423545')
+    for v in [-.02,-.1]:line('cat-face',[(side*.19,v),(side*.59,v-.035)],.008,'#795b50')
+references={r['shape']:r for r in json.loads((ROOT/'work'/'workshop-reference.json').read_text())}
+for pocket in references['cheese']['pockets']:
+    # Radial subdivisions conform to the bowl instead of spanning its concavity.
+    verts=[pocket['u'],pocket['v'],.01];indices=[];segments=32;rings=5
+    for ring in range(1,rings+1):
+        radius=pocket['radius']*.64*ring/rings
+        for i in range(segments):
+            angle=i*2*math.pi/segments;verts.extend([pocket['u']+radius*math.cos(angle),pocket['v']+radius*math.sin(angle),.01])
+            a=1+(ring-1)*segments+i;b=1+(ring-1)*segments+(i+1)%segments
+            if ring==1:indices.extend([0,a,b])
+            else:c=a-segments;d=b-segments;indices.extend([c,a,d,a,b,d])
+    add_group('cheese','recess lining',verts,indices,'#ce932f',pocket['axis'])
+for axis,sign in [(2,1),(2,-1),(1,1),(1,-1),(0,1),(0,-1)]:
+    for slope in [-.8,.8]:
+        for offset in [i*.25 for i in range(-7,8)]:
+            points=[(-.98+i*1.96/64,slope*(-.98+i*1.96/64)+offset) for i in range(65)]
+            points=[p for p in points if abs(p[1])<.97]
+            if len(points)>1:line('peanut',points,.012,'#b78350',axis,sign,height=.011)
+line('peanut',[(-.98+i*1.96/64,0) for i in range(65)],.018,'#edc693',1,height=.015)
 out=ROOT/'public'/'assets';out.mkdir(parents=True,exist_ok=True)
 (out/'collection-details.json').write_text(json.dumps(dict(version=1,blender=bpy.app.version_string,groups=assets),separators=(',',':')),encoding='utf8')
 # The editable workshop contains the exact runtime reference surfaces.
-references={r['shape']:r for r in json.loads((ROOT/'work'/'workshop-reference.json').read_text())}
-items=[('Mochi','mochi',[],(.65,.53,.86)),('Butter','butter',['butter'],(.93,.78,.38)),('Strawberry','butter',['strawberry'],(.95,.55,.69)),('Fragolina','strawberry',['face','seeds','leaves'],(.9,.2,.3)),('Jelly cube','cube',[],(.3,.75,.9))]
+items=[('Mochi','mochi',[],(.65,.53,.86)),('Butter','butter',['butter'],(.93,.78,.38)),('Strawberry','butter',['strawberry'],(.95,.55,.69)),('Fragolina','strawberry',['face','seeds','leaves'],(.9,.2,.3)),('Jelly cube','cube',[],(.3,.75,.9)),('Cioccolato','chocolate',['chocolate'],(.46,.26,.18)),('Banana','banana',['banana'],(.96,.81,.33)),('Gatto','cat',['cat','cat-face'],(.91,.67,.47)),('Formaggio','cheese',['cheese'],(.95,.75,.3)),('Peanut','peanut',['peanut'],(.83,.64,.43))]
+def project(ref,asset,u,v,height):
+    # Exact barycentric sampling of the exported runtime triangles and normals.
+    n=ref['subdivisions'];face=next(f for f in ref['faceGrids'] if f['axis']==asset['axis'] and f['sign']==asset['sign']);grid=face['grid']
+    gu=(max(-1,min(1,u))+1)*n/2;gv=(max(-1,min(1,v))+1)*n/2;x=min(n-1,math.floor(gu));y=min(n-1,math.floor(gv));fu=gu-x;fv=gv-y
+    a=grid[x+(n+1)*y];b=grid[x+1+(n+1)*y];c=grid[x+(n+1)*(y+1)];d=grid[x+1+(n+1)*(y+1)]
+    ids,weights=([a,b,c],[1-fu-fv,fu,fv]) if fu+fv<=1 else ([b,d,c],[1-fv,fu+fv-1,1-fu])
+    p=[sum(ref['positions'][idx*3+axis]*w for idx,w in zip(ids,weights)) for axis in range(3)]
+    normal=[sum(ref['normals'][idx*3+axis]*w for idx,w in zip(ids,weights)) for axis in range(3)];length=math.sqrt(sum(v*v for v in normal)) or 1
+    return [p[axis]+normal[axis]/length*height for axis in range(3)]
 for i,(name,shape,groups,color) in enumerate(items):
     ref=references[shape];collection=bpy.data.collections.new(name);bpy.context.scene.collection.children.link(collection)
     mesh=bpy.data.meshes.new(ref['shape']);mesh.from_pydata([ref['positions'][j:j+3] for j in range(0,len(ref['positions']),3)],[],[ref['indices'][j:j+3] for j in range(0,len(ref['indices']),3)])
-    obj=bpy.data.objects.new(name+' - reference skin',mesh);collection.objects.link(obj);obj.location.x=i*4.5;obj.rotation_euler.x=math.pi/2
+    location=((i%5)*4.5,(i//5)*-5,0)
+    obj=bpy.data.objects.new(name+' - reference skin',mesh);collection.objects.link(obj);obj.location=location;obj.rotation_euler.x=math.pi/2
     mat=material(name+' surface',color);obj.data.materials.append(mat)
     if shape=='cube':
         bsdf=mat.node_tree.nodes['Principled BSDF'];bsdf.inputs['Transmission Weight'].default_value=.91;bsdf.inputs['IOR'].default_value=1.38;bsdf.inputs['Roughness'].default_value=.09
@@ -80,24 +135,16 @@ for i,(name,shape,groups,color) in enumerate(items):
         for asset in assets[group]:
             verts=[]
             for j in range(0,len(asset['positions']),3):
-                u,v,h=asset['positions'][j:j+3];q=[0,0,0];q[asset['axis']]=asset['sign'];other=[a for a in range(3) if a!=asset['axis']];q[other[0]]=u;q[other[1]]=v
-                sx=q[0]*math.sqrt(1-q[1]**2/2-q[2]**2/2+q[1]**2*q[2]**2/3)
-                sy=q[1]*math.sqrt(1-q[2]**2/2-q[0]**2/2+q[2]**2*q[0]**2/3)
-                sz=q[2]*math.sqrt(1-q[0]**2/2-q[1]**2/2+q[0]**2*q[1]**2/3)
-                r=ref['radii'];shape=ref['shape']
-                if shape=='butter':p=[(q[0]*.78+sx*.22)*r[0],(q[1]*.78+sy*.22+1)*r[1]+.04,(q[2]*.78+sz*.22)*r[2]]
-                elif shape=='strawberry':t=.6+.4*(sy+1)/2;p=[sx*r[0]*t,(sy+1)*r[1]+.04,sz*r[2]*t]
-                else:p=[sx*r[0],(sy+1)*r[1]+.04,sz*r[2]]
-                p[asset['axis']]+=h*asset['sign'];verts.append(p)
+                u,v,h=asset['positions'][j:j+3];verts.append(project(ref,asset,u,v,h))
             dm=bpy.data.meshes.new(group+' deformable print');dm.from_pydata(verts,[],[asset['indices'][j:j+3] for j in range(0,len(asset['indices']),3)])
-            detail=bpy.data.objects.new(name+' - '+group,dm);collection.objects.link(detail);detail.location.x=i*4.5;detail.rotation_euler.x=math.pi/2;detail.data.materials.append(material(asset['color'],tuple(int(asset['color'][j:j+2],16)/255 for j in (1,3,5))))
+            detail=bpy.data.objects.new(name+' - '+group,dm);collection.objects.link(detail);detail.location=location;detail.rotation_euler.x=math.pi/2;detail.data.materials.append(material(asset['color'],tuple(int(asset['color'][j:j+2],16)/255 for j in (1,3,5))))
     # Keep the simulation reference editable without cluttering the skin view.
     cm=bpy.data.meshes.new(name+' cage');cp=ref['cage'];cm.from_pydata([cp[j:j+3] for j in range(0,len(cp),3)],[],[])
-    cage=bpy.data.objects.new(name+' - physics reference',cm);collection.objects.link(cage);cage.location.x=i*4.5;cage.rotation_euler.x=math.pi/2;cage.hide_set(True);cage.hide_render=True;cage['tetrahedra']=ref['tets']
+    cage=bpy.data.objects.new(name+' - physics reference',cm);collection.objects.link(cage);cage.location=location;cage.rotation_euler.x=math.pi/2;cage.hide_set(True);cage.hide_render=True;cage['tetrahedra']=ref['tets']
 for screen in bpy.data.screens:
     for area in screen.areas:
         if area.type=='VIEW_3D':
-            area.spaces.active.region_3d.view_distance=23;area.spaces.active.region_3d.view_location=(9,0,1);area.spaces.active.shading.color_type='MATERIAL'
+            area.spaces.active.region_3d.view_distance=24;area.spaces.active.region_3d.view_location=(9,-2.5,1);area.spaces.active.shading.color_type='MATERIAL'
 workshop=ROOT/'assets'/'blender';workshop.mkdir(parents=True,exist_ok=True)
 bpy.data.orphans_purge(do_recursive=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(workshop/'squishy-collection.blend'),compress=True)

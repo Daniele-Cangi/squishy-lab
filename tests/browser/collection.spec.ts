@@ -17,6 +17,13 @@ test('all collectible forms load details and withstand keyboard pressure',async(
     await page.locator('#squishy').focus();await page.keyboard.down('Space');await page.clock.runFor(1800);const held=await snapshot(page);expect(held.maxDisplacement).toBeGreaterThan(.07);expect(held.minVolumeRatio).toBeGreaterThan(.17);await page.keyboard.up('Space');await page.clock.runFor(1200);expect((await snapshot(page)).maxDisplacement).toBeLessThan(held.maxDisplacement);
   }expect(errors).toEqual([]);
 });
+for(const [name,shape]of [['Cioccolato','chocolate'],['Banana','banana'],['Gatto','cat'],['Formaggio','cheese'],['Peanut','peanut']])test(`${name}: new body and Blender details deform and recover`,async({page})=>{
+  await page.clock.install({time:new Date('2026-10-03T00:00:00Z')});await ready(page);await page.clock.pauseAt(new Date('2026-10-03T01:00:00Z'));
+  await page.getByRole('button',{name,exact:true}).click();const rest=await snapshot(page);expect(rest.appearance.shape).toBe(shape);expect(rest.decorationVertices).toBeGreaterThan(100);
+  await page.locator('#squishy').focus();await page.keyboard.down('Space');await page.clock.runFor(1200);const held=await snapshot(page);expect(held.maxDisplacement).toBeGreaterThan(.05);expect(held.minVolumeRatio).toBeGreaterThan(.17);
+  await page.keyboard.up('Space');await page.clock.runFor(1400);expect((await snapshot(page)).maxDisplacement).toBeLessThan(held.maxDisplacement);
+  await page.getByRole('button',{name:'Ripristina forma'}).click();expect((await snapshot(page)).maxDisplacement).toBeLessThan(.001);
+});
 test('effects and face preserve deformation; saved collection survives reload and deletion',async({page})=>{
   await page.clock.install({time:new Date('2026-10-03T00:00:00Z')});await ready(page);await page.clock.pauseAt(new Date('2026-10-03T01:00:00Z'));await page.getByRole('button',{name:'Butter',exact:true}).click();await page.evaluate(()=>window.__squishy!.press());await page.clock.runFor(1400);await page.evaluate(()=>window.__squishy!.release());const held=await snapshot(page);
   await page.getByRole('button',{name:'✦ Glitter',exact:true}).click();await page.getByLabel('Con il viso').check();const fx=await snapshot(page);expect(fx.maxDisplacement).toBe(held.maxDisplacement);expect(fx.physicsTime).toBe(held.physicsTime);expect(fx.appearance).toMatchObject({shape:'butter',effect:'glitter',face:true});
@@ -30,7 +37,7 @@ test('material AI edits keep the selected panetto and its lettering',async({page
   await page.getByRole('button',{name:'Confronta prima e dopo'}).click();expect((await snapshot(page)).appearance).toEqual(before.appearance);await page.getByRole('button',{name:'Interrompi confronto'}).click();expect((await snapshot(page)).appearance).toEqual(before.appearance);
 });
 test('mobile collection has no overflow and yields space while typing',async({page})=>{
-  await page.setViewportSize({width:390,height:844});await ready(page);await page.getByRole('button',{name:'Fragolina',exact:true}).click();expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);await page.getByRole('textbox').focus();await expect(page.getByRole('region',{name:'Forme e superfici'})).toBeHidden();await page.getByRole('textbox').blur();await expect(page.getByRole('region',{name:'Forme e superfici'})).toBeVisible();
+  await page.setViewportSize({width:390,height:844});await ready(page);await expect(page.locator('[data-shape]')).toHaveCount(10);await page.getByRole('button',{name:'Banana',exact:true}).click();expect((await snapshot(page)).appearance.shape).toBe('banana');expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);await page.getByRole('textbox').focus();await expect(page.getByRole('region',{name:'Forme e superfici'})).toBeHidden();await page.getByRole('textbox').blur();await expect(page.getByRole('region',{name:'Forme e superfici'})).toBeVisible();
 });
 test('choosing a collection cancels an older material reply',async({page})=>{
   await ready(page);let arrived=false;

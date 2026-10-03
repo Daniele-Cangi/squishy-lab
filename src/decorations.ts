@@ -27,7 +27,7 @@ export class Decorations {
   private sparkle:THREE.Points|undefined;
   private sparkleBindings:BoundVertex[]=[];
   constructor(surface:SurfaceEmbedding,appearance:Appearance,assets:DetailLibrary){
-    const names=[...(appearance.label==='none'?[]:[appearance.label]),...(appearance.face?['face']:[]),...(appearance.shape==='strawberry'?['seeds','leaves']:[])];
+    const names=[...(appearance.label==='none'?[]:[appearance.label]),...(appearance.face?[appearance.shape==='cat'?'cat-face':'face']:[]),...(appearance.shape==='strawberry'?['seeds','leaves']:[]),...(['chocolate','banana','cat','cheese','peanut'].includes(appearance.shape)?[appearance.shape]:[])];
     const batches=new Map<string,{positions:number[];indices:number[];bindings:BoundVertex[]}>();
     for(const name of names)for(const asset of assets.groups[name]??[]){
       let batch=batches.get(asset.color);if(!batch){batch={positions:[],indices:[],bindings:[]};batches.set(asset.color,batch);}

@@ -29,12 +29,17 @@ test('contextual MOCK modification preserves color and changes simulated respons
   expect((await snapshot(page)).spec.color).toBe(before.spec.color);
 });
 test('color-only patch keeps physical state; unsupported shape and network failure retain object',async({page})=>{
-  await ready(page);await page.evaluate(()=>window.__squishy!.press());await page.waitForTimeout(1200);await page.evaluate(()=>window.__squishy!.release());
-  await page.getByRole('textbox').fill('Cambia soltanto il colore in blu.');await page.getByRole('button',{name:'Applica la descrizione'}).click();await expect.poll(async()=>(await snapshot(page)).spec.color).toBe('#77c8ea');expect((await snapshot(page)).maxDisplacement).toBeGreaterThan(.02);
+  await page.clock.install({time:new Date('2026-10-03T00:00:00Z')});await ready(page);await page.clock.pauseAt(new Date('2026-10-03T01:00:00Z'));
+  await page.evaluate(()=>window.__squishy!.press());await page.clock.runFor(2000);await page.evaluate(()=>window.__squishy!.release());
+  // Keep simulation time fixed across the real HTTP round trip: recovery speed
+  // and CI rendering throughput must not hide a reset caused by a color edit.
+  const deformed=await snapshot(page);expect(deformed.maxDisplacement).toBeGreaterThan(.12);
+  await page.getByRole('textbox').fill('Cambia soltanto il colore in blu.');await page.getByRole('button',{name:'Applica la descrizione'}).click();await expect.poll(async()=>(await snapshot(page)).spec.color).toBe('#77c8ea');
+  const recolored=await snapshot(page);expect(recolored.maxDisplacement).toBe(deformed.maxDisplacement);expect(recolored.physicsTime).toBe(deformed.physicsTime);expect(recolored.minVolumeRatio).toBe(deformed.minVolumeRatio);
   await page.getByRole('textbox').fill('Fammi uno squalo blu.');await page.getByRole('button',{name:'Applica la descrizione'}).click();await expect(page.locator('#status')).toContainText('non è disponibile');expect((await snapshot(page)).spec.archetype).toBe('mochi');
   await page.route('**/api/squishy',route=>route.fulfill({status:429,contentType:'application/json',body:'{"message":"La quota AI di oggi è esaurita."}'}));
   const old=(await snapshot(page)).spec;await page.getByRole('textbox').fill('Più morbido');await page.getByRole('button',{name:'Applica la descrizione'}).click();await expect(page.locator('#status')).toContainText('quota');expect((await snapshot(page)).spec).toEqual(old);await page.getByRole('button',{name:'Ripristina forma'}).click();
-  await page.route('**/api/squishy',route=>route.abort());await page.getByRole('button',{name:'Applica la descrizione'}).click();await expect(page.locator('#generate')).toBeEnabled();await page.evaluate(()=>window.__squishy!.press());await expect.poll(async()=>(await snapshot(page)).maxDisplacement).toBeGreaterThan(.08);
+  await page.route('**/api/squishy',route=>route.abort());await page.getByRole('button',{name:'Applica la descrizione'}).click();await expect(page.locator('#generate')).toBeEnabled();await page.evaluate(()=>window.__squishy!.press());await page.clock.runFor(2000);expect((await snapshot(page)).maxDisplacement).toBeGreaterThan(.08);
 });
 test('outdated request cannot override a later preset or shape generation',async({page})=>{
   await ready(page);let arrived=false;await page.route('**/api/squishy',async route=>{arrived=true;await new Promise(resolve=>setTimeout(resolve,800));await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({version:1,status:'ok',provider:'mock',repaired:false,corrections:[],message:'old response',patch:{softness:.4},spec:{...DEFAULT_SPEC,softness:.4}})}).catch(()=>{});});

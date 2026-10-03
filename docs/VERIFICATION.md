@@ -55,6 +55,8 @@ This short hardware sample cleared the 60 fps target. It is not a long thermal b
 
 During development, checks found a softness comparison that was too weak, angular embedding artifacts, a mock spelling miss for `opaca`, and generated Worker files accidentally included in lint. These were corrected and the affected checks rerun. The first optional benchmark script also needed its browser-evaluated statistics moved out of the serialized function; the final reproducible script succeeded.
 
+The first GitHub Linux run passed the build and all 62 unit tests, but exposed a timing-dependent browser assertion: recovery could finish while the color-edit request and UI actions completed. The color-preservation test now pauses browser animation time during the real mock HTTP round trip and checks exact displacement, volume ratio and simulation time before/after the edit. Other interaction tests still exercise ordinary animation. Remote runs and their uploaded browser evidence are available in [GitHub Actions](https://github.com/Daniele-Cangi/squishy-lab/actions/workflows/ci.yml).
+
 ## Still unverified / external work
 
 - **Actual 3B/8B model semantics, repair frequency, latency and neuron use:** run the opt-in corpus against an authenticated Free account before choosing a model. The mock report is not an inference result.

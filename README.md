@@ -50,7 +50,7 @@ npm run worker:dev      # local workerd preview of built assets + MOCK, normally
 
 See [verification report](docs/VERIFICATION.md), [deformation notes](docs/TECHNICAL-NOTES.md), [deployment instructions](docs/CLOUDFLARE.md), [physics CSV](evidence/physics.csv), [physics JSON](evidence/physics.json), [mock semantic report](evidence/ai-mock.json), and [performance sample](evidence/browser-performance.json). Browser screenshots include rest, compression, recovery, mobile and a **mock** before/after material edit. A remote AI before/after is deliberately absent.
 
-The GitHub Actions workflow runs checks and Chromium smoke on Linux. It does not deploy or run live inference. The workflow itself has not been executed on GitHub; its commands were executed locally.
+The GitHub Actions workflow runs checks and Chromium smoke on Linux. It does not deploy or run live inference. Current remote results are available in [GitHub Actions](https://github.com/Daniele-Cangi/squishy-lab/actions/workflows/ci.yml); the measurements in the verification report were collected locally.
 
 The optional browser benchmark uses installed Chrome. To measure bundled Chromium instead, set `SQUISHY_BROWSER_CHANNEL=chromium` (PowerShell: `$env:SQUISHY_BROWSER_CHANNEL='chromium'`). The report records the selected GPU; SwiftShader results are software smoke measurements, not phone or hardware performance claims.
 

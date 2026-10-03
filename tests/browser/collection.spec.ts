@@ -3,6 +3,12 @@ import { DEFAULT_SPEC } from '../../src/shared/spec';
 type Snapshot={appearance:{shape:string;label:string;face:boolean;effect:string};detailsReady:boolean;decorationVertices:number;spec:typeof DEFAULT_SPEC;physicsTime:number;maxDisplacement:number;minVolumeRatio:number;renderer:{render:{frame:number}}};
 const snapshot=async(page:Page)=>await page.evaluate(()=>window.__squishy!.snapshot()) as Snapshot;
 const ready=async(page:Page)=>{await page.goto('/');await expect.poll(async()=>(await snapshot(page))?.detailsReady).toBe(true);};
+// A virtual clock can queue many expensive transmission frames faster than
+// SwiftShader consumes them. Release that test's GL context before its browser
+// context is torn down, so the next fixture does not wait on its GPU backlog.
+test.afterEach(async({page})=>{
+  if(!page.isClosed())await page.evaluate(()=>document.querySelector('canvas')?.getContext('webgl2')?.getExtension('WEBGL_lose_context')?.loseContext());
+});
 test('all collectible forms load details and withstand keyboard pressure',async({page})=>{
   test.setTimeout(90000);
   await page.clock.install({time:new Date('2026-10-03T00:00:00Z')});await ready(page);await page.clock.pauseAt(new Date('2026-10-03T01:00:00Z'));const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));

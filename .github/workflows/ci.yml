@@ -20,3 +20,4 @@ jobs:
           path: |
             playwright-report/
             evidence/*.png
+            evidence/refined/browser-smoke/*.png

@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "dev:ai": "vite --mode ai-evaluation --host 127.0.0.1 --port 5174",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
@@ -16,10 +17,12 @@
     "test": "vitest run",
     "test:browser": "playwright test",
     "measure:physics": "tsx scripts/measure-physics.ts",
+    "measure:surface": "tsx scripts/measure-surface.ts",
+    "record:experience": "tsx scripts/record-experience.ts",
     "measure:browser": "tsx scripts/measure-browser.ts",
     "evaluate:ai": "tsx scripts/evaluate-ai.ts",
     "worker:dev": "npm run build && wrangler dev --local --env mock",
-    "worker:check": "wrangler deploy --dry-run --outdir work/worker-build",
+    "worker:check": "wrangler deploy --env= --dry-run --outdir work/worker-build",
     "check": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {

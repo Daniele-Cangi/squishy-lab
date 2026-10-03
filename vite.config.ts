@@ -1,9 +1,7 @@
-import { defineConfig } from 'vite';
+import { defineConfig,type Plugin } from 'vite';
 import { Readable } from 'node:stream';
 import { handleApi } from './worker/api.ts';
-export default defineConfig({
-  server:{port:5173,strictPort:true},
-  plugins:[{
+const mockPlugin:Plugin={
     name:'explicit-local-mock-api',
     configureServer(server) {
       server.middlewares.use('/api',async(req,res)=>{
@@ -16,6 +14,9 @@ export default defineConfig({
         } catch {res.statusCode=500;res.end('{"message":"Local adapter error"}');}
       });
     },
-  }],
+};
+export default defineConfig(async({mode})=>({
+  server:{port:5173,strictPort:true},
+  plugins:mode==='ai-evaluation'?[await (await import('./scripts/local-ai-plugin.ts')).localAiPlugin()]:[mockPlugin],
   build:{chunkSizeWarningLimit:700},
-});
+}));

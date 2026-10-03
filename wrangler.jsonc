@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "squishy-lab",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-03",
+  "assets": { "directory": "./dist", "binding": "ASSETS", "not_found_handling": "single-page-application", "run_worker_first": ["/api/*"] },
+  "vars": { "PROVIDER": "disabled", "MODEL": "@cf/meta/llama-3.2-3b-instruct" },
+  "ai": { "binding": "AI" },
+  "ratelimits": [
+    { "name": "AI_RATE", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } },
+    { "name": "BURST_RATE", "namespace_id": "1002", "simple": { "limit": 30, "period": 60 } }
+  ],
+  "observability": { "enabled": false },
+  "env": {
+    "mock": { "vars": { "PROVIDER": "mock" } }
+  }
+}

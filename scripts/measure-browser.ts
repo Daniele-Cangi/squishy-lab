@@ -1,5 +1,6 @@
 import { chromium } from '@playwright/test';
 import { mkdirSync,writeFileSync } from 'node:fs';
+import { evidenceContext } from './evidence';
 const browser=await chromium.launch({channel:process.env.SQUISHY_BROWSER_CHANNEL??'chrome',headless:true,args:['--enable-webgl']});
 try {
   const page=await browser.newPage({viewport:{width:1366,height:1000},deviceScaleFactor:1});
@@ -10,6 +11,6 @@ try {
     return {measuredAt:new Date().toISOString(),browser:navigator.userAgent,gpu:extension?gl.getParameter(extension.UNMASKED_RENDERER_WEBGL) as string:'unavailable',webgl:gl.getParameter(gl.VERSION) as string,viewport:[innerWidth,innerHeight],canvasPixels:[canvas.width,canvas.height],dpr:devicePixelRatio,particles:s.particles,tetrahedra:s.tetrahedra,vertices:s.vertices,triangles:s.triangles,sampleCount:samples.length,samples,safetyBackoffs:s.safetyBackoffs,load:'5 seconds held standard press'};
   });
   const stats=(key:string)=>{const values=report.samples.map(v=>v[key]).sort((a,b)=>a-b);return {medianMs:values[Math.floor(values.length*.5)],p95Ms:values[Math.floor(values.length*.95)]};};
-  const summary={...report,solver:stats('solverMs'),surface:stats('surfaceMs'),renderCpuSubmission:stats('renderMs'),frame:stats('frameMs')};
-  mkdirSync('evidence',{recursive:true});writeFileSync('evidence/browser-performance.json',JSON.stringify(summary,null,2));console.log({...summary,samples:`${report.samples.length} samples saved`});
+  const summary={...evidenceContext(),...report,solver:stats('solverMs'),surface:stats('surfaceMs'),renderCpuSubmission:stats('renderMs'),frame:stats('frameMs')};
+  mkdirSync('evidence/refined',{recursive:true});writeFileSync('evidence/refined/browser-performance.json',JSON.stringify(summary,null,2));console.log({...summary,samples:`${report.samples.length} samples saved`});
 }finally{await browser.close();}

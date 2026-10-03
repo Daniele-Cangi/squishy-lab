@@ -8,6 +8,7 @@ export class SoftBody {
   readonly velocity:Float64Array;
   readonly memory:Float64Array;
   private previous:Float64Array;
+  private previousMemory:Float64Array;
   private targets:Float64Array;
   private edgeTargets:Float64Array;
   private volumeTargets:Float64Array;
@@ -23,6 +24,7 @@ export class SoftBody {
     this.config=compileSpec(spec); this.cage=generateCage(spec);
     this.positions=this.cage.rest.slice(); this.previous=this.positions.slice();
     this.velocity=new Float64Array(this.positions.length); this.memory=this.velocity.slice(); this.targets=this.positions.slice();
+    this.previousMemory=this.memory.slice();
     this.edgeTargets=this.cage.lengths.slice(); this.volumeTargets=this.cage.volumes.slice();
     this.edgeLambda=this.edgeTargets.slice(); this.volumeLambda=this.volumeTargets.slice();
     this.influence=new Float64Array(this.cage.inverseMass.length);
@@ -36,7 +38,7 @@ export class SoftBody {
   step(h=FIXED_DT) {
     if(h!==FIXED_DT) throw new Error('Use fixed physics timestep');
     const {rest,inverseMass:mass,edges,tets,volumes}=this.cage, p=this.positions,cfg=this.config;
-    this.previous.set(p); this.time+=h;
+    this.previous.set(p);this.previousMemory.set(this.memory);this.time+=h;
     const damping=Math.exp(-cfg.dampingRate*h), creep=1-Math.exp(-h/cfg.creepTau), decay=Math.exp(-h/cfg.recoveryTau);
     for(let i=0;i<p.length;i++) {
       if(this.contact) this.memory[i]+=(cfg.memoryFraction*(p[i]-rest[i])-this.memory[i])*creep;
@@ -55,8 +57,8 @@ export class SoftBody {
     const contact=this.contact;
     if(contact) for(let i=0;i<mass.length;i++) {
       const d=Math.hypot(rest[i*3]-contact.point[0],rest[i*3+1]-contact.point[1],rest[i*3+2]-contact.point[2]);
-      const radius=Math.min(...this.cage.radii)*0.95;
-      this.influence[i]=Math.exp(-3*d*d/(radius*radius));
+      const radius=Math.min(...this.cage.radii)*(.65+.48*Math.sqrt(contact.intensity));
+      this.influence[i]=Math.exp(-2.5*d*d/(radius*radius));
     }
     this.edgeLambda.fill(0); this.volumeLambda.fill(0);
     for(let iter=0;iter<6;iter++) {
@@ -70,7 +72,9 @@ export class SoftBody {
         if(contact && this.influence[i]>0.012) {
           const w=this.influence[i],depth=Math.min(...this.cage.radii)*0.65*contact.intensity*w;
           const along=(p[j]-rest[j])*contact.normal[0]+(p[j+1]-rest[j+1])*contact.normal[1]+(p[j+2]-rest[j+2])*contact.normal[2];
-          const correction=(-depth-along)/(1+cfg.contactCompliance/(h*h*w));
+          // A finger pushes inward; it cannot pull recovering foam outward.
+          // Unilateral contact keeps a new light press continuous with its dent.
+          const correction=Math.min(0,-depth-along)/(1+cfg.contactCompliance/(h*h*w));
           for(let a=0;a<3;a++) p[j+a]+=contact.normal[a]*correction;
         }
         p[j+1]=Math.max(0.035,p[j+1]);
@@ -80,7 +84,7 @@ export class SoftBody {
     let safe=true;
     for(let t=0;t<volumes.length;t++) {const j=t*4; if(signedVolume(p,tets[j],tets[j+1],tets[j+2],tets[j+3])<volumes[t]*0.17) {safe=false;break;}}
     for(let i=0;i<p.length;i++) if(!Number.isFinite(p[i])||Math.abs(p[i]-rest[i])>2.5) {safe=false;break;}
-    if(!safe) {p.set(this.previous);this.velocity.fill(0);this.memory.fill(0);this.safetyBackoffs++;}
+    if(!safe) {p.set(this.previous);this.velocity.fill(0);this.memory.set(this.previousMemory);this.safetyBackoffs++;}
     else for(let i=0;i<p.length;i++) this.velocity[i]=(p[i]-this.previous[i])/h;
   }
   private solveEdges(h:number) {

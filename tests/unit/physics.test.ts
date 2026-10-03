@@ -1,13 +1,38 @@
 import { describe,it,expect } from 'vitest';
 import { DEFAULT_SPEC, type SquishySpec } from '../../src/shared/spec';
-import { createSurface, embedSurface, generateCage, roundedPoint, signedVolume, type Vec3 } from '../../src/physics/cage';
+import { createSurface, embedSurface, generateCage, roundedPoint, signedVolume,surfacePoint,pointDepth,sampledSurfaceDepth, type Vec3 } from '../../src/physics/cage';
 import { FIXED_DT, FixedClock, SoftBody } from '../../src/physics/solver';
+import { STANDARD_GESTURE,standardContact } from '../../src/physics/gesture';
 function press(body:SoftBody,steps=240) {
   const point=roundedPoint(0,.55,1,body.cage.radii),normal:Vec3=[0,.48,.88];
   for(let i=0;i<steps;i++){body.setContact({point,normal,intensity:Math.min(1,i/102)*.88});body.step();}
   return body.maxDisplacement();
 }
 describe('Volumetric mochi',()=>{
+  it('persistent material probes measure exactly the visible Float32 surface',()=>{
+    const body=new SoftBody(DEFAULT_SPEC),surface=createSurface(body.cage),shown=surface.rest.slice(),probe=surfacePoint(surface,STANDARD_GESTURE.logicalPoint);
+    const nodes=[...probe.nodes],weights=[...probe.weights];
+    for(let i=0;i<360;i++){
+      body.setContact(standardContact(body.cage,i*FIXED_DT,2));body.step();
+      if(i%30===0){embedSurface(body.cage,body.positions,surface,shown);expect(sampledSurfaceDepth(body.cage,body.positions,surface,probe,STANDARD_GESTURE.normal)).toBeCloseTo(pointDepth(surface.rest,shown,probe,STANDARD_GESTURE.normal),12);}
+    }
+    expect(probe.nodes).toEqual(nodes);expect(probe.weights).toEqual(weights);
+  });
+  it('the rendered dent grows from light pressure, retains memory, and re-presses continuously',()=>{
+    const body=new SoftBody(DEFAULT_SPEC),surface=createSurface(body.cage),probe=surfacePoint(surface,STANDARD_GESTURE.logicalPoint);
+    const depth=()=>sampledSurfaceDepth(body.cage,body.positions,surface,probe,STANDARD_GESTURE.normal);
+    let light=0;for(let i=0;i<240;i++){body.setContact(standardContact(body.cage,i*FIXED_DT));body.step();if(i===29)light=depth();}
+    const held=depth();expect(light).toBeGreaterThan(.015);expect(held).toBeGreaterThan(light*1.2);
+    body.setContact(null);for(let i=0;i<54;i++)body.step();const retained=depth();expect(retained).toBeGreaterThan(held*.3);expect(retained).toBeLessThan(held);
+    body.setContact(standardContact(body.cage,0));body.step();expect(Math.abs(depth()-retained)).toBeLessThan(.03);
+    expect(body.minVolumeRatio()).toBeGreaterThan(.17);expect(body.safetyBackoffs).toBe(0);
+  });
+  it('standard fixed-step input produces identical peak and recovery states across render rates',()=>{
+    const run=(hz:number)=>{const body=new SoftBody(DEFAULT_SPEC),clock=new FixedClock();let step=0;const states:number[][]=[];
+      for(let f=0;f<hz*4;f++)clock.advance(1/hz,()=>{body.setContact(standardContact(body.cage,step*FIXED_DT,2));body.step();step++;if([240,360,480].includes(step))states.push(Array.from(body.positions));});return states;
+    };
+    const reference=run(60);for(const hz of [30,144])expect(run(hz)).toEqual(reference);
+  });
   it('builds positive tetrahedra, connected edges and a watertight surface',()=>{
     const cage=generateCage(DEFAULT_SPEC),surface=createSurface(cage),edgeUse=new Map<string,number>();
     expect(cage.volumes.length).toBe(750);expect(Math.min(...cage.volumes)).toBeGreaterThan(1e-7);expect(cage.inverseMass.some(m=>m===0)).toBe(true);

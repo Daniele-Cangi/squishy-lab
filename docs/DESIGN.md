@@ -49,3 +49,6 @@ The sound preference now defaults to on with Gel selected. Browser gesture restr
 
 Personalization supports up to 40 characters and four locally hosted cute fonts: Chewy, Baloo 2, Pacifico and Short Stack. Text replaces facial geometry while preserving the selected expression, and uses a triangulated skin-bound texture that follows deformation. Clearing the text restores the face. Lettering persists across shape changes and reloads. Download PNG renders and captures the current canvas without page controls. Font licenses are shipped next to the font files (Chewy: Apache 2.0; others: SIL OFL).
 
+
+Mobile audio fix: texture selection is now a direct Gel/Crunchy button instead of a native select. Pending AudioContext resume promises never prevent sample loading or lock the controls. Touchend/click and later gestures retry activation, and changing texture resumes synchronously without suspending the context first. Generation checks discard stale loads. Browser regression tests cover pending activation, switching, mute and fullscreen; physical iPhone verification remains user-side.
+

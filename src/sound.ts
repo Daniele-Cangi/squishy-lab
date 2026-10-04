@@ -9,30 +9,35 @@ export class SquishySound {
   private recording:AudioBuffer|undefined;
   private master:GainNode|undefined;
   private sources=new Set<AudioBufferSourceNode>();
+  private generation=0;
   private nextPulse=0;
   private wasPressed=false;
   async enable(){
+    const generation=++this.generation,mode=this.mode;
     try{
       if(!this.context){
         const Audio=window.AudioContext??(window as unknown as {webkitAudioContext:typeof AudioContext}).webkitAudioContext;
         this.context=new Audio();this.master=this.context.createGain();this.master.gain.value=.65;this.master.connect(this.context.destination);
       }
       // Resume inside the tap, before asynchronous download/decode (including iOS).
-      await this.context.resume();
-      this.recording=this.recordings.get(this.mode);
+      void this.context.resume().catch(()=>{});
+      this.recording=this.recordings.get(mode);
       if(!this.recording){
-        const response=await fetch(this.mode==='gel'?'/audio/gel.mp3':'/audio/crinkle.mp3',{signal:AbortSignal.timeout(15000)});
+        const response=await fetch(mode==='gel'?'/audio/gel.mp3':'/audio/crinkle.mp3',{signal:AbortSignal.timeout(15000)});
         if(!response.ok)throw new Error('Recording unavailable');
-        this.recording=await this.context.decodeAudioData(await response.arrayBuffer());
-        if(this.recording.duration<2)throw new Error('Recording too short');
-        this.recordings.set(this.mode,this.recording);
+        const recording=await this.context.decodeAudioData(await response.arrayBuffer());
+        if(recording.duration<2)throw new Error('Recording too short');
+        this.recordings.set(mode,recording);
+        if(generation!==this.generation)return false;
+        this.recording=recording;
       }
-      this.enabled=this.context.state==='running';return this.enabled;
-    }catch{this.enabled=false;this.quiet();await this.context?.suspend().catch(()=>{});return false;}
+      if(generation!==this.generation)return false;
+      this.enabled=true;return true;
+    }catch{if(generation!==this.generation)return false;this.enabled=false;this.quiet();await this.context?.suspend().catch(()=>{});return false;}
   }
-  async disable(){this.enabled=false;this.quiet();await this.context?.suspend().catch(()=>{});}
+  async disable(suspend=true){this.generation++;this.enabled=false;this.quiet();if(suspend)await this.context?.suspend().catch(()=>{});}
   quiet(){for(const source of this.sources){try{source.stop();}catch{/* Already ended. */}}this.sources.clear();this.wasPressed=false;this.nextPulse=0;}
-  resume(){if(this.enabled)void this.context?.resume().catch(()=>{});}
+  resume(){if(this.context)void this.context.resume().catch(()=>{});}
   update(shape:ShapeId,pressure:number){
     const ctx=this.context;if(!this.enabled||!ctx||!this.recording||ctx.state!=='running'||document.hidden)return;
     const now=ctx.currentTime,pressed=pressure>0,released=this.wasPressed&&!pressed;this.wasPressed=pressed;

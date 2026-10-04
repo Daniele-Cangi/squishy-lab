@@ -29,18 +29,31 @@ catch {el('canvas-error').hidden=false;for(const id of ['squeeze','rotate'])el<H
 scene?.setAppearance(appearance);
 const sound=new SquishySound(),soundButton=el<HTMLButtonElement>('sound');
 const soundMode=el<HTMLSelectElement>('sound-mode');
+let soundWanted=true,soundBusy=false;
+const reflectSound=()=>{
+  soundButton.setAttribute('aria-pressed',String(soundWanted));soundButton.setAttribute('aria-label',soundWanted?'Disable squishy sound':'Enable squishy sound');soundButton.title=soundWanted?'Sound on':'Sound off';
+};
+const startSound=async()=>{
+  if(!soundWanted||soundBusy||sound.enabled)return;
+  soundBusy=true;soundButton.disabled=true;soundMode.disabled=true;
+  if(await sound.enable()){if(scene)scene.soundFeedback=(shape,pressure)=>sound.update(shape,pressure);}
+  else {soundWanted=false;status.textContent='Sound is unavailable in this browser. You can keep squishing.';}
+  reflectSound();soundBusy=false;soundButton.disabled=false;soundMode.disabled=false;
+};
 soundMode.onchange=async()=>{
-  soundMode.disabled=true;soundButton.disabled=true;const active=sound.enabled;await sound.disable();sound.mode=soundMode.value==='crunchy'?'crunchy':'gel';
-  if(active){await sound.enable();soundButton.setAttribute('aria-pressed',String(sound.enabled));soundButton.setAttribute('aria-label',sound.enabled?'Disable squishy sound':'Enable squishy sound');soundButton.title=sound.enabled?'Sound on':'Sound off';if(!sound.enabled)status.textContent='Sound is unavailable in this browser. You can keep squishing.';}
-  soundMode.disabled=false;soundButton.disabled=false;
+  const active=sound.enabled;await sound.disable();sound.mode=soundMode.value==='crunchy'?'crunchy':'gel';
+  if(active)await startSound();
 };
 soundButton.onclick=async()=>{
-  soundButton.disabled=true;soundMode.disabled=true;
-  if(sound.enabled){await sound.disable();if(scene)scene.soundFeedback=undefined;}else if(await sound.enable()){if(scene)scene.soundFeedback=(shape,pressure)=>sound.update(shape,pressure);}else status.textContent='Sound is unavailable in this browser. You can keep squishing.';
-  soundButton.setAttribute('aria-pressed',String(sound.enabled));soundButton.setAttribute('aria-label',sound.enabled?'Disable squishy sound':'Enable squishy sound');soundButton.title=sound.enabled?'Sound on':'Sound off';soundButton.disabled=false;soundMode.disabled=false;
+  soundWanted=!soundWanted;
+  if(soundWanted)await startSound();else {await sound.disable();if(scene)scene.soundFeedback=undefined;}
+  reflectSound();
 };
-document.querySelector('.play-area')!.addEventListener('pointerdown',()=>sound.resume());el('squeeze').addEventListener('pointerdown',()=>sound.resume());
-document.querySelector('.play-area')!.addEventListener('keydown',()=>sound.resume());el('squeeze').addEventListener('keydown',()=>sound.resume());
+const audioGesture=()=>{if(sound.enabled)sound.resume();else void startSound();};
+document.querySelector('.play-area')!.addEventListener('pointerdown',event=>{if(!(event.target as Element).closest('button,select'))audioGesture();});
+el('squeeze').addEventListener('pointerdown',audioGesture);
+document.querySelector('.play-area')!.addEventListener('keydown',event=>{if(event.target===canvas)audioGesture();});
+el('squeeze').addEventListener('keydown',audioGesture);
 window.addEventListener('blur',()=>sound.quiet());document.addEventListener('visibilitychange',()=>{if(document.hidden)sound.quiet();});
 setupFullscreen(document.querySelector<HTMLElement>('.play-area')!,el<HTMLButtonElement>('fullscreen'),()=>scene?.release());
 el('fullscreen-reset').onclick=()=>el<HTMLButtonElement>('reset').click();

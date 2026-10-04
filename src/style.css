@@ -312,3 +312,15 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 
 .sound-mode {pointer-events:auto;min-height:44px;width:85px;border:1px solid var(--line);border-radius:14px;background:var(--mint);color:inherit;font:inherit;font-size:12px;font-weight:700;padding:0 6px}
 @media(max-width:480px){.stage-top-right .state{display:none}.stage-top-right{gap:5px}}
+
+.controls-column {min-width:0;display:flex;flex-direction:column;gap:24px}
+.controls-column .collection {margin-top:0}
+@media(min-width:721px){
+  .workspace {grid-template-columns:minmax(0,1fr) minmax(340px,390px)}
+  .controls-column .shape-list {grid-template-columns:repeat(3,minmax(0,1fr))}
+  .controls-column .finish-row {flex-wrap:wrap}
+  .controls-column .expression-row {display:block}
+  .controls-column .expression-row>span {display:block;margin-bottom:8px}
+  .object-column {position:sticky;top:20px}
+}
+@media(max-width:720px){.controls-column {width:100%}.object-column {width:100%}.controls-column .collection{margin-top:0}}

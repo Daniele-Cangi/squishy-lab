@@ -43,3 +43,6 @@ The refresh changes presentation, HTML metadata and favicon. The AI, validated m
 
 Gel is now the default sound texture, using the approved filtered, slowed 5–20 second excerpt. The selector also offers Crunchy. Audio still starts disabled; each texture loads on demand and is cached for the session. Gel uses longer pressure envelopes without further speed-up.
 
+
+The sound preference now defaults to on with Gel selected. Browser gesture restrictions mean the AudioContext starts on the first playground press or keyboard interaction. Mute disables subsequent automatic starts. Desktop places collection/finishes/moods above AI in the right sidebar, with a sticky playground on the left; mobile stacks the playground first.
+

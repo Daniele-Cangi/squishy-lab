@@ -23,9 +23,9 @@ test('consumed verification is renewed on send; cancellation and old callbacks c
   },{token,index});
   await expect.poll(()=>page.evaluate(()=>(window as unknown as {__verificationFixture:{callbacks:unknown[]}}).__verificationFixture?.callbacks.length)).toBe(1);
   expect(await page.evaluate(()=>{const options=(window as unknown as {__verificationFixture:{callbacks:Record<string,unknown>[]}}).__verificationFixture.callbacks[0];return {language:options.language,size:options.size,appearance:options.appearance};})).toEqual({language:'en',size:'compact',appearance:'interaction-only'});
-  await complete('fixture-one',0);await page.getByRole('textbox').fill('A little firmer');await page.locator('#generate').click();await expect.poll(()=>sent.length).toBe(1);
+  await complete('fixture-one',0);await page.getByRole('textbox',{name:'Color, softness, recovery…',exact:true}).fill('A little firmer');await page.locator('#generate').click();await expect.poll(()=>sent.length).toBe(1);
   await page.getByRole('button',{name:'Peach mochi Foam · a little firmer'}).click();
-  await page.getByRole('textbox').fill('Softer');await page.locator('#generate').click();await expect(page.locator('#status')).toContainText('Complete verification');expect(sent).toEqual(['fixture-one']);
+  await page.getByRole('textbox',{name:'Color, softness, recovery…',exact:true}).fill('Softer');await page.locator('#generate').click();await expect(page.locator('#status')).toContainText('Complete verification');expect(sent).toEqual(['fixture-one']);
   await complete('fixture-stale',0);await page.locator('#generate').click();expect(sent).toEqual(['fixture-one']);
   await complete('fixture-two',1);await page.locator('#generate').click();await expect.poll(()=>sent.length).toBe(2);expect(sent).toEqual(['fixture-one','fixture-two']);
   await complete('fixture-three',2);await expect(page.locator('#generate')).toBeEnabled();
@@ -42,7 +42,7 @@ test('client timeout leaves the object playable and retains the next verificatio
   await page.goto('/');await expect(page.locator('#mode-badge')).toHaveText('AI · Cloudflare');
   const complete=(token:string,index:number)=>page.evaluate(({token,index})=>(window as unknown as {__verificationFixture:{callbacks:{callback:(token:string)=>void}[]}}).__verificationFixture.callbacks[index].callback(token),{token,index});
   await expect.poll(()=>page.evaluate(()=>(window as unknown as {__verificationFixture:{callbacks:unknown[]}}).__verificationFixture?.callbacks.length)).toBe(1);
-  await complete('timeout-one',0);await page.getByRole('textbox').fill('A little firmer');await page.locator('#generate').click();await expect.poll(()=>sent.length).toBe(1);
+  await complete('timeout-one',0);await page.getByRole('textbox',{name:'Color, softness, recovery…',exact:true}).fill('A little firmer');await page.locator('#generate').click();await expect.poll(()=>sent.length).toBe(1);
   await complete('next-token',1);await page.clock.fastForward(26001);await expect(page.locator('#status')).toContainText('timed out');await expect(page.locator('#generate')).toBeEnabled();
   await complete('stale-token',0);await page.locator('#generate').click();await expect.poll(()=>sent.length).toBe(2);expect(sent).toEqual(['timeout-one','next-token']);
   await page.getByRole('button',{name:'Reset shape'}).click();await page.evaluate(()=>window.__squishy!.press());await expect(page.locator('#state')).toHaveText('Being squished');

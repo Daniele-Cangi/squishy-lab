@@ -23,13 +23,13 @@ try{
     const sample=await page.evaluate(()=>{const s=window.__squishy!.snapshot() as {appearance:unknown;samples:Record<string,number>[]};return {appearance:s.appearance,samples:s.samples.slice(-120)};});
     const stats=(key:string)=>{const values=sample.samples.map(v=>v[key]).sort((a,b)=>a-b);return {medianMs:values[Math.floor(values.length*.5)],p95Ms:values[Math.floor(values.length*.95)]};};
     performanceSamples.push({appearance:sample.appearance,count:sample.samples.length,frame:stats('frameMs'),solver:stats('solverMs'),surface:stats('surfaceMs'),renderCpu:stats('renderMs')});
-    await page.getByRole('button',{name:'Ripristina forma'}).click();
+    await page.getByRole('button',{name:'Reset shape'}).click();
   }
-  await page.getByRole('button',{name:expanded?'Peanut':'Strawberry',exact:true}).click();await page.getByRole('button',{name:'✦ Glitter',exact:true}).click();await page.getByLabel('Con il viso').check();await page.waitForTimeout(350);await capture('printed-glitter-face');
+  await page.getByRole('button',{name:expanded?'Peanut':'Strawberry',exact:true}).click();await page.getByRole('button',{name:'✦ Glitter',exact:true}).click();await page.getByLabel('Show face').check();await page.waitForTimeout(350);await capture('printed-glitter-face');
   // Real pointer drag over the body: no injected deformation or accelerated clock.
   const box=(await page.locator('#squishy').boundingBox())!;await page.mouse.move(box.x+box.width*.48,box.y+box.height*.44);await page.mouse.down();await page.waitForTimeout(500);await page.mouse.move(box.x+box.width*.59,box.y+box.height*.52,{steps:20});await page.waitForTimeout(800);await capture('printed-glitter-drag');await page.mouse.up();await page.waitForTimeout(600);
-  if(expanded){await page.getByRole('button',{name:'Formaggio',exact:true}).click();await page.getByRole('button',{name:'Trasparente ✦',exact:true}).click();await page.waitForTimeout(350);await capture('cheese-clear');}
-  await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:expanded?'Banana':'Fragolina',exact:true}).click();await page.locator('#squishy').scrollIntoViewIfNeeded();await page.waitForTimeout(250);await page.screenshot({path:resolve(directory,'mobile.png'),fullPage:true});
+  if(expanded){await page.getByRole('button',{name:'Cheese',exact:true}).click();await page.getByRole('button',{name:'Clear ✦',exact:true}).click();await page.waitForTimeout(350);await capture('cheese-clear');}
+  await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:expanded?'Banana':'Strawberry face',exact:true}).click();await page.locator('#squishy').scrollIntoViewIfNeeded();await page.waitForTimeout(250);await page.screenshot({path:resolve(directory,'mobile.png'),fullPage:true});
   const video=page.video()!;await context.close();renameSync(await video.path(),resolve(directory,'collection.webm'));
   writeFileSync(resolve(directory,'collection.json'),JSON.stringify({...evidenceContext(),workingTree:execFileSync('git',['status','--short'],{encoding:'utf8'}),conditions:`Normal browser time, installed Chrome; each form rests, holds standard pressure for 2.2s and recovers for 1.8s. Snapshots record actual achieved physics time. Glitter ${expanded?'peanut':'bar'} also uses a real pointer drag. No remote AI calls.`,rendering,errors,captures,performanceSamples},null,2));
   console.log(JSON.stringify({directory,errors,captures:captures.length,rendering,performanceSamples},null,2));

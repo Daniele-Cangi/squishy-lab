@@ -1,18 +1,18 @@
 # Local squishy collection
 
-The collection is authored locally and works without a provider or a network AI call. The model, prompts, worker and `SquishySpec v1` are unchanged. `Appearance` in `src/collection.ts` selects a local shape, a closed set of print assets, an optional face, and a visual surface effect. It has a separate validated storage key; neither it nor asset URLs are supplied by the model.
+The collection is authored locally and works without a provider or a network AI call. `SquishySpec v1` remains the material contract. `Appearance` in `src/collection.ts` selects a local shape, a closed set of print assets, an optional face and expression, and a visual surface effect. It has a separate validated storage key; neither it nor asset URLs are supplied by the model. The English release adds five expressions, enables Mochi's default smile and replaces the clear-finish checkerboard with a cream confetti tray. Its [captures](../evidence/english-moods/moods.json) preserve the rendered bindings and mobile checks.
 
 | Entry | Body geometry | Details |
 |---|---|---|
-| Mochi | Original spherified cube | Optional face |
+| Mochi | Original spherified cube | Default smile; five optional expressions |
 | Butter | Wide, low rounded bar | Raised BUTTER, SALTED, weight lettering |
 | Strawberry | Same rounded bar, pink | Raised STRAWBERRY, weight lettering, berry icon |
-| Fragolina | Tapered strawberry, narrow underside | Face, seeds, five leaves |
+| Strawberry face | Tapered strawberry, narrow underside | Five expressions, seeds, five leaves |
 | Jelly cube | Rounded cube | Refractive transmission and attached flecks |
-| Cioccolato | Low rounded slab with six integral raised squares | COCOA relief and groove lines |
+| Chocolate | Low rounded slab with six integral raised squares | COCOA relief and groove lines |
 | Banana | Rounded cross sections rotated along an upward arc, extended stem | Olive stem, brown ends, peel seams and small freckles |
-| Gatto | Rounded head with two integral soft ears | Pink inner ears, stripes, optional eyes, nose, mouth and whiskers |
-| Formaggio | Rounded triangular wedge with seven recessed pockets | Subdivided pocket linings follow the bowls |
+| Cat | Rounded head with two integral soft ears | Pink inner ears, stripes, five expressions, nose and whiskers |
+| Cheese | Rounded triangular wedge with seven recessed pockets | Subdivided pocket linings follow the bowls |
 | Peanut | Two slightly unequal rounded lobes and a narrow waist | Sculpted shell grain, material-bound color variation and a seam |
 
 Every entry supports soft-touch, glitter or transparent appearance, and a face. Collection selection applies the entry's base color while retaining material softness, recovery, damping, compressibility and proportions. Effects and faces preserve deformation. Switching body geometry releases contact and atomically replaces cage, welded render mesh and probes. The two bar prints share a body, so switching between their labels preserves its dent. Reset explicitly restores the current reference.

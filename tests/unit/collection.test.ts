@@ -1,7 +1,7 @@
 import { describe,it,expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import * as THREE from 'three';
-import { COLLECTION,validateAppearance,type ShapeId } from '../../src/collection';
+import { COLLECTION,DEFAULT_APPEARANCE,FACE_EXPRESSIONS,validateAppearance,type ShapeId } from '../../src/collection';
 import { createSurface,embedSurface,facePoint,samplePoint,signedVolume,shapePoint,CHEESE_POCKETS } from '../../src/physics/cage';
 import { SoftBody } from '../../src/physics/solver';
 import { standardContact } from '../../src/physics/gesture';
@@ -74,8 +74,22 @@ describe('local collection geometry',()=>{
     body.reset();embedSurface(body.cage,body.positions,surface,positions);geometry.computeVertexNormals();updateDetails(bindings,positions,geometry.getAttribute('normal').array,out);expect(out).toEqual(rest);geometry.dispose();
   });
   it('saved appearances are bounded and remain independent of the AI contract',()=>{
+    expect(DEFAULT_APPEARANCE.face).toBe(true);expect(DEFAULT_APPEARANCE.expression).toBe('smile');
+    const legacy={shape:'mochi',label:'none',face:false,effect:'foam'};expect(validateAppearance(legacy)).toEqual(legacy);
+    expect(()=>validateAppearance({...DEFAULT_APPEARANCE,expression:'unknown'})).toThrow();
     for(const c of COLLECTION)expect(validateAppearance(c.appearance)).toEqual(c.appearance);
     expect(()=>validateAppearance({shape:'shark',effect:'clear',label:'none',face:true})).toThrow();expect(()=>validateAppearance({shape:'cube',effect:'clear',label:'butter',face:true})).toThrow();
     expect(DEFAULT_SPEC.archetype).toBe('mochi');
+  });
+  it('every expression print stays bound to the rendered skin on mochi, berry and cat',()=>{
+    for(const shape of ['mochi','strawberry','cat']as ShapeId[]){
+      const body=new SoftBody(DEFAULT_SPEC,shape),surface=createSurface(body.cage),geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(surface.rest.slice(),3));geometry.setIndex(new THREE.BufferAttribute(surface.indices,1));geometry.computeVertexNormals();
+      for(let i=0;i<180;i++){body.setContact(standardContact(body.cage,i/120));body.step();}embedSurface(body.cage,body.positions,surface,geometry.getAttribute('position').array as Float32Array);geometry.computeVertexNormals();
+      const signatures=new Set<string>();
+      for(const expression of FACE_EXPRESSIONS){
+        const key=(shape==='cat'?'cat-face':'face')+(expression==='smile'?'':`-${expression}`);expect(assets.groups[key]?.length).toBeGreaterThan(0);signatures.add(JSON.stringify(assets.groups[key]));
+        for(const asset of assets.groups[key]){const bindings=bindDetails(surface,asset),out=new Float32Array(asset.positions.length);updateDetails(bindings,geometry.getAttribute('position').array,geometry.getAttribute('normal').array,out);expect(out.every(Number.isFinite)).toBe(true);for(let i=0;i<bindings.length;i+=31){const p=samplePoint(geometry.getAttribute('position').array,bindings[i]);expect(Math.hypot(out[i*3]-p[0],out[i*3+1]-p[1],out[i*3+2]-p[2])).toBeCloseTo(bindings[i].height,5);}}
+      }expect(signatures.size).toBe(5);geometry.dispose();
+    }
   });
 });

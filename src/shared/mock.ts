@@ -2,7 +2,7 @@ import { DEFAULT_SPEC, type ModelOutput, type SpecPatch, type SquishyRequest } f
 // Deliberately simple local fixture interpreter. This is NOT inference.
 export function mockInterpret(request:SquishyRequest):ModelOutput {
   const text=request.prompt.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''), base=request.current??DEFAULT_SPEC, patch:SpecPatch={};
-  if(/squal|shark|panda|donut|ciambell|cat\b|gatto|rabbit|coniglio|asset|shader|script|ignore|ignora|\burl\b/.test(text)) return {version:1,status:'unsupported',patch:{},message:'Questa forma non è disponibile. Puoi adattarla a un mochi arrotondato.'};
+  if(/squal|shark|panda|donut|ciambell|cat\b|gatto|rabbit|coniglio|asset|shader|script|ignore|ignora|\burl\b/.test(text)) return {version:1,status:'unsupported',patch:{},message:'This shape is unavailable. Try a rounded mochi instead.'};
   const protectColor=/non (?:cambiare|cambiar|toccare).*colore|don.t change.*colou?r|keep.*colou?r|stesso colore/.test(text);
   if(!protectColor) for(const [pattern,color] of [[/viola|purple/,'#a996ee'],[/blu|blue|azzurr/,'#77c8ea'],[/pesca|peach|arancion/,'#f6aa8b'],[/rosa|pink/,'#f49cbe'],[/verd|green/,'#8ed2af'],[/giall|yellow/,'#f1ce67']] as const) if(pattern.test(text)) patch.color=color;
   if(/meno (?:molle|morbido)|less soft|firmer|piu sod|piu dur|less squishy/.test(text)) patch.softness=Math.max(.1,base.softness-.28);
@@ -22,6 +22,6 @@ export function mockInterpret(request:SquishyRequest):ModelOutput {
   if(/elastico|elastic|bouncy/.test(text)) {patch.recoverySeconds=.45;patch.compressibility=.2;patch.damping=.38;}
   if(/comprimibile|compressible/.test(text)) patch.compressibility=.88;
   if(/non rimbalz|no bouncing|less bounce/.test(text)) patch.damping=.95;
-  if(!Object.keys(patch).length) return {version:1,status:'unsupported',patch:{},message:'La demo comprende colore, morbidezza, ritorno e proporzioni. Prova “viola, molto morbido, ritorno lento”.'};
-  return {version:1,status:'ok',patch,message:'Modifica applicata dall’interprete demo locale.'};
+  if(!Object.keys(patch).length) return {version:1,status:'unsupported',patch:{},message:'The demo supports color, softness, recovery and proportions. Try “purple, very soft, slow return”.'};
+  return {version:1,status:'ok',patch,message:'Edit applied by the local demo interpreter.'};
 }

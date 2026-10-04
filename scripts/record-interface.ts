@@ -21,7 +21,7 @@ try{
   await capture('desktop');
   if(!before){
     await page.getByRole('button',{name:'Banana',exact:true}).click();await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(250);await capture('banana');
-    await page.getByRole('button',{name:'Peanut',exact:true}).click();await page.getByRole('button',{name:'✦ Glitter',exact:true}).click();await page.getByLabel('Con il viso').check();await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(250);await capture('peanut-glitter');
+    await page.getByRole('button',{name:'Peanut',exact:true}).click();await page.getByRole('button',{name:'✦ Glitter',exact:true}).click();await page.getByLabel('Show face').check();await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(250);await capture('peanut-glitter');
     await page.getByRole('button',{name:'Jelly cube',exact:true}).click();await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(250);await capture('jelly');
     await page.getByRole('button',{name:'Mochi',exact:true}).click();
     await page.setViewportSize({width:960,height:1000});await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(200);await capture('tablet');

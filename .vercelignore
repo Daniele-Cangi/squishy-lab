@@ -1,0 +1,8 @@
+work/
+evidence/
+assets/blender/
+playwright-report/
+test-results/
+.wrangler/
+.dev.vars*
+.env*

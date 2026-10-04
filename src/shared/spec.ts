@@ -26,9 +26,9 @@ export const DEFAULT_SPEC: SquishySpec = {
   recoverySeconds: 4.5, damping: 0.88,
 };
 export const PRESETS: { name: string; description: string; spec: SquishySpec }[] = [
-  { name: 'Nuvola viola', description: 'Schiuma · risale piano', spec: DEFAULT_SPEC },
-  { name: 'Mochi pesca', description: 'Schiuma · un po’ più sodo', spec: { ...DEFAULT_SPEC, color: '#f6aa8b', softness: 0.48, recoverySeconds: 2.3 } },
-  { name: 'Pop azzurro', description: 'Elastico · ritorna subito', spec: { ...DEFAULT_SPEC, color: '#77c8ea', softness: 0.65, compressibility: 0.2, recoverySeconds: 0.45, damping: 0.38, finish: 'satin' } },
+  { name: 'Purple cloud', description: 'Foam · slow rise', spec: DEFAULT_SPEC },
+  { name: 'Peach mochi', description: 'Foam · a little firmer', spec: { ...DEFAULT_SPEC, color: '#f6aa8b', softness: 0.48, recoverySeconds: 2.3 } },
+  { name: 'Blue pop', description: 'Bouncy · quick return', spec: { ...DEFAULT_SPEC, color: '#77c8ea', softness: 0.65, compressibility: 0.2, recoverySeconds: 0.45, damping: 0.38, finish: 'satin' } },
 ];
 const ranges = { softness: [0.1, 1], compressibility: [0.05, 0.95], recoverySeconds: [0.3, 12], damping: [0.2, 1] } as const;
 export class ValidationError extends Error {}

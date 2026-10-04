@@ -1,6 +1,12 @@
 # Squishy Lab interface
 
-The page uses warm paper, pastel panels, original smiling vector mascots and small sticker details. Strong ink outlines and offset shadows give the playground a clear silhouette. The large Italian headline makes the mood visible immediately; the 3D object remains the main interactive element.
+The page uses warm paper, pastel panels, original smiling vector mascots and small sticker details. Strong ink outlines and offset shadows give the playground a clear silhouette. The English headline “Happiness is squeezable” makes the mood visible immediately; the 3D object remains the main interactive element. All interface text, prompts, status messages and the managed verification widget use English.
+
+Transparent finishes show a cream `#fff3df` tray, restrained pastel confetti and a lavender `#d9c7ec` rim. The deterministic canvas texture gives refraction a pleasant readable background. The earlier repeated checkerboard has been replaced.
+
+Mochi's default smile and the five mood choices — Smile, Happy, Sleepy, Wink, Surprised — use Blender-authored detail meshes bound to the actual deforming render triangles. Strawberry shares these faces; Cat retains its nose and whiskers in every variant. Mood changes preserve deformation, and optional expression data keeps legacy saved appearances readable. The five small SVG button previews communicate the expression without relying on text alone, with labels and selected-state attributes for accessibility.
+
+[Current desktop](../evidence/english-moods/desktop.png), [clear tray](../evidence/english-moods/clear-tray.png), [happy Mochi](../evidence/english-moods/mochi-happy.png), [winking Cat](../evidence/english-moods/cat-wink.png) and [320 px mobile](../evidence/english-moods/mobile-narrow.png) show this release. [Metadata](../evidence/english-moods/moods.json) records the source hash, installed Chrome/GPU, zero page errors and viewport overflow checks. Reproduce with `npm run dev` and `npx tsx scripts/record-moods.ts`. Earlier captures below preserve the previous design.
 
 The GitHub influence appears in the source link, compact monospace badges and numbered collection tiles. The runtime provider badge continues to show the actual configured mode. Shape and material controls use the same labels and state bindings as before.
 

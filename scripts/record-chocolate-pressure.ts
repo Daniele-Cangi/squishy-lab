@@ -13,7 +13,7 @@ async function snapshot(){return await page.evaluate(()=>{const s=window.__squis
 async function capture(name:string){await page.locator('#squishy').screenshot({path:resolve(directory,`${name}.png`)});const s=await snapshot();captures.push({name,snapshot:s});return s;}
 try{
  await page.goto('http://127.0.0.1:5173/');await page.waitForFunction(()=>!!window.__squishy&&(window.__squishy.snapshot() as {detailsReady:boolean}).detailsReady);
- await page.getByRole('button',{name:'Cioccolato',exact:true}).click();assert.equal((await snapshot()).appearance.shape,'chocolate');
+ await page.getByRole('button',{name:'Chocolate',exact:true}).click();assert.equal((await snapshot()).appearance.shape,'chocolate');
  await page.locator('#squishy').scrollIntoViewIfNeeded();await page.waitForTimeout(200);
  const rendering=await page.evaluate(()=>{const gl=document.querySelector('canvas')!.getContext('webgl2')!,ext=gl.getExtension('WEBGL_debug_renderer_info');return {browser:navigator.userAgent,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):'unavailable',viewport:[innerWidth,innerHeight],dpr:devicePixelRatio};});
  const rest=await capture('rest'),box=(await page.locator('#squishy').boundingBox())!;

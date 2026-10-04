@@ -1,0 +1,101 @@
+Browser tab: 5, Title: "Squishy Lab — happiness is squeezable", URL: "https://squishy-lab-phi.vercel.app/".
+1 AXWebArea Squishy Lab — happiness is squeezable, URL: squishy-lab-phi.vercel.app/
+	2 container app
+		3 container
+			4 link Description: Squishy Lab, home, Value: squishy-lab-phi.vercel.app/
+			5 text AI · Cloudflare
+			6 link Description: Open Squishy Lab on GitHub, Value: github.com/Daniele-Cangi/squishy-lab
+		7 container
+			8 text YOUR LITTLE HAPPY PLACE
+			9 heading Happiness is squeezable., Value: 1
+				10 text Happiness
+				11 text is
+				12 text squeezable.
+			13 container
+				14 text Pick a shape, find your favorite feel
+				15 text and enjoy a little squishy time.
+			16 container Playground
+				17 container
+					18 text YOUR SQUISHY
+					19 text Ready to squish
+				20 container ID: squishy, Description: 3D squishy. Hold or drag to squeeze. On your keyboard, hold Space then release; Escape resets the shape.
+				21 container
+					22 container gesture-help
+						23 text Hold longer to sink deeper.
+						24 text Drag to move your squeeze.
+					25 button Description: Rotate view, ID: rotate
+			26 container Description: Shapes and finishes, ID: collection
+				27 heading Pick a shape, Value: 2
+					28 text Pick a shape
+				29 container Collection
+					30 checkbox Description: Mochi, Help: The original little cloud, Value: 1
+						31 text Mochi
+						103 container
+							104 text ✓ ✓
+					34 checkbox Description: Butter, Help: Butter block with embossed lettering, Value: 0
+					35 checkbox Description: Strawberry, Help: Pink strawberry butter block, Value: 0
+					36 checkbox Description: Strawberry face, Help: Seeds, leaves and a smile, Value: 0
+					37 checkbox Description: Jelly cube, Help: Clear with glitter, Value: 0
+					38 checkbox Description: Chocolate, Help: Six-piece chocolate bar, Value: 0
+					39 checkbox Description: Banana, Help: Curved banana with a stem and peel, Value: 0
+					40 checkbox Description: Cat, Help: Soft ears, a nose and whiskers, Value: 0
+					41 checkbox Description: Cheese, Help: A cheese wedge with little holes, Value: 0
+					42 checkbox Description: Peanut, Help: Two-lobed peanut with a textured shell, Value: 0
+				43 container Surface finish
+					44 checkbox Soft touch, Value: 1
+					45 checkbox ✦ Glitter, Value: 0
+					46 checkbox Clear ✦, Value: 0
+				47 container
+					48 checkbox (settable, integer) Description: Show face, Value: 1, ID: face
+					49 text Show face
+				50 text Pick a mood
+				51 container Face expression
+					52 checkbox Description: Smile face, Value: 1
+					53 checkbox Description: Happy face, Value: 0
+					54 checkbox Description: Sleepy face, Value: 0
+					55 checkbox Description: Wink face, Value: 0
+					56 checkbox Description: Surprised face, Value: 0
+			57 container Play controls and material
+				95 text Your mochi
+				96 text Soft · gentle return · matte
+				60 button Hold to squish, ID: squeeze
+				61 button Reset shape, ID: reset
+			97 container Description: Material comparison, ID: comparison-row
+				98 button Compare before and after, ID: compare
+				99 text Same shape and color, same squeeze.
+				100 text Before: Soft · slow return · matte. After: Soft · gentle return · matte.
+			62 text LET’S MAKE IT SQUISHY 01
+			63 heading Give it an idea , Value: 2
+				64 text Give it an idea
+			65 container prompt-form
+				66 text Color, softness, recovery…
+				67 text entry area (settable) Color, softness, recovery…, Value: Keep the color and make it recover faster., ID: prompt
+				68 container Request type
+					69 checkbox Edit this one, Value: 1, ID: modify-mode
+					70 checkbox Create a new one, Value: 0, ID: create-mode
+				71 button Apply description, ID: generate
+					101 text Apply description
+				73 text Your description is sent to Cloudflare Workers AI. Please avoid personal information. Your squishy runs on your device.
+				102 text Squishy updated: faster return.
+			75 text 02
+			76 heading Or start with a favorite, Value: 2
+				77 text Or start with a favorite
+			78 text Three ready-to-squish materials.
+			79 checkbox Purple cloud Foam · slow rise, Value: 0
+				80 text Purple cloud
+				81 text Foam · slow rise
+			82 checkbox Peach mochi Foam · a little firmer, Value: 0
+				83 text Peach mochi
+				84 text Foam · a little firmer
+			85 checkbox Blue pop Bouncy · quick return, Value: 0
+				86 text Blue pop
+				87 text Bouncy · quick return
+			88 container
+				89 text Take your time.
+				90 text Good things bounce back.
+		91 container
+			92 text Little shapes. Big feelings.
+			93 text Qwen3 · Cloudflare Workers AI
+			94 button Clear saved squishy, ID: forget
+
+The focused UI element is 1 AXWebArea Squishy Lab — happiness is squeezable, URL: squishy-lab-phi.vercel.app/

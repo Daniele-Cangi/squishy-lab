@@ -21,12 +21,12 @@ try {
   await page.waitForTimeout(250);await capture('light');await page.waitForTimeout(1500);await capture('held');
   await page.evaluate(()=>window.__squishy!.release());await page.waitForTimeout(450);await capture('released');
   await page.waitForTimeout(2000);await capture('recovering');await page.waitForTimeout(3000);
-  await page.getByRole('button',{name:'Ripristina forma'}).click();
+  await page.getByRole('button',{name:'Reset shape'}).click();
   const box=(await page.locator('#squishy').boundingBox())!;
   await page.mouse.move(box.x+box.width*.5,box.y+box.height*.49);await page.mouse.down();await page.waitForTimeout(400);
   await page.mouse.move(box.x+box.width*.59,box.y+box.height*.56,{steps:20});await page.waitForTimeout(700);await capture('drag');
   await page.mouse.up();await page.waitForTimeout(1000);
-  await page.getByRole('button',{name:'Mochi pesca Schiuma · un po’ più sodo'}).click();await page.getByRole('button',{name:'Ripristina forma'}).click();
+  await page.getByRole('button',{name:'Peach mochi Foam · a little firmer'}).click();await page.getByRole('button',{name:'Reset shape'}).click();
   await page.evaluate(()=>window.__squishy!.press());await page.waitForTimeout(1800);await capture('firm');await page.evaluate(()=>window.__squishy!.release());await page.waitForTimeout(1600);
   const video=page.video()!;
   const rendering=await page.evaluate(()=>{

@@ -18,9 +18,9 @@ const pressSample=(phase:'before'|'after')=>page.evaluate(`new Promise(resolve=>
   };tick();
 })`);
 try{
-  await page.goto('http://127.0.0.1:5174/');await expect(page.locator('#mode-badge')).toHaveText('AI remota · test locale');
+  await page.goto('http://127.0.0.1:5174/');await expect(page.locator('#mode-badge')).toHaveText('Remote AI · local test');
   const before=await snapshot();
-  await page.getByRole('textbox').fill('Uguale, ma meno molle.');await page.locator('#generate').click();
+  await page.getByRole('textbox').fill('Same, but a little firmer.');await page.locator('#generate').click();
   await expect(page.locator('#comparison-row')).toBeVisible({timeout:25000});
   const edited=await snapshot();expect(edited.spec.color).toBe(before.spec.color);expect(edited.spec.softness).toBeLessThan(before.spec.softness);expect(edited.spec.recoverySeconds).toBe(before.spec.recoverySeconds);
   await page.locator('#compare').click();await expect(page.locator('#comparison-row')).toHaveAttribute('data-phase','before');
@@ -30,10 +30,10 @@ try{
   await expect(page.locator('#comparison-row')).toHaveAttribute('data-phase','ready',{timeout:10000});
   expect((await snapshot()).spec).toEqual(edited.spec);
   const a=(samples[0] as {snapshot:{renderedSurfaceDepthUnits:number}}).snapshot.renderedSurfaceDepthUnits,b=(samples[1] as {snapshot:{renderedSurfaceDepthUnits:number}}).snapshot.renderedSurfaceDepthUnits;expect(a).toBeGreaterThan(b*1.1);
-  await page.getByRole('textbox').fill('Non cambiare colore: fallo riprendere più velocemente.');await page.locator('#generate').click();
+  await page.getByRole('textbox').fill('Keep the color and make it recover faster.');await page.locator('#generate').click();
   await expect.poll(async()=>(await snapshot()).spec.recoverySeconds,{timeout:25000}).toBeLessThan(edited.spec.recoverySeconds);expect((await snapshot()).spec.color).toBe(edited.spec.color);
-  await page.locator('#create-mode').click();await page.getByRole('textbox').fill('Fammi uno squalo blu.');await page.locator('#generate').click();
-  await expect(page.locator('#status')).toContainText('non è disponibile',{timeout:25000});
+  await page.locator('#create-mode').click();await page.getByRole('textbox').fill('Make me a blue shark.');await page.locator('#generate').click();
+  await expect(page.locator('#status')).toContainText('is unavailable',{timeout:25000});
   const report=await (await page.request.get('http://127.0.0.1:5174/api/evaluation-report')).json();
   const video=page.video()!;await context.close();renameSync(await video.path(),resolve(directory,'ai-live-browser.webm'));
   writeFileSync(resolve(directory,'ai-live-browser.json'),JSON.stringify({...evidenceContext(),conditions:'Real Workers AI REST inference through an opt-in loopback adapter; model identified in calls. Production Turnstile not exercised. Normal browser time; A/B uses identical geometry, color, camera and fixed-step gesture, reset between phases.',errors,responses,samples,report},null,2));

@@ -60,9 +60,15 @@ export class SquishyScene {
     const shadowCanvas=document.createElement('canvas');shadowCanvas.width=128;shadowCanvas.height=128;
     const ctx=shadowCanvas.getContext('2d')!;const gradient=ctx.createRadialGradient(64,64,0,64,64,64);gradient.addColorStop(0,'rgba(49,68,113,.22)');gradient.addColorStop(.5,'rgba(49,68,113,.12)');gradient.addColorStop(1,'rgba(49,68,113,0)');ctx.fillStyle=gradient;ctx.fillRect(0,0,128,128);
     const contactShadow=new THREE.Mesh(new THREE.PlaneGeometry(3.5,3.5),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(shadowCanvas),transparent:true,depthWrite:false}));contactShadow.rotation.x=-Math.PI/2;contactShadow.position.y=.012;this.scene.add(contactShadow);
-    const tile=document.createElement('canvas');tile.width=256;tile.height=256;const tc=tile.getContext('2d')!;
-    tc.fillStyle='#f1f2fa';tc.fillRect(0,0,256,256);tc.fillStyle='#dbe5ef';tc.fillRect(0,0,128,128);tc.fillRect(128,128,128,128);
-    const texture=new THREE.CanvasTexture(tile);texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(6,6);
+    // A warm confetti tray gives transparent foam a soft, colorful backdrop.
+    const tile=document.createElement('canvas');tile.width=1024;tile.height=1024;const tc=tile.getContext('2d')!;
+    tc.fillStyle='#fff3df';tc.fillRect(0,0,1024,1024);
+    for(let i=0;i<70;i++){
+      const x=(i*283+91)%1024,y=(i*419+173)%1024;
+      tc.fillStyle=['#e4d8f8','#cde6d8','#f7cdd1','#f6dda1'][i%4];tc.beginPath();tc.ellipse(x,y,9+i%11,6+i%7,i*.7,0,Math.PI*2);tc.fill();
+    }
+    tc.strokeStyle='#d9c7ec';tc.lineWidth=9;tc.beginPath();tc.arc(512,512,486,0,Math.PI*2);tc.stroke();
+    const texture=new THREE.CanvasTexture(tile);texture.colorSpace=THREE.SRGBColorSpace;
     this.clearFloor=new THREE.Mesh(new THREE.CircleGeometry(3.1,64),new THREE.MeshStandardMaterial({map:texture,roughness:1}));this.clearFloor.rotation.x=-Math.PI/2;this.clearFloor.position.y=.018;this.clearFloor.visible=false;this.clearFloor.receiveShadow=true;this.scene.add(this.clearFloor);
     // An open, thin contact ring leaves the indentation itself visible.
     this.halo=new THREE.Mesh(new THREE.RingGeometry(.18,.19,48,1,Math.PI*.15,Math.PI*1.7),new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.55,side:THREE.DoubleSide,depthTest:false}));this.halo.visible=false;this.halo.renderOrder=3;this.scene.add(this.halo);

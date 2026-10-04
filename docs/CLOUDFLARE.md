@@ -1,4 +1,6 @@
-# Cloudflare setup — prepared, not deployed
+# Cloudflare setup
+
+The current public release uses Vercel assets and a same-origin Node gateway with the deployed private `squishy-lab-ai` Cloudflare Worker. See [Vercel production](VERCEL.md) for its configuration and canonical domain. The combined Static Assets configuration described below remains available separately and has AI disabled by default.
 
 Ordinary local development needs no credentials. `npm run dev` uses the explicit fixture interpreter; `npm run worker:dev` serves built assets and the same mock from local workerd. The mock is refused on non-loopback hostnames, preventing an accidental public "AI" demo. A plain `npm run preview` has no API and keeps local presets usable.
 
@@ -42,7 +44,7 @@ For context, current pricing lists 4,625 input / 30,475 output neurons per milli
 ## External setup steps, only when deployment is authorized
 
 1. Use an existing Cloudflare account on **Workers Free**; confirm no Workers Paid upgrade or prepaid Gateway billing is enabled. No resources were created by this delivery.
-2. Create/configure a **Free Turnstile widget** for the intended hostname, with action `squishy`. This is an external setup step, not performed here. Put its public key in `vars.TURNSTILE_SITE_KEY` and its secret in the Worker secret `TURNSTILE_SECRET`. Keep secrets out of source control.
+2. Create/configure a **Free Turnstile widget** for the intended hostname, with action `squishy`. The current Vercel deployment already has its managed widget; a separate deployment needs its own configured hostname. Put its public key in `vars.TURNSTILE_SITE_KEY` and its secret in the Worker secret `TURNSTILE_SECRET`. Keep secrets out of source control.
 3. Set base `vars.PROVIDER` to `workers-ai`, and `vars.MODEL` to the candidate that passed evaluation. The native `AI` binding supplies authentication; no account token reaches the browser. Live local binding previews also consume quota, so keep them intentional and separate from `worker:dev`.
 4. Keep both `AI_RATE` (5/minute per IP) and `BURST_RATE` (30/minute shared key) configured. Namespace IDs should be unique to these policies in your account. Check binding availability on the actual Free account; only local bundling/emulation was verified here.
 5. Run `npm run check`, `npm run test:browser`, and `npm run worker:check`; inspect all evidence. Only **after explicit publication authorization** use Wrangler to deploy the base environment and store its Turnstile secret. No deployment script is automatically run by CI.

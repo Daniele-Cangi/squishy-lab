@@ -20,7 +20,7 @@ try{
   await page.goto('http://127.0.0.1:5173/');await page.waitForFunction(()=>!!window.__squishy&&(window.__squishy.snapshot() as {detailsReady:boolean}).detailsReady);
   const rendering=await page.evaluate(()=>{const gl=document.querySelector('canvas')!.getContext('webgl2')!,ext=gl.getExtension('WEBGL_debug_renderer_info');return {browser:navigator.userAgent,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):'unavailable',viewport:[innerWidth,innerHeight],dpr:devicePixelRatio};});
   for(const name of ['Mochi','Banana','Peanut']){
-    const id=name.toLowerCase();await page.getByRole('button',{name,exact:true}).click();await page.getByRole('button',{name:'Ripristina forma'}).click();await page.waitForTimeout(250);
+    const id=name.toLowerCase();await page.getByRole('button',{name,exact:true}).click();await page.getByRole('button',{name:'Reset shape'}).click();await page.waitForTimeout(250);
     const rest=await capture(`${id}-rest`);await page.screenshot({path:resolve(directory,`${id}-interface.png`)});
     const box=(await page.locator('#squishy').boundingBox())!;await page.mouse.move(box.x+box.width*.5,box.y+box.height*.48);await page.mouse.down();
     await page.waitForFunction(time=>(window.__squishy!.snapshot() as Snapshot).physicsTime>=time,rest.physicsTime+1);const short=await capture(`${id}-short`);assert(short.contact&&short.contactDepthUnits>.015);

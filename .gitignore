@@ -9,3 +9,5 @@ test-results/
 playwright-report/
 assets/blender/*.blend1
 evidence/ai-live*.json
+
+.vercel

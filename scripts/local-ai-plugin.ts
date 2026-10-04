@@ -19,15 +19,15 @@ export async function localAiPlugin():Promise<Plugin>{
       try{
         const url=new URL(`http://${req.headers.host}/api${req.url??''}`);
         const peer=req.socket.remoteAddress??'';
-        if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(peer)||!['127.0.0.1','localhost','[::1]'].includes(url.hostname))throw new ApiError(403,'origin','Solo test locale.');
-        if(req.headers.origin&&req.headers.origin!==url.origin)throw new ApiError(403,'origin','Origine non consentita.');
-        if(req.headers['sec-fetch-site']==='cross-site')throw new ApiError(403,'origin','Origine non consentita.');
+        if(!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(peer)||!['127.0.0.1','localhost','[::1]'].includes(url.hostname))throw new ApiError(403,'origin','Local testing only.');
+        if(req.headers.origin&&req.headers.origin!==url.origin)throw new ApiError(403,'origin','Origin not allowed.');
+        if(req.headers['sec-fetch-site']==='cross-site')throw new ApiError(403,'origin','Origin not allowed.');
         if(url.pathname==='/api/config'&&req.method==='GET')response=json({provider:'evaluation-ai',model});
         else if(url.pathname==='/api/evaluation-report'&&req.method==='GET')response=json({provider:'LIVE Workers AI, local evaluation; production Turnstile not exercised',systemPromptSha256:createHash('sha256').update(SYSTEM_PROMPT).digest('hex'),freeCheck:session.freeCheck,calls:session.calls,limit:12});
         else{
-          if(url.pathname!=='/api/squishy'||req.method!=='POST')throw new ApiError(405,'method','Metodo non consentito.');
-          if(busy)throw new ApiError(429,'busy','Un test è già in corso.');
-          if(!req.headers['content-type']?.startsWith('application/json'))throw new ApiError(415,'content_type','Usa JSON.');
+          if(url.pathname!=='/api/squishy'||req.method!=='POST')throw new ApiError(405,'method','Method not allowed.');
+          if(busy)throw new ApiError(429,'busy','A test is already running.');
+          if(!req.headers['content-type']?.startsWith('application/json'))throw new ApiError(415,'content_type','Use JSON.');
           busy=true;
           try{
             const headers=new Headers();for(const [key,value]of Object.entries(req.headers))if(value)headers.set(key,Array.isArray(value)?value.join(','):value);
@@ -36,7 +36,7 @@ export async function localAiPlugin():Promise<Plugin>{
             response=json(await infer(body,{PROVIDER:'workers-ai',MODEL:model,AI:session.binding(controller.signal)},controller.signal));
           }finally{busy=false;}
         }
-      }catch(error){response=json({message:error instanceof ApiError?error.message:'Test AI non disponibile. Lo squishy resta utilizzabile.'},error instanceof ApiError?error.status:400);}
+      }catch(error){response=json({message:error instanceof ApiError?error.message:'AI test unavailable. Your squishy still works.'},error instanceof ApiError?error.status:400);}
       if(!res.destroyed){res.statusCode=response.status;response.headers.forEach((v,k)=>res.setHeader(k,v));res.end(await response.text());}
     });
   }};

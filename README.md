@@ -2,6 +2,8 @@
 
 A small, playable 3D material lab. Choose a mochi, printed Butter or Strawberry bar, smiling strawberry, clear Jelly cube, chocolate bar, curved banana, cat, cheese wedge or peanut. Hold a dent, release it, and watch the foam slowly rise. Describe a different color or feel, then compare it under the same gesture.
 
+**[Play online](https://squishy-lab-phi.vercel.app)** — hosted in [daniele-cangis-projects on Vercel](https://vercel.com/daniele-cangis-projects/squishy-lab), with real Cloudflare Workers AI. The page, examples, status messages and verification widget use English. Mochi starts with a smile; choose Smile, Happy, Sleepy, Wink or Surprised without resetting your squeeze. Transparent objects sit on a cream tray with pastel confetti and a lavender rim.
+
 **Try it locally, without an AI account:**
 
 ```sh
@@ -13,21 +15,21 @@ npm run dev
 
 Open **http://127.0.0.1:5173**. Node 22.19.0 / npm 11.6.2 were tested on Windows. Use Node 22.13+ or 24+. WebGL 2 is required. No weights, Blender, Docker, database, or local inference are needed.
 
-The page immediately shows a local preset. The **Demo locale · senza AI** description interpreter is a deliberately limited fixture provider, not simulated AI inference. Try:
+The page immediately shows a local preset. The **Local demo · no AI** description interpreter is a deliberately limited fixture provider, not simulated AI inference. Try:
 
-- `Fammi un mochi viola, molto morbido, che torna su lentamente.`
-- `Uguale, ma meno molle.`
-- `Non cambiare colore: fallo riprendere più velocemente.`
-- `Lo voglio più schiacciato, non più piccolo.`
-- `Un mochi giallo molto duro.`
+- `A purple mochi, very soft, with a slow return.`
+- `Same, but a little firmer.`
+- `Keep the color and make it recover faster.`
+- `Make it flatter.`
+- `A yellow mochi, very firm.`
 
-Hold the object to increase pressure over 0.85 seconds. After the first second, a stationary hold progressively deepens and widens the dent until second six; drag to move the contact and drag down to add depth. Pressure does not depend on hardware pressure sensors. Hold **Space/Enter** on the canvas or on **Tieni per premere**; release to recover. **Escape** on the canvas and **Ripristina forma** restore the current material's shape. **Ruota la vista** is separate from deformation. The final footer action removes the optional saved spec. Prompts are never saved.
+Hold the object to increase pressure over 0.85 seconds. After the first second, a stationary hold progressively deepens and widens the dent until second six; drag to move the contact and drag down to add depth. Pressure does not depend on hardware pressure sensors. Hold **Space/Enter** on the canvas or on **Hold to squish**; release to recover. **Escape** on the canvas and **Reset shape** restore the current material's shape. **Rotate view** is separate from deformation. The final footer action removes the optional saved spec. Prompts are never saved.
 
 The thin COCOA bar spreads upper-surface pressure into a broader dent, including between simulation nodes, while retaining the horizontal side response. See the [pressure measurements and browser captures](docs/VERIFICATION.md#chocolate-upper-surface-pressure).
 
-After a material edit, **Confronta prima e dopo** repeats a two-second press and five-second recovery on both materials. Shape, color, finish, camera and gesture are held equal; deformation memory is reset between phases. Stop the comparison or press the object to return to the actual edited squishy. Descriptions of changes come from the applied parameters.
+After a material edit, **Compare before and after** repeats a two-second press and five-second recovery on both materials. Shape, color, finish, camera and gesture are held equal; deformation memory is reset between phases. Stop the comparison or press the object to return to the actual edited squishy. Descriptions of changes come from the applied parameters.
 
-![Squishy Lab, the playful material playground](evidence/playful-interface/desktop.png)
+![Squishy Lab, the English playground with facial expressions](evidence/english-moods/desktop.png)
 
 The page pairs a warm dotted background with lavender, mint and yellow panels, original smiling vector graphics, sticker accents and a compact GitHub source link. The responsive collection and composer share the same visual language; see the [design notes and mobile captures](docs/DESIGN.md).
 
@@ -40,13 +42,13 @@ The page pairs a warm dotted background with lavender, mint and yellow panels, o
 - `POST /api/squishy`, explicit local mock, Cloudflare Workers AI binding adapter, one repair at most, quota/rate/timeout/unavailable states, stale-response protection and an object that stays interactive while a request runs or the network fails.
 - Cloudflare Static Assets configuration, server-validated Turnstile, Workers rate-limiting bindings, tests, essential CI and recorded evidence.
 
-**The real phrase → model → material loop is now verified.** Llama 3B and 8B had semantic misses, so the selected model is **Qwen3-30B-A3B-FP8**, on the same Cloudflare Workers AI service. Its last full campaign passed 26/26; separate paraphrase regressions passed 8/8 and 5/5, with one bounded repair in the last set. The initial unseen run had a recovery-direction miss, preserved in the history. A later user report exposed an Italian “molto duro” interpretation miss, even without a typo: clarified firmness vocabulary now passes six targeted live cases and three prior smoke cases, including the exact “monchi” phrase in the real browser. Real browser A/B evidence shows lower surface indentation after “meno molle.” See [verification](docs/VERIFICATION.md). Cloudflare deployment and real public Turnstile/rate-limit integration remain external steps; the prepared Worker still has AI disabled.
+**The real phrase → model → material loop is verified.** Llama 3B and 8B had semantic misses, so the selected model is **Qwen3-30B-A3B-FP8**, on the same Cloudflare Workers AI service. Its last full campaign passed 26/26; separate paraphrase regressions passed 8/8 and 5/5, with one bounded repair in the last set. The initial unseen run had a recovery-direction miss, preserved in the history. A later user report exposed an Italian “molto duro” interpretation miss, even without a typo: clarified firmness vocabulary passes six targeted live cases and three prior smoke cases. Historical real-browser A/B evidence shows lower indentation after “meno molle.” The Vercel release now uses a deployed private Worker, genuine Turnstile verification and the existing rate limits; a public English material edit has been verified. See [verification](docs/VERIFICATION.md) and [production setup](docs/VERCEL.md).
 
 For an intentional live local session, authenticate with `npx wrangler login`, keep Workers Free, and run `npm run dev:ai`. Open **http://127.0.0.1:5174**. This separate loopback adapter uses real inference, keeps credentials in the Node process and caps the session at 12 model calls. If subscription access returns 403, the documented Free-plan confirmation flag is required; see [Cloudflare setup](docs/CLOUDFLARE.md). Ordinary development and CI remain explicitly mock.
 
 ## Local collection and Blender workshop
 
-Use **Scegli una forma**, then choose **Soft touch**, **Glitter** or **Trasparente** and optionally **Con il viso**. Selecting a collection entry sets its silhouette, print and base color while retaining your material parameters. Changing an effect or face retains the current dent. Reload restores both material and local appearance; the footer clears both. The AI continues to use its unchanged v1 material contract. It does not generate these assets or interpret the local collection controls.
+Use **Pick a shape**, then choose **Soft touch**, **Glitter** or **Clear** and optionally **Show face**. **Pick a mood** selects five Blender-authored expressions for Mochi, Strawberry face and Cat, with the cat's nose and whiskers retained. Selecting a collection entry sets its silhouette, print and base color while retaining your material parameters. Changing an effect or face retains the current dent. Reload restores both material and local appearance; old saved appearances remain readable. The footer clears both. The AI continues to use its unchanged v1 material contract. It does not generate these assets or interpret the local collection controls.
 
 Open [the editable Blender workshop](assets/blender/squishy-collection.blend). It contains ten separately named collections in two rows, editable reference skin meshes, print meshes, and hidden cage references. The browser uses the generated triangle library in `public/assets/collection-details.json`; Blender is only needed for authoring. The runtime body and cage use the same shape map. Workshop details sample the exported runtime triangles and normals exactly, including curved silhouettes and cheese recesses.
 
@@ -89,7 +91,8 @@ The optional browser benchmark uses installed Chrome. To measure bundled Chromiu
 
 ```text
 description + optional current spec
-  → same-origin Worker → bounded remote open-weight model call
+  → Vercel same-origin gateway → private Cloudflare Worker
+  → bounded remote open-weight model call
   → validated semantic patch → validated SquishySpec v1
   → deterministic material/geometry compiler
   → local cage + embedded Three.js surface → browser interaction

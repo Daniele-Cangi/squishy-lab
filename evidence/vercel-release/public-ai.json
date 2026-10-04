@@ -1,0 +1,43 @@
+{
+  "measuredAt": "2026-10-04T09:31:45.189Z",
+  "revision": "4a657cb6f79e8c141f978b5d6a1ff4969e1f0416",
+  "runtimeSourceSha256": "87119e8392033897aa46b235445cf9493a33f286983f00159a97e19aba6a81cd",
+  "node": "v22.19.0",
+  "platform": "win32",
+  "apiSourceSha256": "a798d6f51af1b4262ef9c8c065b2df714bffcd9f272eb050533f31b91d6286e7",
+  "origin": "https://squishy-lab-phi.vercel.app",
+  "conditions": "Two synthetic English edits through the real UI in Codex in-app browser. Genuine managed Turnstile completed automatically. No challenge bypass, test key or mock. Request tokens, credentials, client IP and raw provider logs are not persisted. The UI screenshots and accessible result are from the second edit.",
+  "cases": [
+    {
+      "prompt": "Same, but a little firmer.",
+      "observedBefore": "Super soft · slow return · matte",
+      "observedAfter": "Soft · slow return · matte",
+      "status": "Squishy updated: firmer."
+    },
+    {
+      "prompt": "Keep the color and make it recover faster.",
+      "observedBefore": "Soft · slow return · matte",
+      "observedAfter": "Soft · gentle return · matte",
+      "status": "Squishy updated: faster return."
+    }
+  ],
+  "http": [
+    {
+      "timestamp": 1791105967225,
+      "deploymentId": "dpl_8FawdMXK3coERE3UWw6jJrBM2qmt",
+      "domain": "squishy-lab-phi.vercel.app",
+      "requestMethod": "POST",
+      "requestPath": "/api/squishy",
+      "responseStatusCode": 200
+    },
+    {
+      "timestamp": 1791105589352,
+      "deploymentId": "dpl_HAswt7VH3jzkxZp6eE74okPuCcyr",
+      "domain": "squishy-lab-phi.vercel.app",
+      "requestMethod": "POST",
+      "requestPath": "/api/squishy",
+      "responseStatusCode": 200
+    }
+  ],
+  "limitation": "No new full semantic campaign; these two requests verify public integration. Automated headless Chrome did not obtain a challenge token; UI/protection automation is recorded separately."
+}

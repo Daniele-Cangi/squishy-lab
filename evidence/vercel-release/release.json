@@ -1,0 +1,50 @@
+{
+  "measuredAt": "2026-10-04T09:27:27.381Z",
+  "revision": "4a657cb6f79e8c141f978b5d6a1ff4969e1f0416",
+  "runtimeSourceSha256": "87119e8392033897aa46b235445cf9493a33f286983f00159a97e19aba6a81cd",
+  "node": "v22.19.0",
+  "platform": "win32",
+  "origin": "https://squishy-lab-phi.vercel.app",
+  "conditions": "Production UI and HTTP protections checked with installed headless Chrome. Zero inference in this run. Real AI separately verified in Codex in-app browser; see production-ui.txt and production-ai.jpg. Automated Chrome was not granted a challenge token; no bypass attempted.",
+  "http": {
+    "config": 200,
+    "privateWorker": 403,
+    "missingTurnstile": 403
+  },
+  "config": {
+    "provider": "workers-ai",
+    "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "siteKey": "0x4AAAAAAFNWkYh-761kiQ9m"
+  },
+  "before": {
+    "version": 1,
+    "archetype": "mochi",
+    "proportions": {
+      "width": 1.18,
+      "height": 0.88,
+      "depth": 1.08
+    },
+    "color": "#a996ee",
+    "finish": "matte",
+    "softness": 0.84,
+    "compressibility": 0.78,
+    "recoverySeconds": 4.5,
+    "damping": 0.88
+  },
+  "after": {
+    "version": 1,
+    "archetype": "mochi",
+    "proportions": {
+      "width": 1.18,
+      "height": 0.88,
+      "depth": 1.08
+    },
+    "color": "#a996ee",
+    "finish": "matte",
+    "softness": 0.84,
+    "compressibility": 0.78,
+    "recoverySeconds": 4.5,
+    "damping": 0.88
+  },
+  "errors": []
+}

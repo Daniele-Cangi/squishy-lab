@@ -48,7 +48,7 @@ export async function liveAi(maxCalls:number){
   const calls:{model:string;durationMs:number;usage:unknown;status:number}[]=[];
   const binding=(signal?:AbortSignal):AiBinding=>({async run(model,input){
     signal?.throwIfAborted();
-    if(calls.length>=maxCalls)throw new ApiError(429,'evaluation_limit',`Questa sessione di test ha raggiunto ${maxCalls} chiamate AI. I preset restano disponibili.`);
+    if(calls.length>=maxCalls)throw new ApiError(429,'evaluation_limit',`This test session has reached ${maxCalls} AI calls. Presets are still available.`);
     const record={model,durationMs:0,usage:null as unknown,status:0};calls.push(record);const start=Date.now();
     const timeout=AbortSignal.timeout(18000);
     const operationSignal=signal?AbortSignal.any([signal,timeout]):timeout;

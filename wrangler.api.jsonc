@@ -1,0 +1,42 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "squishy-lab-ai",
+  "main": "worker/ai-worker.ts",
+  "compatibility_date": "2026-10-04",
+  "workers_dev": true,
+  "vars": {
+    "PROVIDER": "workers-ai",
+    "MODEL": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "PUBLIC_ORIGIN": "https://squishy-lab-phi.vercel.app",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAFNWkYh-761kiQ9m"
+  },
+  "ai": {
+    "binding": "AI"
+  },
+  "ratelimits": [
+    {
+      "name": "AI_RATE",
+      "namespace_id": "202610041",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    },
+    {
+      "name": "BURST_RATE",
+      "namespace_id": "202610042",
+      "simple": {
+        "limit": 30,
+        "period": 60
+      }
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1,
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
+    }
+  }
+}

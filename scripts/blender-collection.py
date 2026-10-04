@@ -70,6 +70,36 @@ def line(name,points,width,color,axis=2,sign=1,height=.012):
         for side in [-1,1]:verts.extend([max(-1,min(1,u-side*dy/length*width)),max(-1,min(1,v+side*dx/length*width)),height])
         if i:indices.extend([2*i-2,2*i-1,2*i,2*i-1,2*i+1,2*i])
     add_group(name,'relief strip',verts,indices,color,axis,sign)
+
+# Expression prints use dense material-coordinate strips, not rigid stickers.
+for cat in [False,True]:
+    eye_y=.18 if cat else .38
+    mouth_y=-.10 if cat else .15
+    for expression in ['happy','sleepy','wink','surprised']:
+        group=('cat-face-' if cat else 'face-')+expression
+        for side in [-1,1]:
+            x=side*.27
+            if expression=='surprised' or (expression=='wink' and side==-1):
+                ellipse(group,x,eye_y,.08,.105,'#423545')
+                ellipse(group,x-.022,eye_y+.043,.023,.027,'#fff9f4',height=.015)
+            else:
+                points=[(x-.085+i*.17/20,eye_y+(.055*math.sin(i*math.pi/20) if expression!='sleepy' else -.027*math.sin(i*math.pi/20))) for i in range(21)]
+                line(group,points,.012,'#423545')
+            ellipse(group,x*1.42,eye_y-.205,.10,.038,'#f58fa9')
+        if expression=='surprised':
+            ellipse(group,0,mouth_y,.055,.073,'#423545')
+        elif expression=='sleepy':
+            line(group,[(-.055,mouth_y),(.055,mouth_y)],.01,'#423545')
+        elif expression=='happy':
+            points=[(-.115,mouth_y+.035),(.115,mouth_y+.035)]+[(.115*math.cos(i*math.pi/24),mouth_y+.035-.12*math.sin(i*math.pi/24)) for i in range(1,24)]
+            polygon(group,points,'#423545',2)
+            ellipse(group,0,mouth_y-.048,.062,.025,'#f58fa9',height=.015)
+        else:
+            line(group,[(-.10+i*.2/24,mouth_y-.065*math.sin(i*math.pi/24)) for i in range(25)],.009,'#423545')
+        if cat:
+            polygon(group,[(-.06,.01),(.06,.01),(0,-.05)],'#af6b6b',2)
+            for side in [-1,1]:
+                for v in [-.02,-.1]:line(group,[(side*.19,v),(side*.59,v-.035)],.008,'#795b50')
 for u in [-1/3,1/3]:line('chocolate',[(u,-.96+i*1.92/32) for i in range(33)],.007,'#5d3427',1,height=.005)
 line('chocolate',[(-.96+i*1.92/48,0) for i in range(49)],.007,'#5d3427',1,height=.005)
 text('chocolate','COCOA',.48,0,-.56,'#b27d59')
@@ -127,7 +157,7 @@ for sign in [-1,1]:line('peanut',[(-.98+i*1.96/64,0) for i in range(65)],.008,'#
 out=ROOT/'public'/'assets';out.mkdir(parents=True,exist_ok=True)
 (out/'collection-details.json').write_text(json.dumps(dict(version=1,blender=bpy.app.version_string,groups=assets),separators=(',',':')),encoding='utf8')
 # The editable workshop contains the exact runtime reference surfaces.
-items=[('Mochi','mochi',[],(.65,.53,.86)),('Butter','butter',['butter'],(.93,.78,.38)),('Strawberry','butter',['strawberry'],(.95,.55,.69)),('Fragolina','strawberry',['face','seeds','leaves'],(.9,.2,.3)),('Jelly cube','cube',[],(.3,.75,.9)),('Cioccolato','chocolate',['chocolate'],(.46,.26,.18)),('Banana','banana',['banana'],(.96,.81,.33)),('Gatto','cat',['cat','cat-face'],(.91,.67,.47)),('Formaggio','cheese',['cheese'],(.95,.75,.3)),('Peanut','peanut',['peanut'],(.83,.64,.43))]
+items=[('Mochi','mochi',['face'],(.65,.53,.86)),('Butter','butter',['butter'],(.93,.78,.38)),('Strawberry','butter',['strawberry'],(.95,.55,.69)),('Strawberry face','strawberry',['face','seeds','leaves'],(.9,.2,.3)),('Jelly cube','cube',[],(.3,.75,.9)),('Chocolate','chocolate',['chocolate'],(.46,.26,.18)),('Banana','banana',['banana'],(.96,.81,.33)),('Cat','cat',['cat','cat-face'],(.91,.67,.47)),('Cheese','cheese',['cheese'],(.95,.75,.3)),('Peanut','peanut',['peanut'],(.83,.64,.43))]
 def project(ref,asset,u,v,height):
     # Exact barycentric sampling of the exported runtime triangles and normals.
     n=ref['subdivisions'];face=next(f for f in ref['faceGrids'] if f['axis']==asset['axis'] and f['sign']==asset['sign']);grid=face['grid']

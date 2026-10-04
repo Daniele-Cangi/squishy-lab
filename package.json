@@ -22,6 +22,8 @@
     "record:chocolate": "tsx scripts/record-chocolate-pressure.ts",
     "record:experience": "tsx scripts/record-experience.ts",
     "record:collection": "tsx scripts/record-collection.ts",
+    "record:moods": "tsx scripts/record-moods.ts",
+    "verify:production": "tsx scripts/verify-production.ts",
     "measure:browser": "tsx scripts/measure-browser.ts",
     "evaluate:ai": "tsx scripts/evaluate-ai.ts",
     "worker:dev": "npm run build && wrangler dev --local --env mock",

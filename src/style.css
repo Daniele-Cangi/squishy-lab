@@ -161,6 +161,7 @@ textarea::placeholder {color:#74617f}
 .comparison-row button {flex-shrink:0}
 footer {margin-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;color:#75657b;padding:23px 0 28px;font-size:10px;border-top:1px solid #29263d25}
 .footer-note {display:flex;align-items:center;gap:9px}
+.dedication {flex-basis:100%;margin:8px 0 0;text-align:center;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:700;font-size:clamp(17px,2.2vw,22px);line-height:1.5;color:#786295}
 .footer-note>span {font-size:22px;color:#786295}
 footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px 0;text-decoration:underline;text-underline-offset:4px}
 .canvas-error {position:absolute;z-index:3;inset:25%;background:var(--paper);padding:20px;font-size:14px;border:1.5px solid var(--ink);border-radius:15px;line-height:1.6}

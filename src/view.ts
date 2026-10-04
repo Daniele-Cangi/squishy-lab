@@ -52,5 +52,5 @@ export const labMarkup=`
       </aside>
     </div>
   </main>
-  <footer><span class="footer-note"><span aria-hidden="true">☺</span> Little shapes. Big feelings.</span><span id="model-credit" hidden>Built with Llama · Cloudflare Workers AI</span><button id="forget">Clear saved squishy</button></footer>
+  <footer><span class="footer-note"><span aria-hidden="true">☺</span> Little shapes. Big feelings.</span><span id="model-credit" hidden>Built with Llama · Cloudflare Workers AI</span><button id="forget">Clear saved squishy</button><p class="dedication">Made for August, certified squishy expert. ☺</p></footer>
 </div>`;

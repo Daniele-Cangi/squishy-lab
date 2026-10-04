@@ -40,3 +40,6 @@ npx tsx scripts/record-interface.ts
 
 The refresh changes presentation, HTML metadata and favicon. The AI, validated material contract, geometry, solver and long-hold interaction keep their preceding implementation. Historical recordings retain their original styles and source hashes.
 
+
+Gel is now the default sound texture, using the approved filtered, slowed 5–20 second excerpt. The selector also offers Crunchy. Audio still starts disabled; each texture loads on demand and is cached for the session. Gel uses longer pressure envelopes without further speed-up.
+

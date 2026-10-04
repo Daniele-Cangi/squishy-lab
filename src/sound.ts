@@ -3,6 +3,8 @@ import type {ShapeId} from './collection';
 /** Pressure-responsive excerpts from the credited Pixabay recording. */
 export class SquishySound {
   enabled=false;
+  mode:'gel'|'crunchy'='gel';
+  private recordings=new Map<string,AudioBuffer>();
   private context:AudioContext|undefined;
   private recording:AudioBuffer|undefined;
   private master:GainNode|undefined;
@@ -17,11 +19,13 @@ export class SquishySound {
       }
       // Resume inside the tap, before asynchronous download/decode (including iOS).
       await this.context.resume();
+      this.recording=this.recordings.get(this.mode);
       if(!this.recording){
-        const response=await fetch('/audio/crinkle.mp3',{signal:AbortSignal.timeout(15000)});
+        const response=await fetch(this.mode==='gel'?'/audio/gel.mp3':'/audio/crinkle.mp3',{signal:AbortSignal.timeout(15000)});
         if(!response.ok)throw new Error('Recording unavailable');
         this.recording=await this.context.decodeAudioData(await response.arrayBuffer());
         if(this.recording.duration<2)throw new Error('Recording too short');
+        this.recordings.set(this.mode,this.recording);
       }
       this.enabled=this.context.state==='running';return this.enabled;
     }catch{this.enabled=false;this.quiet();await this.context?.suspend().catch(()=>{});return false;}
@@ -36,7 +40,7 @@ export class SquishySound {
     if(pressed&&now<this.nextPulse)return;
     if(this.sources.size>=2)return;
     const intensity=Math.min(1,Math.max(0,pressure)),source=ctx.createBufferSource(),gain=ctx.createGain();
-    const duration=released?.28:.65+.18*intensity,rate=shape==='peanut'?1.04:.92;
+    const duration=released?.28:this.mode==='gel'?1.1+.25*intensity:.65+.18*intensity,rate=this.mode==='gel'?1:shape==='peanut'?1.04:.92;
     source.buffer=this.recording;source.playbackRate.value=rate;
     const peak=released?.12:.2+.5*intensity;
     gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(peak,now+.035);
@@ -47,3 +51,4 @@ export class SquishySound {
     this.nextPulse=now+duration-.08;
   }
 }
+

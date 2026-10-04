@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 test('opt-in real Web Audio responds to every shape, mutes immediately and remains usable in fullscreen',async({page})=>{
- let recordings=0;page.on('request',request=>{if(request.url().endsWith('/audio/crinkle.mp3'))recordings++;});
+ let recordings=0;page.on('request',request=>{if(request.url().match(/\/audio\/(gel|crinkle)\.mp3$/))recordings++;});
  await page.addInitScript(()=>{
   const probe={contexts:0,sources:0,peak:0,state:''};(window as unknown as {__audioProbe:typeof probe}).__audioProbe=probe;
   const Native=window.AudioContext;
@@ -17,7 +17,9 @@ test('opt-in real Web Audio responds to every shape, mutes immediately and remai
  await page.getByRole('button',{name:'Enable squishy sound'}).click();await expect(page.getByRole('button',{name:'Disable squishy sound'})).toHaveAttribute('aria-pressed','true');
  expect(recordings).toBe(1);
  for(const name of ['Mochi','Butter','Strawberry','Strawberry face','Jelly cube','Chocolate','Banana','Cat','Cheese','Peanut']){await page.getByRole('button',{name,exact:true}).click();const count=(await probe()).sources;await page.evaluate(()=>window.__squishy!.press());await expect.poll(async()=>(await probe()).sources).toBeGreaterThan(count);await page.evaluate(()=>window.__squishy!.release());}
+ await page.getByLabel('Sound texture').selectOption('crunchy');await expect(page.getByRole('button',{name:'Disable squishy sound'})).toBeEnabled();expect(recordings).toBe(2);await page.getByLabel('Sound texture').selectOption('gel');await expect(page.getByRole('button',{name:'Disable squishy sound'})).toBeEnabled();
  expect((await probe()).peak).toBeGreaterThan(.0001);await page.getByRole('button',{name:'Disable squishy sound'}).click();await expect.poll(async()=>(await probe()).state).toBe('suspended');const count=(await probe()).sources;await page.evaluate(()=>window.__squishy!.press());await page.waitForTimeout(300);expect((await probe()).sources).toBe(count);await page.evaluate(()=>window.__squishy!.release());
- await page.setViewportSize({width:320,height:740});await page.getByRole('button',{name:'Enter fullscreen',exact:true}).click();await page.getByRole('button',{name:'Enable squishy sound'}).click();await expect(page.getByRole('button',{name:'Disable squishy sound'})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(320);await page.getByRole('button',{name:'Disable squishy sound'}).click();await page.getByRole('button',{name:'Exit fullscreen',exact:true}).click();expect(recordings).toBe(1);await page.reload();await expect(page.getByRole('button',{name:'Enable squishy sound'})).toHaveAttribute('aria-pressed','false');
+ await page.setViewportSize({width:320,height:740});await page.getByRole('button',{name:'Enter fullscreen',exact:true}).click();await page.getByRole('button',{name:'Enable squishy sound'}).click();await expect(page.getByRole('button',{name:'Disable squishy sound'})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(320);await page.getByRole('button',{name:'Disable squishy sound'}).click();await page.getByRole('button',{name:'Exit fullscreen',exact:true}).click();expect(recordings).toBe(2);await page.reload();await expect(page.getByRole('button',{name:'Enable squishy sound'})).toHaveAttribute('aria-pressed','false');
 });
+
 

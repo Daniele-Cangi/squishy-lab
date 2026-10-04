@@ -19,8 +19,9 @@ export function setupFullscreen(area:HTMLElement,button:HTMLButtonElement,onRele
     if(!expanded)return;
     if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();close();}
     if(event.key==='Tab'){
-      const targets=Array.from(area.querySelectorAll<HTMLElement>('button:not(:disabled),canvas[tabindex]')).filter(element=>element.getClientRects().length);
+      const targets=Array.from(area.querySelectorAll<HTMLElement>('button:not(:disabled),select:not(:disabled),canvas[tabindex]')).filter(element=>element.getClientRects().length);
       const first=targets[0],last=targets.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
     }
   },true);
 }
+

@@ -309,3 +309,6 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 .expression-list button[aria-pressed=true] {background:#f0e9fc;border-color:#9c84c8;box-shadow:2px 2px 0 #c8b8df}
 .expression-list button:hover {background:#f5eefe}
 @media(max-width:720px) {.expression-row {display:block}.expression-row>span {display:block;margin-bottom:6px}.expression-list {gap:3px}.expression-list button {min-height:58px;font-size:9px}}
+
+.sound-mode {pointer-events:auto;min-height:44px;width:85px;border:1px solid var(--line);border-radius:14px;background:var(--mint);color:inherit;font:inherit;font-size:12px;font-weight:700;padding:0 6px}
+@media(max-width:480px){.stage-top-right .state{display:none}.stage-top-right{gap:5px}}

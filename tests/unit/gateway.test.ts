@@ -12,9 +12,9 @@ it('gateway rejects foreign origins, invalid IPs and oversized bodies before rea
  expect(call).not.toHaveBeenCalled();
 });
 it('gateway forwards only server-owned credentials and the verified platform IP',async()=>{
- const call=vi.fn().mockResolvedValue(new Response('{"message":"rate"}',{status:429}));vi.stubGlobal('fetch',call);
+ const call=vi.fn().mockResolvedValue(new Response('{"message":"rate"}',{status:429,headers:{'Retry-After':'86400'}}));vi.stubGlobal('fetch',call);
  const response=await proxyApi(new Request(origin+'/api/squishy',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin,'x-forwarded-for':'192.0.2.1','X-Squishy-Gateway':'forged','X-Squishy-Client-IP':'203.0.113.2'},body:'{}'}),settings);
- const [target,init]=call.mock.calls[0] as [URL,RequestInit];expect(target.href).toBe(upstream+'/api/squishy');expect(new Headers(init.headers).get('X-Squishy-Gateway')).toBe(secret);expect(new Headers(init.headers).get('X-Squishy-Client-IP')).toBe('192.0.2.1');expect(response.status).toBe(429);expect(response.headers.get('Retry-After')).toBe('60');expect(response.headers.get('Cache-Control')).toBe('no-store');
+ const [target,init]=call.mock.calls[0] as [URL,RequestInit];expect(target.href).toBe(upstream+'/api/squishy');expect(new Headers(init.headers).get('X-Squishy-Gateway')).toBe(secret);expect(new Headers(init.headers).get('X-Squishy-Client-IP')).toBe('192.0.2.1');expect(response.status).toBe(429);expect(response.headers.get('Retry-After')).toBe('86400');expect(response.headers.get('Cache-Control')).toBe('no-store');
 });
 it('private Worker rejects direct requests, missing secrets and foreign app origins',async()=>{
  for(const env of [{PUBLIC_ORIGIN:origin},{PUBLIC_ORIGIN:origin,GATEWAY_SECRET:secret}])expect((await handleApi(new Request(upstream+'/api/config'),env)).status).toBe(403);
@@ -22,7 +22,7 @@ it('private Worker rejects direct requests, missing secrets and foreign app orig
 });
 it('private Worker validates the public Turnstile hostname and rates the real client',async()=>{
  const rate=vi.fn().mockResolvedValue({success:true}),run=vi.fn().mockResolvedValue({version:1,status:'ok',patch:{softness:.5},message:'Firmer.'});vi.stubGlobal('fetch',vi.fn().mockResolvedValue(new Response(JSON.stringify({success:true,hostname:'squishy.example',action:'squishy'}))));
- const env:Env={PUBLIC_ORIGIN:origin,GATEWAY_SECRET:secret,PROVIDER:'workers-ai',TURNSTILE_SECRET:'test-only',TURNSTILE_SITE_KEY:'public-test',AI_RATE:{limit:rate},BURST_RATE:{limit:vi.fn().mockResolvedValue({success:true})},AI:{run}};
+ const env:Env={PUBLIC_ORIGIN:origin,GATEWAY_SECRET:secret,PROVIDER:'workers-ai',TURNSTILE_SECRET:'test-only',TURNSTILE_SITE_KEY:'public-test',AI_RATE:{limit:rate},BURST_RATE:{limit:vi.fn().mockResolvedValue({success:true})},AI:{run},DAILY_QUOTA:{idFromName:name=>name,get:()=>({fetch:async()=>Response.json({success:true})})}};
  const response=await handleApi(new Request(upstream+'/api/squishy',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json','X-Squishy-Gateway':secret,'X-Squishy-Client-IP':'192.0.2.10','CF-Connecting-IP':'203.0.113.20'},body:JSON.stringify({version:1,mode:'modify',current:DEFAULT_SPEC,prompt:'Firmer.',turnstileToken:'test-token'})}),env);
  expect(response.status).toBe(200);expect(rate).toHaveBeenCalledWith({key:'192.0.2.10'});expect(run).toHaveBeenCalledOnce();expect((await response.json()).spec.softness).toBe(.5);
 });

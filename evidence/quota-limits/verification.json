@@ -1,0 +1,37 @@
+{
+  "measuredAt": "2026-10-04T10:06:15.110Z",
+  "sourceSha256": "10a7aa3e1776c522d3627250113e7190490ebd1e08ef4ab754f5234c1124b6a3",
+  "conditions": "Actual local workerd SQLite-backed Durable Object; synthetic object IDs, no remote inference, no user quota consumed. Worker/API integration and expiry tested with isolated unit fixtures. Public Worker deployed with native binding.",
+  "nativeWorkerd": {
+    "parallelRequests": 20,
+    "accepted": 3,
+    "denied": 17,
+    "restartPersistence": {
+      "success": false,
+      "retryAfter": 86251,
+      "remaining": 0
+    }
+  },
+  "tests": {
+    "fullUnitPassed": 128,
+    "focusedQuotaAndGatewayPassed": 10,
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "dryRun": true
+  },
+  "production": {
+    "worker": "squishy-lab-ai",
+    "version": "9e6b407d-72ea-45e0-8f90-7b939a6598f2",
+    "binding": "DAILY_QUOTA",
+    "class": "DailyQuota",
+    "migration": "daily-quota-v1"
+  },
+  "semantics": {
+    "limit": 3,
+    "rollingWindowSeconds": 86400,
+    "counts": "Verified reservations before inference; failures and cancellations are not refunded.",
+    "rawIpStoredInCounter": false
+  },
+  "limitation": "No deliberate exhaustion of the owner’s public IP allowance. The fourth-call provider guard is verified in integration fixtures; persistence/concurrency in real local workerd."
+}

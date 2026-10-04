@@ -23,7 +23,7 @@ export async function proxyApi(request:Request,env=process.env):Promise<Response
     const response=await fetch(target,{method:request.method,headers,body,signal:AbortSignal.any([request.signal,AbortSignal.timeout(22000)]),redirect:'error'});
     const text=await boundedBody(new Request('https://response.invalid',{method:'POST',body:response.body,duplex:'half'} as RequestInit),12000);
     const outgoing=new Headers({'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
-    if(response.status===429)outgoing.set('Retry-After','60');
+    if(response.status===429){const retry=response.headers.get('Retry-After');outgoing.set('Retry-After',retry&&/^\d{1,5}$/.test(retry)&&Number(retry)>=1&&Number(retry)<=86400?retry:'60');}
     return new Response(text,{status:response.status,headers:outgoing});
   }catch(error){return error instanceof ApiError?json({code:error.code,message:error.message},error.status):json({code:'unavailable',message:'AI is unavailable. Your squishy and presets still work.'},503);}
 }

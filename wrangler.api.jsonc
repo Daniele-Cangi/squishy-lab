@@ -13,6 +13,8 @@
   "ai": {
     "binding": "AI"
   },
+  "durable_objects": {"bindings":[{"name":"DAILY_QUOTA","class_name":"DailyQuota"}]},
+  "migrations": [{"tag":"daily-quota-v1","new_sqlite_classes":["DailyQuota"]}],
   "ratelimits": [
     {
       "name": "AI_RATE",

@@ -120,7 +120,7 @@ async function configureProvider() {
     el('model-credit').textContent=config.model==='@cf/qwen/qwen3-30b-a3b-fp8'?'Qwen3 · Cloudflare Workers AI':'Built with Llama · Cloudflare Workers AI';
     if(provider==='workers-ai') {
       el('model-credit').hidden=false;
-      el('mode-badge').textContent='AI · Cloudflare';el('privacy').textContent='Your description is sent to Cloudflare Workers AI. Please avoid personal information. Your squishy runs on your device.';
+      el('mode-badge').textContent='AI · Cloudflare';el('privacy').textContent='3 AI requests per network every 24 hours. Your description is sent to Cloudflare Workers AI. Please avoid personal information. Your squishy runs on your device.';
       if(config.siteKey){verificationSiteKey=config.siteKey;const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.async=true;script.onload=renewVerification;script.onerror=()=>{status.textContent='Verification is unavailable. Try a local preset.';};document.head.append(script);}
     } else if(provider==='evaluation-ai'&&import.meta.env.DEV){
       el('model-credit').hidden=false;el('mode-badge').textContent='Remote AI · local test';

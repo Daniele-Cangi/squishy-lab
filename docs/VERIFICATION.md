@@ -1,5 +1,11 @@
 # Refinement verification — 4 October 2026
 
+## Persistent three-per-IP AI quota
+
+Production AI now reserves at most three verified requests per IP in a rolling 24-hour window, in a SQLite-backed Cloudflare Durable Object. A fourth request returns 429 before model inference; each slot expires exactly 24 hours after its reservation. The counter survives page reloads and Worker redeployments. The existing Turnstile and minute/burst guards remain active. The UI explains the limit in English and keeps presets and squishing available when exhausted. [Quota behavior and deployment](VERCEL.md#three-requests-per-ip-in-24-hours) document what consumes a reservation.
+
+The actual local workerd SQLite backend accepted exactly 3 of 20 simultaneous requests and rejected the remaining 17. After terminating and restarting Wrangler with the same persisted storage, the fourth request was still denied. Ten focused quota/gateway unit tests passed: exact expiry boundaries, persistence/reconstruction, concurrent reservations, cleanup of expired timestamps without losing new reservations, keyed IP separation, verification failures consuming zero slots, fourth-call refusal before inference, and forwarding the daily Retry-After value. These tests use no remote model calls and do not consume the owner's public allowance.
+
 ## English expressions and Vercel release
 
 The new cream confetti tray replaces the checkerboard for clear finishes. Mochi starts with a smile; five expressions (Smile, Happy, Sleepy, Wink, Surprised) also work on strawberry and cat, with the cat's nose and whiskers retained. All interface text, prompt examples, status messages and Turnstile UI use English. The original solver and validated material contract remain intact.

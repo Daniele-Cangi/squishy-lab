@@ -23,6 +23,16 @@ The Worker uses `wrangler.api.jsonc`: `PROVIDER=workers-ai`, the existing `@cf/q
 
 The managed Turnstile widget is restricted to `squishy-lab-phi.vercel.app`. Its UI language is English, compact size fits narrow columns, and interaction-only appearance allows automatic verification without occupying the composer. AI uses the Workers Free account confirmed by the owner; no paid-plan upgrade was made. Provider quota failures leave local presets and interaction usable.
 
+## Three requests per IP in 24 hours
+
+The private Worker also binds `DAILY_QUOTA`, a SQLite-backed `DailyQuota` Durable Object, with the `daily-quota-v1` migration. No login or user database is required. One object per HMAC of the platform-verified IP stores at most three reservation timestamps; raw IPs and prompts are not stored in the quota counter. The existing gateway secret keys the HMAC. Rotating that secret starts a new set of counters.
+
+A synchronous transaction reserves a slot after genuine Turnstile validation and before inference. The fourth verified request in a rolling 24-hour window returns HTTP 429 with `daily_limit`, an English message and `Retry-After` until the oldest reservation expires. Each slot becomes available 24 hours after its use, rather than at midnight. Requests that begin inference count even if the provider fails, the result is unsupported or the browser cancels; a bounded repair is part of the same request. Invalid requests and failed verification do not consume a daily slot. Missing quota bindings or storage failures fail closed. The existing minute/burst protections remain in place.
+
+The counter persists across reloads, Worker restarts and deployments, and serializes concurrent reservations. Alarms prune expired timestamps. Devices sharing the same public IP share the allowance; a different IP has its own counter. Local mock development and the separate opt-in evaluation adapter remain outside this public limit. SQLite-backed Durable Objects are supported on [Workers Free](https://developers.cloudflare.com/durable-objects/platform/pricing/); this configuration does not upgrade the plan.
+
+Quota verification uses the actual local workerd SQLite backend for 20 simultaneous requests (3 accepted, 17 denied) and restart persistence. Unit tests cover exact rolling-window expiry, cleanup, HMAC separation, rejected verification, and refusal before the fourth model call. The gateway preserves the daily `Retry-After` header.
+
 The public canonical URL is the supported AI origin. Deployment aliases and preview domains are not registered with this Turnstile widget. Preview environments do not have production AI secrets. When moving the production domain, update `PUBLIC_ORIGIN` and the widget domain together before promoting the new site.
 
 Deploy after `npm run check`:

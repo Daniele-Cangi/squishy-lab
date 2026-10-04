@@ -2,6 +2,7 @@ import { applyPatch, DEFAULT_SPEC, ValidationError, validateModelOutput, validat
 import { mockInterpret } from '../src/shared/mock.ts';
 import { MODEL_3B, MODEL_8B, MODEL_QWEN, OUTPUT_SCHEMA, SYSTEM_PROMPT } from '../src/shared/prompt.ts';
 import { protectedFields,validateRecoveryDirection } from '../src/shared/protection.ts';
+import {quotaKey} from './daily-quota.ts';
 export interface AiBinding { run(model:string,input:Record<string,unknown>):Promise<unknown> }
 export interface RateBinding { limit(input:{key:string}):Promise<{success:boolean}> }
 export interface Env {
@@ -9,8 +10,9 @@ export interface Env {
   ASSETS?:{fetch(request:Request):Promise<Response>}; AI_RATE?:RateBinding; BURST_RATE?:RateBinding;
   TURNSTILE_SECRET?:string; TURNSTILE_SITE_KEY?:string;
   PUBLIC_ORIGIN?:string; GATEWAY_SECRET?:string;
+  DAILY_QUOTA?:{idFromName(name:string):unknown;get(id:unknown):{fetch(request:Request):Promise<Response>}};
 }
-export class ApiError extends Error { constructor(public status:number,public code:string,message:string){super(message);} }
+export class ApiError extends Error { constructor(public status:number,public code:string,message:string,public retryAfter=60){super(message);} }
 const headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
 export function json(value:unknown,status=200) {return new Response(JSON.stringify(value),{status,headers});}
 export async function boundedBody(request:Request,max=8192):Promise<string> {
@@ -96,6 +98,18 @@ async function protect(request:Request,body:SquishyRequest,env:Env) {
   const response=await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:env.TURNSTILE_SECRET,response:body.turnstileToken,remoteip:ip}),signal:AbortSignal.timeout(5000)});
   const result=await response.json() as {success?:boolean;hostname?:string;action?:string};
   if(!response.ok||!result.success||result.hostname!==new URL(env.PUBLIC_ORIGIN??request.url).hostname||result.action!=='squishy')throw new ApiError(403,'verification','Verification expired or is invalid. Please try again.');
+  if(env.PUBLIC_ORIGIN){
+    if(!env.DAILY_QUOTA||!env.GATEWAY_SECRET)throw new ApiError(503,'configuration','AI quota protection is unavailable. Local presets still work.');
+    const id=env.DAILY_QUOTA.idFromName(await quotaKey(ip,env.GATEWAY_SECRET));
+    const quotaResponse=await deadline(env.DAILY_QUOTA.get(id).fetch(new Request('https://quota.internal/consume',{method:'POST'})),5000);
+    const quota=await quotaResponse.json() as {success?:boolean;retryAfter?:number};
+    if(!quotaResponse.ok||typeof quota.success!=='boolean')throw new ApiError(503,'configuration','AI quota protection is unavailable. Local presets still work.');
+    if(!quota.success){
+      const retry=quota.retryAfter;
+      if(typeof retry!=='number'||!Number.isInteger(retry)||retry<1||retry>86400)throw new ApiError(503,'configuration','AI quota protection is unavailable. Local presets still work.');
+      throw new ApiError(429,'daily_limit','You have used your 3 AI requests for the last 24 hours. Please try again later. Your squishy and presets still work.',retry);
+    }
+  }
 }
 function authenticatedGateway(request:Request,secret:string){
   const supplied=request.headers.get('X-Squishy-Gateway')??'';if(supplied.length!==secret.length)return false;
@@ -123,6 +137,6 @@ export async function handleApi(request:Request,env:Env):Promise<Response> {
   } catch(error) {
     if(error instanceof ValidationError||error instanceof SyntaxError)return json({code:'invalid_request',message:'Invalid description or material.'},400);
     const safe=providerError(error);const response=json({code:safe.code,message:safe.message},safe.status);
-    if(safe.status===429)response.headers.set('Retry-After','60');return response;
+    if(safe.status===429)response.headers.set('Retry-After',String(safe.retryAfter));return response;
   }
 }

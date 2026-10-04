@@ -74,6 +74,10 @@ A **216-particle / 750-tetrahedron CPU cage** uses XPBD distance and volume cons
 
 Pressure ramps over 0.85 seconds. Sustained holds progressively deepen and widen the contact until second six; dragging moves the contact and adds depth. No hardware pressure sensor is required. The simulation is a tuned toy material, not a calibrated engineering model; arbitrary self-collision is not implemented and only one pointer deforms the object.
 
+![Clear Jelly cube with coral color changed by Cloudflare Workers AI](docs/images/jelly-cube-clear-ai.png)
+
+*Clear Jelly cube after an AI color-only edit to coral pink; shape and material are preserved.*
+
 ![A Mochi squishy deformed by a sustained mouse press](docs/images/deformed-squishy.png)
 
 `src/shared/` contains the spec, compiler and AI contract. `src/physics/` is independent of rendering and hosting. `src/scene.ts` handles rendering and interaction; `src/decorations.ts` binds details and custom lettering to the surface. `src/sound.ts` manages recorded audio. `server/` and `worker/` implement the API gateway and provider.

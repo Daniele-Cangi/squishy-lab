@@ -21,7 +21,7 @@ Pick a shape, press and hold to sink deeper, then release and watch it recover. 
 - **Make it yours:** up to 40 characters, four locally hosted fonts (Chewy, Baloo 2, Pacifico and Short Stack), and a text color picker. Your message replaces the face; clearing it restores the selected expression. Personalization persists across collection changes and reloads.
 - **Download PNG:** save the current rendered squishy without the page's controls or panels.
 - **Gel and Crunchy audio:** pressure-responsive excerpts from real recordings. Gel is selected and enabled by default, starting after the first playground gesture as required by browsers. Choose Crunchy or mute with the speaker button.
-- **Responsive playground:** a large squishy on the left and customization above AI on the right on desktop. On mobile, the squishy stays above the controls. Fullscreen uses the browser API or a viewport fallback.
+- **Responsive playground:** a large squishy with the AI panel below it on the left, and collection/customization controls on the right on desktop. On mobile, the squishy stays above the controls and AI is the last panel. Fullscreen uses the browser API or a viewport fallback.
 - **Optional AI material edits:** describe color, softness, firmness, recovery or proportions in English. The public app uses Cloudflare Workers AI; local development uses an explicit mock. AI does not generate new shapes, text or fonts.
 - **Before/after comparison:** compare an edited material under the same automated squeeze and recovery gesture.
 

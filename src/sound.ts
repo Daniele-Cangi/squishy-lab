@@ -1,40 +1,49 @@
 import type {ShapeId} from './collection';
+
+/** Pressure-responsive excerpts from the credited Pixabay recording. */
 export class SquishySound {
   enabled=false;
   private context:AudioContext|undefined;
-  private noise:AudioBuffer|undefined;
+  private recording:AudioBuffer|undefined;
   private master:GainNode|undefined;
   private sources=new Set<AudioBufferSourceNode>();
-  private lastPulse=-1;
+  private nextPulse=0;
   private wasPressed=false;
-  private releasedAt=-10;
   async enable(){
     try{
       if(!this.context){
         const Audio=window.AudioContext??(window as unknown as {webkitAudioContext:typeof AudioContext}).webkitAudioContext;
-        this.context=new Audio();this.master=this.context.createGain();this.master.gain.value=.28;this.master.connect(this.context.destination);
-        this.noise=this.context.createBuffer(1,this.context.sampleRate,this.context.sampleRate);const samples=this.noise.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=Math.random()*2-1;
+        this.context=new Audio();this.master=this.context.createGain();this.master.gain.value=.65;this.master.connect(this.context.destination);
       }
-      await this.context.resume();this.enabled=this.context.state==='running';return this.enabled;
-    }catch{this.enabled=false;return false;}
+      // Resume inside the tap, before asynchronous download/decode (including iOS).
+      await this.context.resume();
+      if(!this.recording){
+        const response=await fetch('/audio/crinkle.mp3',{signal:AbortSignal.timeout(15000)});
+        if(!response.ok)throw new Error('Recording unavailable');
+        this.recording=await this.context.decodeAudioData(await response.arrayBuffer());
+        if(this.recording.duration<2)throw new Error('Recording too short');
+      }
+      this.enabled=this.context.state==='running';return this.enabled;
+    }catch{this.enabled=false;this.quiet();await this.context?.suspend().catch(()=>{});return false;}
   }
   async disable(){this.enabled=false;this.quiet();await this.context?.suspend().catch(()=>{});}
-  quiet(){for(const source of this.sources){try{source.stop();}catch{/* Already ended. */}}this.sources.clear();this.wasPressed=false;this.releasedAt=-10;}
+  quiet(){for(const source of this.sources){try{source.stop();}catch{/* Already ended. */}}this.sources.clear();this.wasPressed=false;this.nextPulse=0;}
   resume(){if(this.enabled)void this.context?.resume().catch(()=>{});}
   update(shape:ShapeId,pressure:number){
-    const ctx=this.context;if(!this.enabled||!ctx||ctx.state!=='running'||document.hidden)return;
-    const now=ctx.currentTime,pressed=pressure>0;
-    if(this.wasPressed&&!pressed)this.releasedAt=now;this.wasPressed=pressed;
-    const tail=!pressed&&now-this.releasedAt<.55;
-    if(!pressed&&!tail)return;
-    const intensity=Math.min(1,Math.max(0,pressure));
-    if(now-this.lastPulse<(pressed?.19-.09*intensity:.16))return;this.lastPulse=now;
-    const crisp=shape==='peanut',source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();
-    source.buffer=this.noise!;source.playbackRate.value=.8+Math.random()*.5;
-    filter.type=crisp?'bandpass':'lowpass';filter.frequency.value=(crisp?2400:shape==='cube'?1900:shape==='chocolate'||shape==='cheese'?1600:1000)*( .8+Math.random()*.4);filter.Q.value=crisp?.8:.5;
-    const duration=crisp?.035+Math.random()*.025:.055+Math.random()*.035,peak=pressed?(.035+.15*intensity)*(crisp?1.2:1):.025*(1-(now-this.releasedAt)/.55);
-    gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(peak,now+.003);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
-    source.connect(filter);filter.connect(gain);gain.connect(this.master!);this.sources.add(source);
-    source.onended=()=>{this.sources.delete(source);source.disconnect();filter.disconnect();gain.disconnect();};source.start(now,Math.random()*.7);source.stop(now+duration+.005);
+    const ctx=this.context;if(!this.enabled||!ctx||!this.recording||ctx.state!=='running'||document.hidden)return;
+    const now=ctx.currentTime,pressed=pressure>0,released=this.wasPressed&&!pressed;this.wasPressed=pressed;
+    if(!pressed&&!released)return;
+    if(pressed&&now<this.nextPulse)return;
+    if(this.sources.size>=2)return;
+    const intensity=Math.min(1,Math.max(0,pressure)),source=ctx.createBufferSource(),gain=ctx.createGain();
+    const duration=released?.28:.65+.18*intensity,rate=shape==='peanut'?1.04:.92;
+    source.buffer=this.recording;source.playbackRate.value=rate;
+    const peak=released?.12:.2+.5*intensity;
+    gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(peak,now+.035);
+    gain.gain.setValueAtTime(peak,now+duration-.12);gain.gain.linearRampToValueAtTime(0,now+duration);
+    source.connect(gain);gain.connect(this.master!);this.sources.add(source);
+    source.onended=()=>{this.sources.delete(source);source.disconnect();gain.disconnect();};
+    source.start(now,Math.random()*(this.recording.duration-duration*rate),duration*rate);
+    this.nextPulse=now+duration-.08;
   }
 }

@@ -35,6 +35,11 @@ export class SquishySound {
       this.enabled=true;return true;
     }catch{if(generation!==this.generation)return false;this.enabled=false;this.quiet();await this.context?.suspend().catch(()=>{});return false;}
   }
+  get running(){return this.context?.state==='running';}
+  preview(){
+    if(!this.enabled||!this.running)return false;
+    this.quiet();this.update('mochi',1);return true;
+  }
   async disable(suspend=true){this.generation++;this.enabled=false;this.quiet();if(suspend)await this.context?.suspend().catch(()=>{});}
   quiet(){for(const source of this.sources){try{source.stop();}catch{/* Already ended. */}}this.sources.clear();this.wasPressed=false;this.nextPulse=0;}
   resume(){if(this.context)void this.context.resume().catch(()=>{});}

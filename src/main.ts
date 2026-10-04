@@ -60,6 +60,15 @@ for(const eventName of ['pointerdown','touchend','click'])playground.addEventLis
 for(const eventName of ['pointerdown','touchend','click'])el('squeeze').addEventListener(eventName,audioGesture,{passive:true});
 playground.addEventListener('keydown',event=>{if(event.target===canvas)audioGesture();});
 el('squeeze').addEventListener('keydown',audioGesture);
+el<HTMLButtonElement>('test-sound').onclick=async()=>{
+  soundWanted=true;reflectSound();sound.resume();
+  const ready=await sound.enable();
+  if(ready&&scene)scene.soundFeedback=(shape,pressure)=>sound.update(shape,pressure);
+  // Resume again after decoding on browsers with sticky user activation.
+  sound.resume();
+  const played=sound.preview();
+  status.textContent=played?'Sound test playing. Use your device media volume to adjust it.':'Tap Test sound again to start audio.';
+};
 window.addEventListener('blur',()=>sound.quiet());document.addEventListener('visibilitychange',()=>{if(document.hidden)sound.quiet();});
 setupFullscreen(document.querySelector<HTMLElement>('.play-area')!,el<HTMLButtonElement>('fullscreen'),()=>scene?.release());
 el('fullscreen-reset').onclick=()=>el<HTMLButtonElement>('reset').click();

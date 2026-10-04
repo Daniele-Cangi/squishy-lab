@@ -338,3 +338,5 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 .personalization #text-color::-moz-color-swatch{border:0;border-radius:7px}
 
 .sound-mode{touch-action:manipulation;-webkit-appearance:none;appearance:none;width:90px;border:1.5px solid var(--ink);box-shadow:2px 3px 0 var(--ink)}
+
+.play-actions{flex-wrap:wrap}.play-actions #test-sound{min-height:44px}

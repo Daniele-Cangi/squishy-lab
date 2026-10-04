@@ -26,6 +26,9 @@ test('focus loss and hidden-tab interruption release pressure; resized mobile co
   const dock=(await page.locator('#squishy').boundingBox())!;expect(dock.height).toBeGreaterThanOrEqual(150);expect(dock.height).toBeLessThan(230);expect(dock.y).toBeGreaterThanOrEqual(-1);expect(dock.y+dock.height).toBeLessThan(504);
   const field=(await page.getByRole('textbox').boundingBox())!;expect(field.y).toBeGreaterThan(dock.y+dock.height);
   await page.screenshot({path:'evidence/refined/browser-smoke/mobile-composing.png'});
+  // Leaving the textarea for composer controls must not move their tap target.
+  await page.locator('#create-mode').click();await expect(page.locator('#create-mode')).toHaveAttribute('aria-pressed','true');
+  await page.locator('#modify-mode').click();await expect(page.locator('#modify-mode')).toHaveAttribute('aria-pressed','true');
   await page.locator('#generate').click();await expect(page.locator('#status')).toContainText('demo locale');await expect(page.locator('body')).not.toHaveAttribute('data-composing','true');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);await page.locator('#squeeze').scrollIntoViewIfNeeded();await page.locator('#squeeze').focus();await page.keyboard.down('Enter');await expect(page.locator('#state')).toHaveText('Sotto pressione');await page.keyboard.up('Enter');
 });

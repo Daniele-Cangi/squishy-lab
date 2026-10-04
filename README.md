@@ -25,7 +25,9 @@ Hold the object to increase pressure over 0.85 seconds. After the first second, 
 
 After a material edit, **Confronta prima e dopo** repeats a two-second press and five-second recovery on both materials. Shape, color, finish, camera and gesture are held equal; deformation memory is reset between phases. Stop the comparison or press the object to return to the actual edited squishy. Descriptions of changes come from the applied parameters.
 
-![The expanded local collection](evidence/collection-expanded/cat-rest.png)
+![Squishy Lab, the playful material playground](evidence/playful-interface/desktop.png)
+
+The page pairs a warm dotted background with lavender, mint and yellow panels, original smiling vector graphics, sticker accents and a compact GitHub source link. The responsive collection and composer share the same visual language; see the [design notes and mobile captures](docs/DESIGN.md).
 
 ## What is implemented
 
@@ -67,6 +69,7 @@ npm run measure:surface # persistent rendered-surface probes and indentation pro
 npm run record:experience # normal-time Chrome press/release/drag video
 npm run record:collection -- --expanded # new five shapes, press/recovery, effects, mobile
 npx tsx scripts/record-shape-refinement.ts # real mouse short/long holds, revised banana/peanut
+npx tsx scripts/record-interface.ts # current desktop/mobile theme, forms and composer focus
 npm run measure:browser # requires npm run dev + installed Chrome; records actual GPU
 npm run worker:check    # local bundle/dry run; does not publish
 npm run worker:dev      # local workerd preview of built assets + MOCK, normally port 8787

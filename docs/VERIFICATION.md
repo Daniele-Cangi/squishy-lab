@@ -1,5 +1,17 @@
 # Refinement verification — 4 October 2026
 
+## Playful interface refresh
+
+The page now has a warm dotted background, lavender playground, mint composer, yellow actions, original smiling vector graphics, sticker details and colored numbered collection tiles. The source link and monospace badges provide the requested GitHub character. Browser title, theme color and favicon match the page. See [design notes](DESIGN.md), [desktop](../evidence/playful-interface/desktop.png), [mobile](../evidence/playful-interface/mobile.png) and [composer focus](../evidence/playful-interface/mobile-composing.png).
+
+Nine screenshots and [capture metadata](../evidence/playful-interface/interface.json) record the rendered UI, including banana, glitter peanut, transparent cube, tablet, 320 px and 390 px layouts and a 390×504 composer viewport. The capture script checks document width against every captured viewport, records the actual Chrome/GPU and source/document hashes, and finished without browser errors. It used the explicit local demo and made no remote inference calls. Mobile focus is browser emulation.
+
+Strict typecheck, lint, all **114 unit tests** and the production build passed. The AI backend, contract, geometry and pressure/recovery implementation keep the preceding version; this follow-up changes presentation and page metadata. Previous appearance and physics recordings remain tied to their original source hashes.
+
+The first browser run passed 24/25 and exposed a mobile tap regression: text-field blur expanded the playground before pointer release, moving the submit target by about 638 px and losing the click. Composition now persists across focus transfers within the composer; submission, local preset selection and focus leaving the panel end it. The existing regression retains its submission/viewport assertions and additionally checks real clicks on both request modes. The corrected focused case passed.
+
+The final full installed-Chrome run passed all **25 browser tests**, including sustained mouse pressure, collection/effect controls, keyboard, focus interruption, mock material edits, cancellation and verification-token flows. Production favicon bytes match the source, capture hashes match the final runtime/documents, and Worker dry-run packaging passed with the provider disabled. No Cloudflare publication was performed for the page refresh.
+
 ## Banana, peanut and progressive hold
 
 The banana now has a fuller curved body with rotated rounded cross sections, a distinct extended stem, smooth tip pigment and subtle peel markings. The peanut has two unequal lobes, a stronger waist, shallow sculpted grain, material-bound color variation and a small shell seam. Both use their actual lowest cage nodes for support. Their exact runtime references and colors were regenerated in Blender 5.2.2 LTS; reopening the saved workshop confirmed ten upright 5,402-vertex skins, the peanut color attribute and no external fonts. Mobile banana framing was inspected at 390×844 with both ends visible.

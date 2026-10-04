@@ -18,7 +18,9 @@ const updateViewport=()=>{
 };
 window.visualViewport?.addEventListener('resize',updateViewport);window.addEventListener('resize',updateViewport);updateViewport();
 prompt.addEventListener('focus',()=>{document.body.dataset.composing='true';updateViewport();});
-prompt.addEventListener('blur',()=>{delete document.body.dataset.composing;});
+const composer=document.querySelector<HTMLElement>('.composer')!;
+// Keep pointer targets still while focus moves from the field to its controls.
+composer.addEventListener('focusout',event=>{if(!(event.relatedTarget instanceof Node)||!composer.contains(event.relatedTarget))delete document.body.dataset.composing;});
 let scene!:SquishyScene;
 try {scene=new SquishyScene(canvas,spec,state=>{const text=copy.states[state];if(el('state').textContent!==text)el('state').textContent=text;el('state').dataset.state=state;});}
 catch {el('canvas-error').hidden=false;for(const id of ['squeeze','rotate'])el<HTMLButtonElement>(id).disabled=true;}
@@ -69,11 +71,13 @@ canvas.addEventListener('details-error',()=>{status.textContent='I dettagli non 
 function chooseMode(next:'create'|'modify') {mode=next;for(const m of ['create','modify']){const b=el<HTMLButtonElement>(`${m}-mode`);b.classList.toggle('selected',m===mode);b.setAttribute('aria-pressed',String(m===mode));}}
 el('create-mode').onclick=()=>chooseMode('create');el('modify-mode').onclick=()=>chooseMode('modify');
 document.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach(button=>button.onclick=()=>{
+  delete document.body.dataset.composing;
   cancelRequest();clearComparison();const p=PRESETS[Number(button.dataset.preset)];apply(structuredClone(p.spec),p.name);status.textContent='Preset locale pronto. Premi per sentire la differenza.';
   document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',String(b===button));});
 });
 el<HTMLFormElement>('prompt-form').onsubmit=async event=>{
   event.preventDefault();if(!prompt.value.trim()){status.textContent='Scrivi come vorresti il tuo squishy.';prompt.focus();return;}
+  delete document.body.dataset.composing;
   if(provider==='disabled'){status.textContent='AI non configurata. I preset locali sono pronti da usare.';return;}
   if(provider==='workers-ai'&&!turnstileToken){status.textContent='Completa la verifica prima di usare l’AI.';return;}
   scene?.stopComparison();const before=structuredClone(spec),sentMode=mode;

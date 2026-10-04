@@ -133,6 +133,11 @@ export class SquishyScene {
     this.geometry.getAttribute('position').needsUpdate=true;this.geometry.computeVertexNormals();this.geometry.computeBoundingSphere();
     this.decorations?.update(this.geometry.getAttribute('position').array,this.geometry.getAttribute('normal').array);
   }
+  async exportPNG(){
+    this.renderer.render(this.scene,this.camera);
+    const blob=await new Promise<Blob>((resolve,reject)=>this.canvas.toBlob(value=>value?resolve(value):reject(new Error('PNG export failed')),'image/png'));
+    return blob;
+  }
   reset(){this.stopComparison();this.release();this.body.reset();this.refreshSurface();this.onState('rest');}
   rotate(){this.stopComparison();this.release();this.angle+=Math.PI/2;this.updateCamera();}
   beginStandardPress() {this.stopComparison();this.keyboard=true;this.held=true;this.pressStart=this.body.time;this.haloEmbedding=this.visibleProbe;this.onState('pressing');}

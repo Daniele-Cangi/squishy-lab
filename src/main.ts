@@ -94,13 +94,29 @@ function updateAppearanceControls(){
   document.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach(b=>{const a=COLLECTION.find(c=>c.id===b.dataset.shape)!.appearance;b.setAttribute('aria-pressed',String(a.shape===appearance.shape&&a.label===appearance.label));});
   document.querySelectorAll<HTMLButtonElement>('[data-effect]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.effect===appearance.effect)));
   el<HTMLInputElement>('face').checked=appearance.face;
+  el<HTMLInputElement>('custom-text').value=appearance.text??'';
+  document.querySelectorAll<HTMLButtonElement>('[data-font]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.font===(appearance.font??'Chewy'))));
   document.querySelectorAll<HTMLButtonElement>('[data-expression]').forEach(b=>{b.setAttribute('aria-pressed',String(appearance.face&&b.dataset.expression===(appearance.expression??'smile')));});
 }
 function applyAppearance(next:Appearance){cancelRequest();clearComparison();appearance={...next};scene?.setAppearance(appearance);updateAppearanceControls();updateSummary();try{localStorage.setItem('squishy-appearance-v1',JSON.stringify(appearance));}catch{/* Optional storage. */}}
-document.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach(button=>button.onclick=()=>{const choice=COLLECTION.find(c=>c.id===button.dataset.shape)!;applyAppearance(choice.appearance);apply(validateSpec({...spec,color:choice.color}),choice.name);document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});status.textContent=`${choice.name} is ready. You can squish the lettering and details too.`;});
+document.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach(button=>button.onclick=()=>{const choice=COLLECTION.find(c=>c.id===button.dataset.shape)!;applyAppearance({...choice.appearance,text:appearance.text,font:appearance.font});apply(validateSpec({...spec,color:choice.color}),choice.name);document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});status.textContent=`${choice.name} is ready. You can squish the lettering and details too.`;});
 document.querySelectorAll<HTMLButtonElement>('[data-effect]').forEach(button=>button.onclick=()=>{applyAppearance({...appearance,effect:button.dataset.effect as SurfaceEffect});status.textContent='Finish updated. Same squishy feel.';});
 el<HTMLInputElement>('face').onchange=event=>applyAppearance({...appearance,face:(event.target as HTMLInputElement).checked});
 document.querySelectorAll<HTMLButtonElement>('[data-expression]').forEach(button=>button.onclick=()=>{applyAppearance({...appearance,face:true,expression:button.dataset.expression as FaceExpression});status.textContent='New mood, same squishy.';});
+let letteringRevision=0;
+async function updateLettering(text:string,font:Appearance['font']){
+  const revision=++letteringRevision;await document.fonts.load(`32px "${font??'Chewy'}"`);
+  if(revision!==letteringRevision)return;
+  applyAppearance({...appearance,text,font});
+}
+el<HTMLInputElement>('custom-text').oninput=event=>{void updateLettering((event.target as HTMLInputElement).value,appearance.font);};
+document.querySelectorAll<HTMLButtonElement>('[data-font]').forEach(button=>button.onclick=()=>{void updateLettering(el<HTMLInputElement>('custom-text').value,button.dataset.font as Appearance['font']);});
+el<HTMLButtonElement>('download-png').onclick=async()=>{
+  const button=el<HTMLButtonElement>('download-png');button.disabled=true;
+  try{await document.fonts.ready;if(!scene)throw new Error('Scene unavailable');const blob=await scene.exportPNG();const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='my-squishy.png';link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);el('download-status').textContent='Your squishy is ready!';}
+  catch{el('download-status').textContent='Could not save the PNG. Please try again.';}finally{button.disabled=false;}
+};
+void document.fonts.load(`32px "${appearance.font??'Chewy'}"`).then(()=>scene?.setAppearance(appearance));
 canvas.addEventListener('details-error',()=>{status.textContent='Details could not load. Refresh the page to try again.';});
 function chooseMode(next:'create'|'modify') {mode=next;for(const m of ['create','modify']){const b=el<HTMLButtonElement>(`${m}-mode`);b.classList.toggle('selected',m===mode);b.setAttribute('aria-pressed',String(m===mode));}}
 el('create-mode').onclick=()=>chooseMode('create');el('modify-mode').onclick=()=>chooseMode('modify');

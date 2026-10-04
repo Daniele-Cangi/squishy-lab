@@ -324,3 +324,11 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
   .object-column {position:sticky;top:20px}
 }
 @media(max-width:720px){.controls-column {width:100%}.object-column {width:100%}.controls-column .collection{margin-top:0}}
+
+@font-face{font-family:Chewy;src:url('/fonts/chewy.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'Baloo 2';src:url('/fonts/baloo2.ttf') format('truetype');font-display:swap}
+@font-face{font-family:Pacifico;src:url('/fonts/pacifico.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'Short Stack';src:url('/fonts/shortstack.ttf') format('truetype');font-display:swap}
+.personalization {padding:20px;border:1.5px solid var(--ink);border-radius:21px;background:var(--paper);box-shadow:3px 4px 0 #c4b7d2}
+.personalization h2{font-size:18px;margin:0 0 14px}.personalization label{display:block;font-size:13px;margin-bottom:8px}.personalization input{width:100%;min-height:46px;border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit;background:#f5efff;color:var(--ink)}
+.personalization p{font-size:12px;color:var(--muted);line-height:1.5}.cute-fonts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.cute-fonts button{font-size:19px;min-height:48px;border:1px solid var(--line);border-radius:12px;background:white;color:var(--ink)}.cute-fonts button[aria-pressed=true]{background:var(--lavender);border-color:var(--ink)}

@@ -28,7 +28,7 @@ export class Decorations {
   private sparkleBindings:BoundVertex[]=[];
   constructor(surface:SurfaceEmbedding,appearance:Appearance,assets:DetailLibrary){
     const face=appearance.shape==='cat'?'cat-face':'face',expression=appearance.expression??'smile';
-    const names=[...(appearance.label==='none'?[]:[appearance.label]),...(appearance.face?[expression==='smile'?face:`${face}-${expression}`]:[]),...(appearance.shape==='strawberry'?['seeds','leaves']:[]),...(['chocolate','banana','cat','cheese','peanut'].includes(appearance.shape)?[appearance.shape]:[])];
+    const names=[...(appearance.label==='none'?[]:[appearance.label]),...(appearance.face&&!appearance.text?.trim()?[expression==='smile'?face:`${face}-${expression}`]:[]),...(appearance.shape==='strawberry'?['seeds','leaves']:[]),...(['chocolate','banana','cat','cheese','peanut'].includes(appearance.shape)?[appearance.shape]:[])];
     const batches=new Map<string,{positions:number[];indices:number[];bindings:BoundVertex[]}>();
     for(const name of names)for(const asset of assets.groups[name]??[]){
       let batch=batches.get(asset.color);if(!batch){batch={positions:[],indices:[],bindings:[]};batches.set(asset.color,batch);}
@@ -38,6 +38,20 @@ export class Decorations {
       const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(batch.positions.length),3));geometry.setIndex(batch.indices);
       const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color,roughness:.62,side:THREE.DoubleSide}));mesh.frustumCulled=false;
       this.meshes.push({mesh,bindings:batch.bindings});this.group.add(mesh);
+    }
+    if(appearance.text?.trim()){
+      const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=256;const ctx=canvas.getContext('2d')!;
+      ctx.textAlign='center';ctx.textBaseline='middle';let size=180;const text=appearance.text.trim();
+      do{ctx.font=`${size}px "${appearance.font??'Chewy'}"`;if(ctx.measureText(text).width<940)break;size-=2;}while(size>18);
+      ctx.lineJoin='round';ctx.strokeStyle='#fff8ec';ctx.lineWidth=10;ctx.strokeText(text,512,128);ctx.fillStyle='#47334e';ctx.fillText(text,512,128);
+      const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;
+      const columns=32,rows=12,bindings:BoundVertex[]=[],uv:number[]=[],indices:number[]=[];
+      for(let y=0;y<=rows;y++)for(let x=0;x<=columns;x++){
+        bindings.push({...facePoint(surface,2,1,(x/columns-.5)*1.45,(y/rows-.5)*.85+.25),height:.012});uv.push(x/columns,y/rows);
+        if(x<columns&&y<rows){const a=x+y*(columns+1);indices.push(a,a+1,a+columns+1,a+1,a+columns+2,a+columns+1);}
+      }
+      const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(bindings.length*3),3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geometry.setIndex(indices);
+      const mesh=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({map,transparent:true,depthWrite:false,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-1}));mesh.frustumCulled=false;this.meshes.push({mesh,bindings});this.group.add(mesh);
     }
     if(appearance.effect!=='foam'){
       // Deterministic flecks lie in material coordinates and travel with the skin.
@@ -60,5 +74,6 @@ export class Decorations {
     if(this.sparkle){const attr=this.sparkle.geometry.getAttribute('position');updateDetails(this.sparkleBindings,positions,normals,attr.array as Float32Array);attr.needsUpdate=true;}
   }
   get vertices(){return this.meshes.reduce((n,m)=>n+m.bindings.length,0)+this.sparkleBindings.length;}
-  dispose(){for(const {mesh}of this.meshes){mesh.geometry.dispose();(mesh.material as THREE.Material).dispose();}this.sparkle?.geometry.dispose();const material=this.sparkle?.material as THREE.PointsMaterial|undefined;material?.map?.dispose();material?.dispose();}
+  dispose(){for(const {mesh}of this.meshes){mesh.geometry.dispose();(mesh.material as THREE.MeshBasicMaterial).map?.dispose();(mesh.material as THREE.Material).dispose();}this.sparkle?.geometry.dispose();const material=this.sparkle?.material as THREE.PointsMaterial|undefined;material?.map?.dispose();material?.dispose();}
 }
+

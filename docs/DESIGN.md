@@ -46,3 +46,6 @@ Gel is now the default sound texture, using the approved filtered, slowed 5–20
 
 The sound preference now defaults to on with Gel selected. Browser gesture restrictions mean the AudioContext starts on the first playground press or keyboard interaction. Mute disables subsequent automatic starts. Desktop places collection/finishes/moods above AI in the right sidebar, with a sticky playground on the left; mobile stacks the playground first.
 
+
+Personalization supports up to 40 characters and four locally hosted cute fonts: Chewy, Baloo 2, Pacifico and Short Stack. Text replaces facial geometry while preserving the selected expression, and uses a triangulated skin-bound texture that follows deformation. Clearing the text restores the face. Lettering persists across shape changes and reloads. Download PNG renders and captures the current canvas without page controls. Font licenses are shipped next to the font files (Chewy: Apache 2.0; others: SIL OFL).
+

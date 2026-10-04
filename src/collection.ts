@@ -3,7 +3,7 @@ export type ShapeId=typeof SHAPE_IDS[number];
 export type SurfaceEffect='foam'|'glitter'|'clear';
 export const FACE_EXPRESSIONS=['smile','happy','sleepy','wink','surprised'] as const;
 export type FaceExpression=typeof FACE_EXPRESSIONS[number];
-export interface Appearance {shape:ShapeId;label:'none'|'butter'|'strawberry';face:boolean;effect:SurfaceEffect;expression?:FaceExpression}
+export interface Appearance {shape:ShapeId;label:'none'|'butter'|'strawberry';face:boolean;effect:SurfaceEffect;expression?:FaceExpression;text?:string;font?:'Chewy'|'Baloo 2'|'Pacifico'|'Short Stack'}
 export const DEFAULT_APPEARANCE:Appearance={shape:'mochi',label:'none',face:true,effect:'foam',expression:'smile'};
 export const COLLECTION:{id:string;name:string;note:string;color:string;appearance:Appearance}[]=[
   {id:'mochi',name:'Mochi',note:'The original little cloud',color:'#a996ee',appearance:DEFAULT_APPEARANCE},
@@ -22,6 +22,9 @@ export function validateAppearance(value:unknown):Appearance{
   const v=value as Record<string,unknown>;
   if(!SHAPE_IDS.includes(v.shape as ShapeId)||!['none','butter','strawberry'].includes(String(v.label))||!['foam','glitter','clear'].includes(String(v.effect))||typeof v.face!=='boolean'||(v.shape!=='butter'&&v.label!=='none'))throw new Error('Invalid appearance');
   if(v.expression!==undefined&&!FACE_EXPRESSIONS.includes(v.expression as FaceExpression))throw new Error('Invalid expression');
-  return {shape:v.shape as ShapeId,label:v.label as Appearance['label'],face:v.face,effect:v.effect as SurfaceEffect,...(v.expression!==undefined?{expression:v.expression as FaceExpression}:{})};
+  if(v.text!==undefined&&(typeof v.text!=='string'||v.text.length>40))throw new Error('Invalid text');
+  if(v.font!==undefined&&!['Chewy','Baloo 2','Pacifico','Short Stack'].includes(String(v.font)))throw new Error('Invalid font');
+  return {...(v.text!==undefined?{text:v.text as string}:{}),...(v.font!==undefined?{font:v.font as Appearance['font']}:{}),shape:v.shape as ShapeId,label:v.label as Appearance['label'],face:v.face,effect:v.effect as SurfaceEffect,...(v.expression!==undefined?{expression:v.expression as FaceExpression}:{})};
 }
 export function collectionName(appearance:Appearance){return COLLECTION.find(c=>c.appearance.shape===appearance.shape&&c.appearance.label===appearance.label)?.name??'Squishy';}
+

@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { DEFAULT_APPEARANCE, type Appearance } from './collection';
+import { DEFAULT_APPEARANCE, type Appearance,type ShapeId } from './collection';
 import { Decorations,loadDetails,type DetailLibrary } from './decorations';
 import { compileSpec, type SquishySpec } from './shared/spec';
 import { createSurface, embedSurface, cagePoint,surfacePoint,pointDepth,shapeTint,type MaterialPoint,type SurfaceEmbedding, type Vec3 } from './physics/cage';
 import { FixedClock, SoftBody } from './physics/solver';
 import { pressureAt,sustainedPressureAt,standardContact,STANDARD_GESTURE } from './physics/gesture';
 export class SquishyScene {
+  soundFeedback:((shape:ShapeId,pressure:number)=>void)|undefined;
   readonly renderer:THREE.WebGLRenderer;
   readonly scene=new THREE.Scene();
   readonly camera=new THREE.PerspectiveCamera(36,1,.1,40);
@@ -204,6 +205,7 @@ export class SquishyScene {
       }
     });const solved=performance.now();
     if(moving)this.refreshSurface();
+    this.soundFeedback?.(this.appearance.shape,this.body.contact?.intensity??0);
     if(this.haloEmbedding){const world=new THREE.Vector3(),normal=new THREE.Vector3();for(let i=0;i<3;i++){world.addScaledVector(new THREE.Vector3().fromBufferAttribute(this.geometry.getAttribute('position'),this.haloEmbedding.nodes[i]),this.haloEmbedding.weights[i]);normal.addScaledVector(new THREE.Vector3().fromBufferAttribute(this.geometry.getAttribute('normal'),this.haloEmbedding.nodes[i]),this.haloEmbedding.weights[i]);}this.moveHalo(world,normal.normalize().toArray() as Vec3);}
     const surfaced=performance.now();
     if(this.needsRender){this.renderer.render(this.scene,this.camera);this.needsRender=false;}const rendered=performance.now();

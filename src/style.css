@@ -71,6 +71,9 @@ h1 {font-family:Manrope,system-ui,sans-serif;font-size:clamp(48px,4.6vw,64px);li
 .stage-top {position:absolute;top:23px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none;z-index:2}
 .stage-label {display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;color:#5a486e}
 .stage-label>span {font-size:17px}
+.stage-top-right {display:flex;align-items:center;gap:8px}
+.sound-toggle[aria-pressed=true] {background:var(--mint)}
+.sound-toggle[aria-pressed=true] .sound-slash {display:none}
 .state {font-size:11px;font-weight:500;color:#5d4c73;background:#fffdf5da;border:1px solid #9b85b1;border-radius:30px;padding:8px 11px;white-space:nowrap}
 .state[data-state=pressing] {color:var(--ink);background:var(--yellow);border-color:var(--ink)}
 .state[data-state=recovering] {background:#cbead6;color:#3b614b}

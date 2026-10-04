@@ -95,11 +95,12 @@ function updateAppearanceControls(){
   document.querySelectorAll<HTMLButtonElement>('[data-effect]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.effect===appearance.effect)));
   el<HTMLInputElement>('face').checked=appearance.face;
   el<HTMLInputElement>('custom-text').value=appearance.text??'';
+  el<HTMLInputElement>('text-color').value=appearance.textColor??'#47334e';
   document.querySelectorAll<HTMLButtonElement>('[data-font]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.font===(appearance.font??'Chewy'))));
   document.querySelectorAll<HTMLButtonElement>('[data-expression]').forEach(b=>{b.setAttribute('aria-pressed',String(appearance.face&&b.dataset.expression===(appearance.expression??'smile')));});
 }
 function applyAppearance(next:Appearance){cancelRequest();clearComparison();appearance={...next};scene?.setAppearance(appearance);updateAppearanceControls();updateSummary();try{localStorage.setItem('squishy-appearance-v1',JSON.stringify(appearance));}catch{/* Optional storage. */}}
-document.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach(button=>button.onclick=()=>{const choice=COLLECTION.find(c=>c.id===button.dataset.shape)!;applyAppearance({...choice.appearance,text:appearance.text,font:appearance.font});apply(validateSpec({...spec,color:choice.color}),choice.name);document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});status.textContent=`${choice.name} is ready. You can squish the lettering and details too.`;});
+document.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach(button=>button.onclick=()=>{const choice=COLLECTION.find(c=>c.id===button.dataset.shape)!;applyAppearance({...choice.appearance,text:appearance.text,font:appearance.font,textColor:appearance.textColor});apply(validateSpec({...spec,color:choice.color}),choice.name);document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});status.textContent=`${choice.name} is ready. You can squish the lettering and details too.`;});
 document.querySelectorAll<HTMLButtonElement>('[data-effect]').forEach(button=>button.onclick=()=>{applyAppearance({...appearance,effect:button.dataset.effect as SurfaceEffect});status.textContent='Finish updated. Same squishy feel.';});
 el<HTMLInputElement>('face').onchange=event=>applyAppearance({...appearance,face:(event.target as HTMLInputElement).checked});
 document.querySelectorAll<HTMLButtonElement>('[data-expression]').forEach(button=>button.onclick=()=>{applyAppearance({...appearance,face:true,expression:button.dataset.expression as FaceExpression});status.textContent='New mood, same squishy.';});
@@ -109,6 +110,7 @@ async function updateLettering(text:string,font:Appearance['font']){
   if(revision!==letteringRevision)return;
   applyAppearance({...appearance,text,font});
 }
+el<HTMLInputElement>('text-color').oninput=event=>{appearance={...appearance,textColor:(event.target as HTMLInputElement).value};void updateLettering(el<HTMLInputElement>('custom-text').value,appearance.font);};
 el<HTMLInputElement>('custom-text').oninput=event=>{void updateLettering((event.target as HTMLInputElement).value,appearance.font);};
 document.querySelectorAll<HTMLButtonElement>('[data-font]').forEach(button=>button.onclick=()=>{void updateLettering(el<HTMLInputElement>('custom-text').value,button.dataset.font as Appearance['font']);});
 el<HTMLButtonElement>('download-png').onclick=async()=>{

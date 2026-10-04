@@ -1,4 +1,5 @@
 import { labMarkup } from './view';
+import {setupFullscreen} from './fullscreen';
 import { copy,materialSummary,describeChange,hasMaterialChange } from './copy';
 import './style.css';
 import { SquishyScene } from './scene';
@@ -25,6 +26,8 @@ let scene!:SquishyScene;
 try {scene=new SquishyScene(canvas,spec,state=>{const text=copy.states[state];if(el('state').textContent!==text)el('state').textContent=text;el('state').dataset.state=state;});}
 catch {el('canvas-error').hidden=false;for(const id of ['squeeze','rotate'])el<HTMLButtonElement>(id).disabled=true;}
 scene?.setAppearance(appearance);
+setupFullscreen(document.querySelector<HTMLElement>('.play-area')!,el<HTMLButtonElement>('fullscreen'),()=>scene?.release());
+el('fullscreen-reset').onclick=()=>el<HTMLButtonElement>('reset').click();
 let mode:'create'|'modify'='modify',provider='mock',requestController:AbortController|null=null;
 let comparison:{before:SquishySpec;after:SquishySpec}|null=null,comparing=false;
 function clearComparison(){scene?.stopComparison();comparison=null;el('comparison-row').hidden=true;}

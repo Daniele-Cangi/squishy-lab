@@ -81,6 +81,15 @@ h1 {font-family:Manrope,system-ui,sans-serif;font-size:clamp(48px,4.6vw,64px);li
 .stage-bottom p span {font-weight:400;color:#69527f}
 .icon-button {pointer-events:auto;border:1.5px solid var(--ink);border-radius:13px;width:44px;height:44px;display:grid;place-items:center;background:#fffdf5;color:var(--ink);box-shadow:2px 3px 0 var(--ink)}
 .icon-button:hover {background:var(--yellow)}
+.stage-actions {display:flex;gap:8px;pointer-events:auto}
+#fullscreen-reset {display:none}
+body .play-area.is-expanded {position:fixed;inset:0;z-index:1000;width:100%;height:100dvh;max-height:none;border:0;border-radius:0;box-shadow:none}
+.play-area.is-expanded #fullscreen-reset {display:grid}
+body .play-area.is-expanded .stage-top {top:max(20px,env(safe-area-inset-top));left:max(20px,env(safe-area-inset-left));right:max(20px,env(safe-area-inset-right))}
+body .play-area.is-expanded .stage-bottom {display:flex;bottom:max(22px,env(safe-area-inset-bottom));left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right))}
+.play-area.is-expanded #fullscreen {background:var(--yellow)}
+.play-area.is-expanded #fullscreen svg {transform:rotate(180deg)}
+@media(max-width:360px) {.stage-actions {gap:5px}.play-area.is-expanded .stage-bottom p {max-width:135px}}
 .collection {scroll-margin-top:22px;margin-top:24px;padding:18px;background:var(--paper);border:1.5px solid var(--ink);border-radius:21px;box-shadow:3px 4px 0 #c4b7d2}
 .collection-heading {display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
 .collection h2 {display:flex;align-items:center;gap:8px;font-size:15px;letter-spacing:-.3px;margin:0;font-weight:700}

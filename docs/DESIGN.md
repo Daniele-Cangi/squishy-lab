@@ -1,5 +1,7 @@
 # Squishy Lab interface
 
+The playground's **Enter fullscreen** corner button expands the current squishy. Supported browsers use native fullscreen; mobile browsers without it get a fixed viewport-sized playground. A visible X exits, with rotation and reset controls still available. Safe-area spacing protects phone controls, scrolling is locked while expanded, keyboard focus stays inside, and Escape restores focus to the entry button. The same canvas, material and deformation remain active. Camera framing adapts to narrow portrait viewports. Browser checks cover native exit, denied native API/mobile fallback, portrait/landscape layout, deformation, inert background, focus and scroll restoration. Physical iPhone Safari has not been tested.
+
 The page uses warm paper, pastel panels, original smiling vector mascots and small sticker details. Strong ink outlines and offset shadows give the playground a clear silhouette. The English headline “Happiness is squeezable” makes the mood visible immediately; the 3D object remains the main interactive element. All interface text, prompts, status messages and the managed verification widget use English.
 
 Transparent finishes show a cream `#fff3df` tray, restrained pastel confetti and a lavender `#d9c7ec` rim. The deterministic canvas texture gives refraction a pleasant readable background. The earlier repeated checkerboard has been replaced.

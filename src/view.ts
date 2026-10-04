@@ -23,7 +23,7 @@ export const labMarkup=`
       <div class="object-column">
       <section class="play-area" aria-label="Playground">
         <div class="stage-top"><span class="stage-label"><span aria-hidden="true">✦</span> YOUR SQUISHY</span><span class="state" id="state">Ready to squish</span></div>
-        <div class="stage-doodles" aria-hidden="true"><span class="doodle-star">✧</span><span class="doodle-plus">+</span><span class="doodle-note">squish me!</span></div>
+        <div class="stage-doodles" aria-hidden="true"><span class="doodle-star">✧</span><span class="doodle-plus">+</span></div>
         <canvas id="squishy" tabindex="0" role="application" aria-label="3D squishy. Hold or drag to squeeze. On your keyboard, hold Space then release; Escape resets the shape." aria-describedby="gesture-help"></canvas>
         <div class="stage-bottom"><p id="gesture-help">Hold longer to sink deeper.<br/><span>Drag to move your squeeze.</span></p><div class="stage-actions"><button id="fullscreen-reset" class="icon-button" aria-label="Reset shape in fullscreen">${svg('reset')}</button><button id="rotate" class="icon-button" aria-label="Rotate view">${svg('rotate')}</button><button id="fullscreen" class="icon-button" aria-label="Enter fullscreen" aria-expanded="false" title="Enter fullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
         <div id="canvas-error" class="canvas-error" hidden>Your browser could not start WebGL 2. Try an up-to-date browser with graphics acceleration.</div>

@@ -63,6 +63,8 @@ h1 {font-family:Manrope,system-ui,sans-serif;font-size:clamp(48px,4.6vw,64px);li
 .object-column {min-width:0;width:100%;scroll-margin-top:14px}
 .play-area {position:relative;isolation:isolate;height:530px;border:2px solid var(--ink);border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 48% 40%,#fffaff 0%,#f1e7ff 49%,#dfd0f6 100%);box-shadow:5px 6px 0 var(--ink)}
 .play-area::before {content:'';position:absolute;inset:0;z-index:-1;background-image:radial-gradient(#8673982b .8px,transparent .8px);background-size:20px 20px;pointer-events:none}
+.play-area {-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.play-area * {-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .play-area canvas {position:relative;z-index:1;display:block;width:100%;height:100%;touch-action:none;cursor:grab}
 .play-area canvas:active {cursor:grabbing}
 .play-area canvas:focus-visible {outline-offset:-6px}
@@ -75,7 +77,6 @@ h1 {font-family:Manrope,system-ui,sans-serif;font-size:clamp(48px,4.6vw,64px);li
 .stage-doodles {position:absolute;inset:0;z-index:0;pointer-events:none;color:#9678bf}
 .doodle-star {position:absolute;left:7%;top:24%;font-size:46px;transform:rotate(12deg)}
 .doodle-plus {position:absolute;right:8%;top:24%;font-family:var(--mono);font-size:31px;transform:rotate(-15deg);color:#af98c6}
-.doodle-note {position:absolute;right:9%;bottom:25%;font-size:15px;font-weight:600;transform:rotate(-11deg);color:#a185bd}
 .stage-bottom {position:absolute;bottom:22px;left:24px;right:22px;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none;z-index:2}
 .stage-bottom p {font-size:12px;font-weight:600;line-height:1.7;margin:0;color:#594570}
 .stage-bottom p span {font-weight:400;color:#69527f}

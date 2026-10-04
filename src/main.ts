@@ -1,3 +1,4 @@
+import {inject} from '@vercel/analytics';
 import { labMarkup } from './view';
 import {setupFullscreen} from './fullscreen';
 import {SquishySound} from './sound';
@@ -197,3 +198,16 @@ void configureProvider();
 if(import.meta.env.DEV||new URLSearchParams(location.search).has('evidence'))window.__squishy={snapshot:()=>scene?.diagnostics(),press:()=>scene?.beginStandardPress(),release:()=>scene?.release(),reset:()=>scene?.reset(),setSpec:next=>{cancelRequest();apply(validateSpec(next),'Test material');}};
 
 
+
+if(import.meta.env.PROD){
+  inject({beforeSend:event=>({...event,url:new URL(event.url).origin+new URL(event.url).pathname})});
+  void (async()=>{
+    try{
+      let token=crypto.randomUUID();
+      try{const saved=JSON.parse(localStorage.getItem('squishy-visit-v1')??'null') as {token:string;expires:number}|null;if(saved&&saved.expires>Date.now()&&/^[0-9a-f-]{36}$/i.test(saved.token))token=saved.token as typeof token;else localStorage.setItem('squishy-visit-v1',JSON.stringify({token,expires:Date.now()+86400000}));}catch{/* Storage is optional. */}
+      const response=await fetch('/api/visits',{method:'POST',body:token,signal:AbortSignal.timeout(10000)});if(!response.ok)throw new Error('Counter unavailable');
+      const data=await response.json() as {number:number};if(!Number.isSafeInteger(data.number)||data.number<1)throw new Error('Invalid counter');
+      el('vibe-number').textContent='no. '+data.number.toLocaleString('en-US');
+    }catch{el('vibe-number').textContent='welcome!';}
+  })();
+}else el('vibe-number').textContent='welcome!';

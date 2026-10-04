@@ -13,8 +13,8 @@
   "ai": {
     "binding": "AI"
   },
-  "durable_objects": {"bindings":[{"name":"DAILY_QUOTA","class_name":"DailyQuota"}]},
-  "migrations": [{"tag":"daily-quota-v1","new_sqlite_classes":["DailyQuota"]}],
+  "durable_objects": {"bindings":[{"name":"DAILY_QUOTA","class_name":"DailyQuota"},{"name":"VISITS","class_name":"VisitCounter"}]},
+  "migrations": [{"tag":"daily-quota-v1","new_sqlite_classes":["DailyQuota"]},{"tag":"visits-v1","new_sqlite_classes":["VisitCounter"]}],
   "ratelimits": [
     {
       "name": "AI_RATE",

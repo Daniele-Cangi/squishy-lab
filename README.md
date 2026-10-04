@@ -25,6 +25,10 @@ Pick a shape, press and hold to sink deeper, then release and watch it recover. 
 - **Optional AI material edits:** describe color, softness, firmness, recovery or proportions in English. The public app uses Cloudflare Workers AI; local development uses an explicit mock. AI does not generate new shapes, text or fonts.
 - **Before/after comparison:** compare an edited material under the same automated squeeze and recovery gesture.
 
+**Visitor sticker:** “You’re squishy vibe no. …” assigns one visit number per browser every 24 hours. Refreshing keeps the same number. The persistent counter starts from its launch and is separate from Vercel Web Analytics. A random token is saved locally for 24 hours; clearing browser storage or changing browsers counts again.
+
+Vercel Web Analytics is enabled in production. Analytics URLs exclude query strings.
+
 The interface uses English throughout. Optional material and appearance settings are saved locally; prompts are not saved.
 
 ## Run locally

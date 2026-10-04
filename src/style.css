@@ -340,3 +340,7 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 .sound-mode{touch-action:manipulation;-webkit-appearance:none;appearance:none;width:90px;border:1.5px solid var(--ink);box-shadow:2px 3px 0 var(--ink)}
 
 .play-actions{flex-wrap:wrap}.play-actions #test-sound{min-height:44px}
+
+.vibe-sticker{display:inline-flex;align-items:center;gap:14px;margin-top:26px;padding:13px 20px;background:var(--mint);border:2px solid var(--ink);border-radius:12px;box-shadow:4px 5px 0 var(--ink);transform:rotate(-3deg);font-weight:700;font-size:17px}
+.vibe-sticker>span{font-size:30px}.vibe-sticker strong{display:block;font-family:Chewy,system-ui,sans-serif;font-size:32px;line-height:1.2}
+@media(max-width:720px){.vibe-sticker{font-size:14px;margin-top:18px;padding:9px 15px;gap:10px}.vibe-sticker strong{font-size:26px}}

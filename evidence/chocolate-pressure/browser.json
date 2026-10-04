@@ -1,0 +1,286 @@
+{
+  "measuredAt": "2026-10-04T08:28:17.305Z",
+  "revision": "80cf2a790af7da93e6b0856216c4e3cd1d498332",
+  "runtimeSourceSha256": "3fce5e1fb5e087e2d7b336935d833d28fa9772b72ebac59abd64c899903634b7",
+  "node": "v22.19.0",
+  "platform": "win32",
+  "conditions": "Installed Chrome, normal animation time, real stationary mouse on upper surface (50%, 48%) for at least 6.5 physics seconds. Snapshot times include screenshot time. Local demo; no remote AI calls.",
+  "rendering": {
+    "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "gpu": "ANGLE (AMD, AMD Radeon(TM) Vega 8 Graphics (0x000015D8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "viewport": [
+      1366,
+      1000
+    ],
+    "dpr": 1
+  },
+  "errors": [],
+  "captures": [
+    {
+      "name": "rest",
+      "snapshot": {
+        "contactDepthUnits": 0,
+        "contact": null,
+        "appearance": {
+          "shape": "chocolate",
+          "label": "none",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 1982,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#75422e",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v3",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88,
+          "sustainStartSeconds": 1,
+          "sustainRampSeconds": 5
+        },
+        "renderedSurfaceDepthUnits": 0,
+        "internalCageDepthUnits": 0,
+        "maxDisplacement": 0,
+        "minVolumeRatio": 0.9999999999999996,
+        "safetyBackoffs": 0,
+        "physicsTime": 0,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "short",
+      "snapshot": {
+        "contactDepthUnits": 0.10222665499969841,
+        "contact": {
+          "point": [
+            0.17659643571554273,
+            0.7400872009832263,
+            0.4421402379799346
+          ],
+          "normal": [
+            0.004726607464759984,
+            0.9997723191808247,
+            0.020807906710408844
+          ],
+          "intensity": 0.88,
+          "sustain": 0.002645999999999943
+        },
+        "appearance": {
+          "shape": "chocolate",
+          "label": "none",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 1982,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#75422e",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v3",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88,
+          "sustainStartSeconds": 1,
+          "sustainRampSeconds": 5
+        },
+        "renderedSurfaceDepthUnits": 0.08308654979983843,
+        "internalCageDepthUnits": 0.1024238809296193,
+        "maxDisplacement": 0.1365239503847836,
+        "minVolumeRatio": 0.7192913463870455,
+        "safetyBackoffs": 0,
+        "physicsTime": 1.1583333333333317,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "long",
+      "snapshot": {
+        "contactDepthUnits": 0.23809208469529175,
+        "contact": {
+          "point": [
+            0.17659643571554273,
+            0.7400872009832263,
+            0.4421402379799346
+          ],
+          "normal": [
+            0.004726607464759984,
+            0.9997723191808247,
+            0.020807906710408844
+          ],
+          "intensity": 0.88,
+          "sustain": 1
+        },
+        "appearance": {
+          "shape": "chocolate",
+          "label": "none",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 1982,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#75422e",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v3",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88,
+          "sustainStartSeconds": 1,
+          "sustainRampSeconds": 5
+        },
+        "renderedSurfaceDepthUnits": 0.20552366906029818,
+        "internalCageDepthUnits": 0.24445527703314773,
+        "maxDisplacement": 0.293138120808519,
+        "minVolumeRatio": 0.48055112890448515,
+        "safetyBackoffs": 0,
+        "physicsTime": 7.05000000000014,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    },
+    {
+      "name": "recovering",
+      "snapshot": {
+        "contactDepthUnits": 0,
+        "contact": null,
+        "appearance": {
+          "shape": "chocolate",
+          "label": "none",
+          "face": false,
+          "effect": "foam"
+        },
+        "detailsReady": true,
+        "decorationVertices": 1982,
+        "spec": {
+          "version": 1,
+          "archetype": "mochi",
+          "proportions": {
+            "width": 1.18,
+            "height": 0.88,
+            "depth": 1.08
+          },
+          "color": "#75422e",
+          "finish": "matte",
+          "softness": 0.84,
+          "compressibility": 0.78,
+          "recoverySeconds": 4.5,
+          "damping": 0.88
+        },
+        "gesture": {
+          "id": "material-press-v3",
+          "logicalPoint": [
+            0.2,
+            1,
+            0.2
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "rampSeconds": 0.85,
+          "holdSeconds": 2,
+          "recoverySeconds": 5,
+          "maximumIntensity": 0.88,
+          "sustainStartSeconds": 1,
+          "sustainRampSeconds": 5
+        },
+        "renderedSurfaceDepthUnits": 0.041624903547055614,
+        "internalCageDepthUnits": 0.04920072075489934,
+        "maxDisplacement": 0.05952807785108601,
+        "minVolumeRatio": 0.9055161161083783,
+        "safetyBackoffs": 0,
+        "physicsTime": 9.850000000000081,
+        "vertices": 5402,
+        "tetrahedra": 750,
+        "particles": 216,
+        "triangles": 10800,
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    }
+  ]
+}

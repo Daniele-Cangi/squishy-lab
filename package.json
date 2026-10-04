@@ -18,6 +18,8 @@
     "test:browser": "playwright test",
     "measure:physics": "tsx scripts/measure-physics.ts",
     "measure:surface": "tsx scripts/measure-surface.ts",
+    "measure:chocolate": "tsx scripts/measure-chocolate.ts",
+    "record:chocolate": "tsx scripts/record-chocolate-pressure.ts",
     "record:experience": "tsx scripts/record-experience.ts",
     "record:collection": "tsx scripts/record-collection.ts",
     "measure:browser": "tsx scripts/measure-browser.ts",

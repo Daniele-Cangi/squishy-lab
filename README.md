@@ -23,6 +23,8 @@ The page immediately shows a local preset. The **Demo locale · senza AI** descr
 
 Hold the object to increase pressure over 0.85 seconds. After the first second, a stationary hold progressively deepens and widens the dent until second six; drag to move the contact and drag down to add depth. Pressure does not depend on hardware pressure sensors. Hold **Space/Enter** on the canvas or on **Tieni per premere**; release to recover. **Escape** on the canvas and **Ripristina forma** restore the current material's shape. **Ruota la vista** is separate from deformation. The final footer action removes the optional saved spec. Prompts are never saved.
 
+The thin COCOA bar spreads upper-surface pressure into a broader dent, including between simulation nodes, while retaining the horizontal side response. See the [pressure measurements and browser captures](docs/VERIFICATION.md#chocolate-upper-surface-pressure).
+
 After a material edit, **Confronta prima e dopo** repeats a two-second press and five-second recovery on both materials. Shape, color, finish, camera and gesture are held equal; deformation memory is reset between phases. Stop the comparison or press the object to return to the actual edited squishy. Descriptions of changes come from the applied parameters.
 
 ![Squishy Lab, the playful material playground](evidence/playful-interface/desktop.png)
@@ -66,6 +68,8 @@ npm run test:browser    # browser smoke + interaction/API/error flows; software 
 npm run evaluate:ai     # 26 synthetic cases, explicitly MOCK; zero remote calls
 npm run measure:physics # numerical traces, recovery, 12 cycles, 30/60/144 Hz comparison
 npm run measure:surface # persistent rendered-surface probes and indentation profiles
+npm run measure:chocolate # top-center/tile/off-center and side depths against retained baseline
+npm run record:chocolate # normal-time Chrome upper-surface mouse hold and recovery
 npm run record:experience # normal-time Chrome press/release/drag video
 npm run record:collection -- --expanded # new five shapes, press/recovery, effects, mobile
 npx tsx scripts/record-shape-refinement.ts # real mouse short/long holds, revised banana/peanut

@@ -1,14 +1,16 @@
 import { test,expect,type Page } from '@playwright/test';
 import { DEFAULT_SPEC } from '../../src/shared/spec';
-type Snapshot={appearance:{shape:string;label:string;face:boolean;effect:string};contactDepthUnits:number;contact:{sustain:number}|null;detailsReady:boolean;decorationVertices:number;spec:typeof DEFAULT_SPEC;physicsTime:number;maxDisplacement:number;minVolumeRatio:number;renderer:{render:{frame:number}}};
+type Snapshot={appearance:{shape:string;label:string;face:boolean;effect:string};contactDepthUnits:number;contact:{sustain:number;normal:number[]}|null;detailsReady:boolean;decorationVertices:number;spec:typeof DEFAULT_SPEC;physicsTime:number;maxDisplacement:number;minVolumeRatio:number;safetyBackoffs:number;renderer:{render:{frame:number}}};
 const snapshot=async(page:Page)=>await page.evaluate(()=>window.__squishy!.snapshot()) as Snapshot;
 const ready=async(page:Page)=>{await page.goto('/');await expect.poll(async()=>(await snapshot(page))?.detailsReady).toBe(true);};
-for(const name of ['Mochi','Banana','Peanut'])test(`${name}: stationary mouse hold continues sinking, then recovers`,async({page})=>{
+for(const name of ['Mochi','Banana','Peanut','Cioccolato'])test(`${name}: stationary mouse hold continues sinking, then recovers`,async({page})=>{
   test.setTimeout(90000);
   await page.clock.install({time:new Date('2026-10-04T00:00:00Z')});await ready(page);await page.clock.pauseAt(new Date('2026-10-04T01:00:00Z'));
   await page.getByRole('button',{name,exact:true}).click();const box=(await page.locator('#squishy').boundingBox())!;
   await page.mouse.move(box.x+box.width*.5,box.y+box.height*.48);await page.mouse.down();await page.clock.runFor(1000);const short=await snapshot(page);expect(short.contact).not.toBeNull();expect(short.contactDepthUnits).toBeGreaterThan(.015);
+  if(name==='Cioccolato'){expect(short.contact!.normal[1]).toBeGreaterThan(.8);expect(short.contactDepthUnits).toBeGreaterThan(.03);}
   await page.clock.runFor(5500);const long=await snapshot(page);expect(long.contact?.sustain).toBe(1);expect(long.contactDepthUnits).toBeGreaterThan(short.contactDepthUnits*1.35);expect(long.minVolumeRatio).toBeGreaterThan(.17);
+  if(name==='Cioccolato')expect(long.safetyBackoffs).toBe(0);
   await page.mouse.up();await page.clock.runFor(2000);expect((await snapshot(page)).maxDisplacement).toBeLessThan(long.maxDisplacement);expect((await snapshot(page)).contact).toBeNull();
 });
 // A virtual clock can queue many expensive transmission frames faster than

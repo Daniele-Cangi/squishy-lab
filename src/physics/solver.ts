@@ -56,10 +56,17 @@ export class SoftBody {
       this.volumeTargets[t]=Math.max(volumes[t]*0.4,volumes[t]+(v-volumes[t])*this.spec.compressibility);
     }
     const contact=this.contact;
+    // Spread a top press over the thin bar's surface, not through its thickness.
+    // The continuous normal blend leaves horizontal side pressure unchanged.
+    const topSpread=contact&&this.cage.shape==='chocolate'
+      ?1+(Math.min(2.5,Math.max(1,Math.sqrt(this.cage.radii[0]*this.cage.radii[2])/this.cage.radii[1]))-1)*Math.max(0,contact.normal[1])**4:1;
     if(contact) for(let i=0;i<mass.length;i++) {
-      const d=Math.hypot(rest[i*3]-contact.point[0],rest[i*3+1]-contact.point[1],rest[i*3+2]-contact.point[2]);
+      const dx=rest[i*3]-contact.point[0],dy=rest[i*3+1]-contact.point[1],dz=rest[i*3+2]-contact.point[2];
+      const d=Math.hypot(dx,dy,dz);
+      const along=dx*contact.normal[0]+dy*contact.normal[1]+dz*contact.normal[2];
+      const distanceSquared=topSpread===1?d*d:along*along+Math.max(0,d*d-along*along)/(topSpread*topSpread);
       const radius=Math.min(...this.cage.radii)*(.65+.48*Math.sqrt(contact.intensity))*(1+.22*(contact.sustain??0));
-      this.influence[i]=Math.exp(-2.5*d*d/(radius*radius));
+      this.influence[i]=Math.exp(-2.5*distanceSquared/(radius*radius));
     }
     this.edgeLambda.fill(0); this.volumeLambda.fill(0);
     for(let iter=0;iter<6;iter++) {

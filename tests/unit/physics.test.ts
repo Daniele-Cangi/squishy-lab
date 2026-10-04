@@ -1,8 +1,8 @@
 import { describe,it,expect } from 'vitest';
 import { DEFAULT_SPEC, type SquishySpec } from '../../src/shared/spec';
-import { createSurface, embedSurface, generateCage, roundedPoint, signedVolume,surfacePoint,pointDepth,sampledSurfaceDepth, type Vec3 } from '../../src/physics/cage';
+import { createSurface, embedSurface, generateCage, roundedPoint,shapePoint, signedVolume,surfacePoint,pointDepth,sampledSurfaceDepth, type Vec3 } from '../../src/physics/cage';
 import { FIXED_DT, FixedClock, SoftBody } from '../../src/physics/solver';
-import { STANDARD_GESTURE,standardContact,sustainedPressureAt } from '../../src/physics/gesture';
+import { STANDARD_GESTURE,standardContact,pressureAt,sustainedPressureAt } from '../../src/physics/gesture';
 import {SHAPE_IDS} from '../../src/collection';
 function press(body:SoftBody,steps=240) {
   const point=roundedPoint(0,.55,1,body.cage.radii),normal:Vec3=[0,.48,.88];
@@ -10,6 +10,26 @@ function press(body:SoftBody,steps=240) {
   return body.maxDisplacement();
 }
 describe('Volumetric mochi',()=>{
+  for(const thin of [false,true])it(`chocolate: top-center pressure reaches between cage nodes${thin?' with thin proportions':''}`,()=>{
+    const spec=thin?{...DEFAULT_SPEC,softness:1,compressibility:.95,proportions:{width:1.55,height:.65,depth:.9}}:DEFAULT_SPEC;
+    const body=new SoftBody(spec,'chocolate'),surface=createSurface(body.cage),q:Vec3=[0,1,0],probe=surfacePoint(surface,q),point=shapePoint(...q,body.cage.radii,'chocolate');
+    const depth=()=>sampledSurfaceDepth(body.cage,body.positions,surface,probe,[0,1,0]);let short=0;
+    for(let i=0;i<780;i++){
+      body.setContact({point,normal:[0,1,0],intensity:pressureAt(i*FIXED_DT),sustain:sustainedPressureAt(i*FIXED_DT)});body.step();
+      if(i===119)short=depth();if(i%30===0)expect(body.minVolumeRatio()).toBeGreaterThan(.17);
+    }
+    expect(short).toBeGreaterThan(body.cage.radii[1]*.07);expect(depth()).toBeGreaterThan(short*1.6);
+    const neighbor=surfacePoint(surface,[.2,1,0]);expect(sampledSurfaceDepth(body.cage,body.positions,surface,neighbor,[0,1,0])).toBeGreaterThan(body.cage.radii[1]*.08);
+    const held=body.maxDisplacement();body.setContact(null);for(let i=0;i<1440;i++)body.step();
+    expect(body.maxDisplacement()).toBeLessThan(held*.02);expect(body.safetyBackoffs).toBe(0);
+  });
+  it('chocolate: horizontal side pressure retains the preceding rendered depth',()=>{
+    const body=new SoftBody(DEFAULT_SPEC,'chocolate'),surface=createSurface(body.cage),q:Vec3=[.2,0,1],point=shapePoint(...q,body.cage.radii,'chocolate');
+    for(let i=0;i<240;i++){body.setContact({point,normal:[0,0,1],intensity:pressureAt(i*FIXED_DT),sustain:sustainedPressureAt(i*FIXED_DT)});body.step();}
+    // Captured on revision 80cf2a7 before widening only the upper footprint.
+    expect(sampledSurfaceDepth(body.cage,body.positions,surface,surfacePoint(surface,q),[0,0,1])).toBeCloseTo(.14206933952165898,6);
+    expect(body.safetyBackoffs).toBe(0);
+  });
   for(const shape of SHAPE_IDS)it(`${shape}: sustained hold deepens the visible dent, stays safe and recovers`,()=>{
     const body=new SoftBody(DEFAULT_SPEC,shape),surface=createSurface(body.cage),probe=surfacePoint(surface,STANDARD_GESTURE.logicalPoint);
     const depth=()=>sampledSurfaceDepth(body.cage,body.positions,surface,probe,STANDARD_GESTURE.normal);let short=0;

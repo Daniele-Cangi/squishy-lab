@@ -60,8 +60,11 @@ for(const eventName of ['pointerdown','touchend','click'])el('squeeze').addEvent
 playground.addEventListener('keydown',event=>{if(event.target===canvas)audioGesture();});
 el('squeeze').addEventListener('keydown',audioGesture);
 el<HTMLButtonElement>('test-sound').onclick=async()=>{
+  const revision=++soundRevision;soundBusy=true;
   soundWanted=true;reflectSound();sound.resume();
   const ready=await sound.enable();
+  if(revision!==soundRevision)return;
+  soundBusy=false;
   if(ready&&scene)scene.soundFeedback=(shape,pressure)=>sound.update(shape,pressure);
   // Resume again after decoding on browsers with sticky user activation.
   sound.resume();
@@ -175,7 +178,7 @@ squeeze.onpointerdown=event=>{event.preventDefault();squeeze.setPointerCapture(e
 for(const name of ['pointerup','pointercancel','lostpointercapture','blur'])squeeze.addEventListener(name,()=>scene?.release());
 squeeze.onkeydown=event=>{if((event.code==='Space'||event.code==='Enter')&&!event.repeat){event.preventDefault();scene?.beginStandardPress();}};
 squeeze.onkeyup=event=>{if(event.code==='Space'||event.code==='Enter'){event.preventDefault();scene?.release();}};
-el('forget').onclick=()=>{cancelRequest();clearComparison();try{localStorage.removeItem('squishy-spec-v1');localStorage.removeItem('squishy-appearance-v1');}catch{/* Storage can be disabled. */}appearance={...DEFAULT_APPEARANCE};scene?.setAppearance(appearance);updateAppearanceControls();scene?.reset();spec=structuredClone(DEFAULT_SPEC);scene?.applySpec(spec);name='Purple cloud';updateSummary();status.textContent='Saved squishy cleared. Descriptions are never stored.';};
+el('forget').onclick=()=>{letteringRevision++;cancelRequest();clearComparison();try{localStorage.removeItem('squishy-spec-v1');localStorage.removeItem('squishy-appearance-v1');}catch{/* Storage can be disabled. */}appearance={...DEFAULT_APPEARANCE};scene?.setAppearance(appearance);updateAppearanceControls();scene?.reset();spec=structuredClone(DEFAULT_SPEC);scene?.applySpec(spec);name='Purple cloud';updateSummary();status.textContent='Saved squishy cleared. Descriptions are never stored.';};
 updateSummary();updateAppearanceControls();
 async function configureProvider() {
   try {

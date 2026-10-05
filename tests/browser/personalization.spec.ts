@@ -1,5 +1,26 @@
 import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
+
+test('clearing a squishy cancels lettering waiting for a font',async({page})=>{
+ await page.goto('/');await page.waitForFunction(()=>!!window.__squishy);
+ await page.evaluate(async()=>{
+  await document.fonts.ready;
+  const load=document.fonts.load.bind(document.fonts);
+  const target=window as unknown as {releaseFont:()=>void};
+  document.fonts.load=()=>new Promise<FontFace[]>(resolve=>{target.releaseFont=()=>{document.fonts.load=load;resolve([]);};});
+ });
+ await page.getByLabel('A little message').fill('OLD MESSAGE');
+ await page.getByRole('button',{name:'Clear saved squishy',exact:true}).click();
+ await page.evaluate(async()=>{
+  (window as unknown as {releaseFont:()=>void}).releaseFont();
+  await new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
+ });
+ await expect(page.getByLabel('A little message')).toHaveValue('');
+ const saved=await page.evaluate(()=>({appearance:localStorage.getItem('squishy-appearance-v1'),spec:localStorage.getItem('squishy-spec-v1')}));
+ expect(saved).toEqual({appearance:null,spec:null});
+ const snapshot=await page.evaluate(()=>window.__squishy!.snapshot()) as {appearance:{face:boolean;text?:string}};
+ expect(snapshot.appearance.face).toBe(true);expect(snapshot.appearance.text).toBeUndefined();
+});
 test('cute lettering persists, follows shape changes and exports PNG',async({page})=>{
  await page.goto('/');await page.waitForFunction(()=>!!window.__squishy);await page.getByLabel('A little message').fill('Hello August');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string}}).appearance.text).toBe('Hello August');
  await page.getByLabel('Text color').fill('#ed4b91');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{textColor?:string}}).appearance.textColor).toBe('#ed4b91');

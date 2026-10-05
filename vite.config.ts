@@ -1,6 +1,17 @@
 import { defineConfig,type Plugin } from 'vite';
 import { Readable } from 'node:stream';
 import { handleApi } from './worker/api.ts';
+import { labMarkup } from './src/view.ts';
+// Serve the same complete HTML to people and crawlers, in dev and production.
+// Client code attaches behavior to these elements instead of replacing them.
+const staticPagePlugin:Plugin={
+  name:'squishy-static-page',
+  transformIndexHtml:{order:'pre',handler(html){
+    const mount='<div id="app"></div>';
+    if(!html.includes(mount))throw new Error('Static page mount is missing.');
+    return html.replace(mount,()=>`<div id="app">${labMarkup}</div>`);
+  }},
+};
 const mockPlugin:Plugin={
     name:'explicit-local-mock-api',
     configureServer(server) {
@@ -17,6 +28,6 @@ const mockPlugin:Plugin={
 };
 export default defineConfig(async({mode})=>({
   server:{port:5173,strictPort:true},
-  plugins:mode==='ai-evaluation'?[await (await import('./scripts/local-ai-plugin.ts')).localAiPlugin()]:[mockPlugin],
+  plugins:[staticPagePlugin,...(mode==='ai-evaluation'?[await (await import('./scripts/local-ai-plugin.ts')).localAiPlugin()]:[mockPlugin])],
   build:{chunkSizeWarningLimit:700},
 }));

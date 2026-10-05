@@ -24,6 +24,7 @@
     "record:collection": "tsx scripts/record-collection.ts",
     "record:moods": "tsx scripts/record-moods.ts",
     "verify:production": "tsx scripts/verify-production.ts",
+    "verify:seo": "tsx scripts/verify-seo.ts",
     "measure:browser": "tsx scripts/measure-browser.ts",
     "evaluate:ai": "tsx scripts/evaluate-ai.ts",
     "worker:dev": "npm run build && wrangler dev --local --env mock",

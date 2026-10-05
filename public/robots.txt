@@ -1,0 +1,7 @@
+# Public pages and assets are available to search and AI search crawlers.
+# API access is protected separately; these rules are not access control.
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.squishylab.fun/sitemap.xml

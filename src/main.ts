@@ -1,5 +1,4 @@
 import {inject} from '@vercel/analytics';
-import { labMarkup } from './view';
 import {setupFullscreen} from './fullscreen';
 import {SquishySound} from './sound';
 import { copy,materialSummary,describeChange,hasMaterialChange } from './copy';
@@ -8,7 +7,6 @@ import { SquishyScene } from './scene';
 import { DEFAULT_SPEC, PRESETS, validateSpec, type SquishySpec } from './shared/spec';
 import { generate, RequestGate } from './client';
 import { COLLECTION,DEFAULT_APPEARANCE,validateAppearance,collectionName,type Appearance,type SurfaceEffect,type FaceExpression } from './collection';
-document.querySelector<HTMLDivElement>('#app')!.innerHTML=labMarkup;
 function el<T extends HTMLElement=HTMLElement>(id:string){return document.getElementById(id) as T;}
 let spec=structuredClone(DEFAULT_SPEC),name='Purple cloud';
 let appearance:Appearance={...DEFAULT_APPEARANCE};

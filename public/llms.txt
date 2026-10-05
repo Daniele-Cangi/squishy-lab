@@ -1,0 +1,22 @@
+# Squishy Lab
+
+> Squishy Lab is a free online 3D squishy simulator. Press, hold and drag cute virtual squishies in your browser, personalize their look, and download your creation as a PNG.
+
+## Official website
+
+- [Play Squishy Lab](https://www.squishylab.fun/): the interactive playground.
+- [About and instructions](https://www.squishylab.fun/#about): features, browser requirements and how to play.
+- [Frequently asked questions](https://www.squishylab.fun/#faq): sound, personalization and optional AI editing.
+- [Source and documentation](https://github.com/Daniele-Cangi/squishy-lab): the open-source project and setup documentation.
+
+## Features and limits
+
+- The collection has 10 entries: Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese and Peanut.
+- Mouse, touch and keyboard interaction; longer holds deepen the squeeze. Fullscreen is available on desktop and mobile.
+- Soft touch, glitter and clear finishes; five face expressions; custom lettering in four fonts with a text color picker.
+- Recorded gel and crunchy sound textures. Audio starts after interaction and can be muted.
+- Free use without an account or installation. The interactive playground requires JavaScript and WebGL 2.
+- Optional AI edits adjust supported material properties such as color, softness and recovery. AI does not create arbitrary meshes or shapes.
+- AI allows three verified requests per public IP in a rolling 24-hour window. Devices sharing an IP share the allowance. The other playground features do not use AI.
+
+This file summarizes the public site. It is not an API endpoint or a guarantee of inclusion in search results.

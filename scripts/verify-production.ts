@@ -3,7 +3,7 @@ import {mkdirSync,writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {evidenceContext} from './evidence';
 import type {SquishySpec} from '../src/shared/spec';
-const origin='https://squishy-lab-phi.vercel.app',directory=resolve('evidence/vercel-release');mkdirSync(directory,{recursive:true});
+const origin='https://www.squishylab.fun',directory=resolve('evidence/vercel-release');mkdirSync(directory,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true,args:['--enable-webgl']});
 const page=await browser.newPage({viewport:{width:1366,height:1000}}),errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
 try{
@@ -14,7 +14,7 @@ try{
  await page.waitForFunction(()=>!!window.__squishy&&(window.__squishy.snapshot() as {detailsReady:boolean}).detailsReady);
  const before=await page.evaluate(()=>(window.__squishy!.snapshot() as {spec:SquishySpec}).spec);let after=before,realAI:number|undefined,body:unknown;
  if(process.argv.includes('--ai')){
- await page.getByRole('textbox').fill('Same, but a little firmer.');
+ await page.getByRole('textbox',{name:'Color, softness, recovery…',exact:true}).fill('Same, but a little firmer.');
  // Observe readiness only. The production widget obtains a genuine token;
  // this verifier never creates, prints, persists or bypasses a challenge token.
  await page.waitForFunction(()=>!!document.querySelector<HTMLInputElement>('input[name="cf-turnstile-response"]')?.value,null,{timeout:45000});

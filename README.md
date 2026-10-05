@@ -3,11 +3,11 @@
 [![Checks](https://github.com/Daniele-Cangi/squishy-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Daniele-Cangi/squishy-lab/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Daniele-Cangi/squishy-lab)](https://github.com/Daniele-Cangi/squishy-lab/releases)
 [![Code license: MIT](https://img.shields.io/badge/code_license-MIT-mintgreen)](LICENSE)
-[![Play online](https://img.shields.io/badge/Play-Squishy_Lab-c7b7fa)](https://squishy-lab-phi.vercel.app/)
+[![Play online](https://img.shields.io/badge/Play-Squishy_Lab-c7b7fa)](https://www.squishylab.fun/)
 
 **Happiness is squeezable.** A playful 3D squishy playground with soft-body deformation, cute personalization, recorded sound textures and optional AI material editing.
 
-**[Play Squishy Lab →](https://squishy-lab-phi.vercel.app/)**
+**[Play Squishy Lab →](https://www.squishylab.fun/)**
 
 Pick a shape, press and hold to sink deeper, then release and watch it recover. Make it yours with a little message, a cute font and your favorite text color, and download a PNG of your creation.
 
@@ -28,6 +28,8 @@ Pick a shape, press and hold to sink deeper, then release and watch it recover. 
 **Visitor sticker:** “You’re squishy vibe no. …” assigns one visit number per browser every 24 hours. Refreshing keeps the same number. The persistent counter starts from its launch and is separate from Vercel Web Analytics. A random token is saved locally for 24 hours; clearing browser storage or changing browsers counts again.
 
 Vercel Web Analytics is enabled in production. Analytics URLs exclude query strings.
+
+The official domain is **[www.squishylab.fun](https://www.squishylab.fun/)**. Vite renders the complete page HTML at build time, so instructions and FAQs are readable before JavaScript starts. Search metadata, structured application data, robots rules, a sitemap and an optional AI-readable summary use the same canonical domain. See [SEO and indexing](docs/SEO.md) for verification and maintenance.
 
 The interface uses English throughout. Optional material and appearance settings are saved locally; prompts are not saved.
 

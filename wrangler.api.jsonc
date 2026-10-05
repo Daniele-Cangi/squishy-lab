@@ -7,7 +7,7 @@
   "vars": {
     "PROVIDER": "workers-ai",
     "MODEL": "@cf/qwen/qwen3-30b-a3b-fp8",
-    "PUBLIC_ORIGIN": "https://squishy-lab-phi.vercel.app",
+    "PUBLIC_ORIGIN": "https://www.squishylab.fun",
     "TURNSTILE_SITE_KEY": "0x4AAAAAAFNWkYh-761kiQ9m"
   },
   "ai": {

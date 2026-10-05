@@ -1,6 +1,6 @@
 # Vercel production
 
-Public site: **https://squishy-lab-phi.vercel.app**. Project: [daniele-cangis-projects / squishy-lab](https://vercel.com/daniele-cangis-projects/squishy-lab), connected to `Daniele-Cangi/squishy-lab`. Main-branch pushes trigger Vercel builds.
+Public site: **https://www.squishylab.fun**. Project: [daniele-cangis-projects / squishy-lab](https://vercel.com/daniele-cangis-projects/squishy-lab), connected to `Daniele-Cangi/squishy-lab`. Main-branch pushes trigger Vercel builds.
 
 Vercel serves the Vite assets and two Node functions, `api/config.ts` and `api/squishy.ts`. The same-origin gateway in `server/gateway.ts` calls a private Cloudflare Worker with the existing Qwen3 model and native AI binding. OAuth credentials used for local development are never deployed. `rewriteRelativeImportExtensions` in `tsconfig.json` converts the shared TypeScript imports for Vercel's emitted Node ESM functions.
 
@@ -19,9 +19,9 @@ Production Vercel variables:
 | `SQUISHY_AI_URL` | `https://squishy-lab-ai.daniele-cangi-squishy.workers.dev` |
 | `SQUISHY_GATEWAY_SECRET` | Sensitive random shared gateway secret; never a frontend variable |
 
-The Worker uses `wrangler.api.jsonc`: `PROVIDER=workers-ai`, the existing `@cf/qwen/qwen3-30b-a3b-fp8`, `PUBLIC_ORIGIN=https://squishy-lab-phi.vercel.app`, public Turnstile site key, native AI binding, per-client 5/minute and shared 30/minute rate bindings. Worker secrets are `GATEWAY_SECRET` (matching Vercel) and `TURNSTILE_SECRET`. Direct Worker calls fail with 403. Siteverify checks the canonical site's hostname and action `squishy`; the gateway takes the client IP from Vercel's overwritten forwarding header, discarding client gateway headers.
+The Worker uses `wrangler.api.jsonc`: `PROVIDER=workers-ai`, the existing `@cf/qwen/qwen3-30b-a3b-fp8`, `PUBLIC_ORIGIN=https://www.squishylab.fun`, public Turnstile site key, native AI binding, per-client 5/minute and shared 30/minute rate bindings. Worker secrets are `GATEWAY_SECRET` (matching Vercel) and `TURNSTILE_SECRET`. Direct Worker calls fail with 403. Siteverify checks the canonical site's hostname and action `squishy`; the gateway takes the client IP from Vercel's overwritten forwarding header, discarding client gateway headers.
 
-The managed Turnstile widget is restricted to `squishy-lab-phi.vercel.app`. Its UI language is English, compact size fits narrow columns, and interaction-only appearance allows automatic verification without occupying the composer. AI uses the Workers Free account confirmed by the owner; no paid-plan upgrade was made. Provider quota failures leave local presets and interaction usable.
+The managed Turnstile widget permits `squishylab.fun` and `www.squishylab.fun`; the former Vercel hostname remains registered during migration. The Worker's exact origin and Siteverify hostname checks allow only `https://www.squishylab.fun`. The widget's UI language is English, compact size fits narrow columns, and interaction-only appearance allows automatic verification without occupying the composer. AI uses the Workers Free account confirmed by the owner; no paid-plan upgrade was made. Provider quota failures leave local presets and interaction usable.
 
 ## Three requests per IP in 24 hours
 

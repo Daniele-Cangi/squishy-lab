@@ -29,7 +29,7 @@ Pick a shape, press and hold to sink deeper, then release and watch it recover. 
 
 Vercel Web Analytics is enabled in production. Analytics URLs exclude query strings.
 
-The official domain is **[www.squishylab.fun](https://www.squishylab.fun/)**. Vite renders the complete page HTML at build time, so instructions and FAQs are readable before JavaScript starts. Search metadata, structured application data, robots rules, a sitemap and an optional AI-readable summary use the same canonical domain. See [SEO and indexing](docs/SEO.md) for verification and maintenance.
+The official domain is **[www.squishylab.fun](https://www.squishylab.fun/)**. Vite renders the playground HTML at build time. Instructions and FAQs have their own [guide page](https://www.squishylab.fun/guide/), linked from the footer and readable without JavaScript. Search metadata, structured application data, robots rules, a sitemap and an optional AI-readable summary use the same canonical domain. See [SEO and indexing](docs/SEO.md) for verification and maintenance.
 
 The interface uses English throughout. Optional material and appearance settings are saved locally; prompts are not saved.
 

@@ -6,7 +6,8 @@ import { labMarkup } from './src/view.ts';
 // Client code attaches behavior to these elements instead of replacing them.
 const staticPagePlugin:Plugin={
   name:'squishy-static-page',
-  transformIndexHtml:{order:'pre',handler(html){
+  transformIndexHtml:{order:'pre',handler(html,context){
+    if(context.filename.replaceAll('\\','/').endsWith('/guide/index.html'))return html;
     const mount='<div id="app"></div>';
     if(!html.includes(mount))throw new Error('Static page mount is missing.');
     return html.replace(mount,()=>`<div id="app">${labMarkup}</div>`);
@@ -29,5 +30,5 @@ const mockPlugin:Plugin={
 export default defineConfig(async({mode})=>({
   server:{port:5173,strictPort:true},
   plugins:[staticPagePlugin,...(mode==='ai-evaluation'?[await (await import('./scripts/local-ai-plugin.ts')).localAiPlugin()]:[mockPlugin])],
-  build:{chunkSizeWarningLimit:700},
+  build:{chunkSizeWarningLimit:700,rollupOptions:{input:{playground:'index.html',guide:'guide/index.html'}}},
 }));

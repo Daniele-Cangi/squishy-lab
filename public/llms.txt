@@ -5,8 +5,8 @@
 ## Official website
 
 - [Play Squishy Lab](https://www.squishylab.fun/): the interactive playground.
-- [About and instructions](https://www.squishylab.fun/#about): features, browser requirements and how to play.
-- [Frequently asked questions](https://www.squishylab.fun/#faq): sound, personalization and optional AI editing.
+- [About and instructions](https://www.squishylab.fun/guide/): features, browser requirements and how to play.
+- [Frequently asked questions](https://www.squishylab.fun/guide/#faq): sound, personalization and optional AI editing.
 - [Source and documentation](https://github.com/Daniele-Cangi/squishy-lab): the open-source project and setup documentation.
 
 ## Features and limits

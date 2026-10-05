@@ -4,12 +4,12 @@ Official URL: **https://www.squishylab.fun/**. Vercel project domain settings pe
 
 ## Static content and metadata
 
-The `squishy-static-page` Vite plugin renders `src/view.ts` into `index.html` during both development and production builds. `src/main.ts` attaches interactions to that existing HTML. There is no user-agent-specific response. The visible guide and FAQ remain readable with JavaScript disabled; the interactive canvas needs JavaScript and WebGL 2.
+The `squishy-static-page` Vite plugin renders `src/view.ts` into `index.html` during both development and production builds. `src/main.ts` attaches interactions to that existing HTML. There is no user-agent-specific response. The homepage footer links to `/guide/`, a separate static HTML page containing the guide and FAQ. It has its own canonical, title and description and works without JavaScript. The interactive canvas on the homepage needs JavaScript and WebGL 2.
 
 `index.html` contains the English title, description, canonical, Open Graph and Twitter cards, and JSON-LD for `WebSite`, `WebPage` and `WebApplication`. Structured data describes actual free features and browser requirements. It contains no fabricated reviews or ratings, and does not guarantee a rich search result. The social preview is an existing 1200 × 630 PNG. Main font stylesheets are discovered directly in the head with preconnect hints instead of a CSS import.
 
 - `/robots.txt` allows the public page and assets, excludes `/api/`, and links the sitemap. API authorization remains separate from robots rules; API responses carry `X-Robots-Tag: noindex, nofollow`.
-- `/sitemap.xml` lists the only public page, the homepage. Do not add fragment links, preview URLs or nonexistent shape pages. Add `lastmod` only when the actual content modification date is known.
+- `/sitemap.xml` lists the homepage and `/guide/`. Do not add fragment links, preview URLs or nonexistent shape pages. Add `lastmod` only when the actual content modification date is known.
 - `/llms.txt` provides a concise summary and official links. It is optional and is not a ranking or AI-discovery guarantee.
 - The wildcard robots policy permits search crawlers including `OAI-SearchBot`. Training crawler policy is unchanged; search discovery and model training are separate controls.
 
@@ -54,3 +54,7 @@ One fresh installed-Chrome context per viewport, without network or CPU throttli
 These are lab observations, not field Core Web Vitals or scores for a real phone. INP and a full performance trace were not measured. Google Search Console field data requires real visits and time to accumulate.
 
 Google ownership verification succeeded, its live homepage test reported that the page can be indexed, and the indexing request was accepted into the crawl queue. Bing ownership was verified independently with the Microsoft account and its sitemap submission was accepted for processing. Submission is separate from completed indexing. At first submission Google reported that it could not retrieve the sitemap, despite public HTTP 200/XML responses and a successful live homepage fetch; the sitemap was resubmitted once after these checks. Confirm its processed status in Search Console before treating sitemap ingestion as complete.
+
+### Direct sitemap investigation — October 5, 2026, 19:08 Europe/Paris
+
+The sitemap detail report displayed “Sitemap could not be read” without a specific HTTP or parsing error. Google's live URL Inspection test of the sitemap URL itself successfully fetched it: crawl allowed, HTTP 200 OK, content type `application/xml`, and the expected XML source. The manual actions report showed no issues. Public HTTP checks also returned the valid sitemap without redirects, authentication or a challenge. These observations rule out a current access failure for the Google inspection crawler; they do not establish why the separate sitemap ingestion report failed, or prove ingestion is complete. Pending processing or an earlier transient failure remain possibilities, not confirmed causes. Avoid renaming the sitemap or changing security controls without evidence of a relevant fault. The same sitemap now includes the new guide URL.

@@ -348,7 +348,7 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 
 .about-lab{margin-top:56px;padding:32px;border:1.5px solid var(--ink);border-radius:24px;background:var(--paper);box-shadow:4px 5px 0 #c4b7d2;scroll-margin-top:24px}
 .about-sticker{display:inline-block;padding:7px 12px;background:var(--mint);border:1px solid var(--ink);border-radius:9px;transform:rotate(-2deg);font-size:12px;font-weight:700}
-.about-lab h2{font-family:Manrope,system-ui,sans-serif;font-size:clamp(23px,3vw,32px);letter-spacing:-.7px;margin:20px 0 12px;line-height:1.2}
+.about-lab h1,.about-lab h2{font-family:Manrope,system-ui,sans-serif;font-size:clamp(23px,3vw,32px);letter-spacing:-.7px;margin:20px 0 12px;line-height:1.2}
 .about-lab h3{font-size:18px;margin:10px 0 12px;line-height:1.4}
 .about-lab p,.browser-note{font-size:14px;line-height:1.8;color:#5d5365}
 .about-heading>p{max-width:760px;margin-bottom:24px}
@@ -362,4 +362,5 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 .squishy-faq summary:focus-visible{outline:3px solid #7250bc;outline-offset:3px;border-radius:5px}
 .squishy-faq details p{margin:0 0 18px;max-width:820px}
 .about-lab .guide-credit{font-size:12px;margin:24px 0 0}.guide-credit a{text-underline-offset:3px}
+.guide-page .about-lab{margin-top:24px}.guide-back{text-decoration:none}.guide-link{font-size:12px;text-underline-offset:4px;display:inline-flex;align-items:center;min-height:36px}.guide-page footer a{font-size:13px;text-underline-offset:4px}
 @media(max-width:720px){.about-lab{margin-top:34px;padding:22px 18px;border-radius:20px}.guide-grid{grid-template-columns:1fr;gap:14px}.guide-grid article{padding:18px}.about-lab p{font-size:13px}.about-lab h3{font-size:16px}}

@@ -54,24 +54,9 @@ export const labMarkup=`
         <div class="little-reminder"><span aria-hidden="true">☁️</span><p>Take your time.<br/><strong>Good things bounce back.</strong></p><span class="reminder-spark" aria-hidden="true">✧</span></div>
       </aside>
     </div>
-    <noscript><p class="browser-note">The 3D playground needs JavaScript. You can still read about Squishy Lab and how to play below.</p></noscript>
-    <section class="about-lab" id="about" aria-labelledby="about-title">
-      <div class="about-heading"><span class="about-sticker" aria-hidden="true">a little squishy guide ☺</span><h2 id="about-title">Your free online squishy simulator</h2><p>Squishy Lab is a playful 3D playground where you can squeeze virtual squishies right in your browser. No account, installation or payment needed — just pick a little shape and make it yours.</p></div>
-      <div class="guide-grid">
-        <article><span class="guide-number" aria-hidden="true">01 ✦</span><h3>Pick, press, play</h3><p>Choose Mochi, Butter, a Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese or Peanut. Press and hold with your mouse or finger for a deeper squeeze, drag to move the dent, then release and watch it bounce back.</p><p>For keyboard play, focus the squishy and hold Space or Enter. Escape resets it. Use fullscreen for a bigger playground on your phone.</p></article>
-        <article><span class="guide-number" aria-hidden="true">02 ✦</span><h3>A squishy with your vibe</h3><p>Try soft touch, glitter or clear finishes, choose a cute face, or add your own message in four playful fonts. Change the text color and download a PNG of your creation.</p><p>Explore squishy ASMR with recorded gel and crunchy sound textures. Sound starts after you interact; switch textures or tap the speaker to mute.</p></article>
-      </div>
-      <div class="squishy-faq" id="faq"><h3>A few little answers</h3>
-        <details><summary>Is Squishy Lab free?</summary><p>Yes. The playground, shapes, customization, sounds and PNG downloads are free, with no signup required.</p></details>
-        <details><summary>Does it work on a phone?</summary><p>Yes, in a modern browser with JavaScript and WebGL 2 enabled. Touch and hold to squeeze, and use the fullscreen button for more room. Desktop browsers also support mouse and keyboard controls.</p></details>
-        <details><summary>Why can’t I hear the sound?</summary><p>Browsers need a tap or click before audio can start. Squish the shape or tap Test sound, check your device media volume, and make sure the speaker button is enabled. Gel is the default; Crunchy is optional.</p></details>
-        <details><summary>What can I ask the AI to change?</summary><p>Describe material edits in English, such as “Keep the color and make it softer” or “Make it blue with a slower return”. AI can adjust supported properties including color, softness, firmness, recovery and proportions. Choose shapes, faces, lettering and finishes with the playground controls.</p></details>
-        <details><summary>How many AI requests can I make?</summary><p>Three verified requests per public IP in a rolling 24-hour window. Each used slot becomes available 24 hours later, and devices sharing an IP share the allowance. Requests that start AI processing count even if unsuccessful. All the other playground features stay available without AI.</p></details>
-        <details><summary>Can I save my squishy?</summary><p>Tap Download PNG to save the current squishy as an image. Your material and appearance settings are also saved in this browser when local storage is available. Clear saved squishy removes those settings.</p></details>
-      </div>
-      <p class="guide-credit">Made with a little curiosity and a lot of squishing. <a href="https://github.com/Daniele-Cangi/squishy-lab" target="_blank" rel="noopener noreferrer">Explore the open-source project ↗</a></p>
-    </section>
+    <noscript><p class="browser-note">The 3D playground needs JavaScript. Read the <a href="/guide/">guide and FAQ</a> to learn how to play.</p></noscript>
+
   </main>
-  <footer><span class="footer-note"><span aria-hidden="true">☺</span> Little shapes. Big feelings.</span><span id="model-credit" hidden>Built with Llama · Cloudflare Workers AI</span><button id="forget">Clear saved squishy</button><p class="dedication">Made for August, certified squishy expert. ☺</p></footer>
+  <footer><span class="footer-note"><span aria-hidden="true">☺</span> Little shapes. Big feelings.</span><a class="guide-link" href="/guide/">Guide &amp; FAQ ↗</a><span id="model-credit" hidden>Built with Llama · Cloudflare Workers AI</span><button id="forget">Clear saved squishy</button><p class="dedication">Made for August, certified squishy expert. ☺</p></footer>
 </div>`;
 

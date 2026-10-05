@@ -5,7 +5,9 @@
   "outputDirectory": "dist",
   "functions": { "api/*.ts": { "maxDuration": 30 } },
   "redirects": [
-    { "source": "/index.html", "destination": "/", "permanent": true }
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/guide", "destination": "/guide/", "permanent": true },
+    { "source": "/guide/index.html", "destination": "/guide/", "permanent": true }
   ],
   "headers": [
     { "source": "/api/:path*", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }

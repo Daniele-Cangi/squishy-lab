@@ -9,6 +9,8 @@ assert.ok(!home.headers.get('x-robots-tag')?.includes('noindex'));
 const html=await home.text();
 assert.ok(html.includes(`<link rel="canonical" href="${origin}/"`));
 assert.ok(html.includes('href="/guide/"'));
+assert.ok(!html.includes('Local demo · no AI'));
+assert.ok(!html.includes('Built with Llama'));
 assert.ok(!html.includes('What can I ask the AI to change?'));
 assert.equal((html.match(/<h1[\s>]/g)??[]).length,1);
 assert.ok(!html.includes('squishy-lab-phi.vercel.app'));

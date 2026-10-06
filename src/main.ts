@@ -184,7 +184,7 @@ async function configureProvider() {
   try {
     const response=await fetch(`${import.meta.env.VITE_API_BASE??''}/api/config`,{signal:AbortSignal.timeout(4000)});if(!response.ok)throw new Error();
     const config=await response.json() as {provider:string;model?:string;siteKey?:string};provider=config.provider;
-    el('model-credit').textContent=config.model==='@cf/qwen/qwen3-30b-a3b-fp8'?'Qwen3 · Cloudflare Workers AI':'Built with Llama · Cloudflare Workers AI';
+    el('model-credit').textContent=config.model==='@cf/qwen/qwen3-30b-a3b-fp8'?'Qwen3 · Cloudflare Workers AI':['@cf/meta/llama-3.2-3b-instruct','@cf/meta/llama-3.1-8b-instruct'].includes(config.model??'')?'Built with Llama · Cloudflare Workers AI':'Cloudflare Workers AI';
     if(provider==='workers-ai') {
       el('model-credit').hidden=false;
       el('mode-badge').textContent='AI · Cloudflare';el('privacy').textContent='3 AI requests per network every 24 hours. Your description is sent to Cloudflare Workers AI. Please avoid personal information. Your squishy runs on your device.';
@@ -192,7 +192,8 @@ async function configureProvider() {
     } else if(provider==='evaluation-ai'&&import.meta.env.DEV){
       el('model-credit').hidden=false;el('mode-badge').textContent='Remote AI · local test';
       el('privacy').textContent='Local test with real Cloudflare Workers AI, limited to 12 calls. Descriptions are sent to Cloudflare; please avoid personal information.';
-    } else if(provider!=='mock') {provider='disabled';el('mode-badge').textContent='Local presets · AI off';el('privacy').textContent='AI is not configured. Explore the three material presets.';}
+    } else if(provider==='mock') {el('mode-badge').textContent='Local demo · no AI';el('privacy').textContent='Local demo with simulated material edits. No AI service is used.';}
+    else {provider='disabled';el('mode-badge').textContent='Local presets · AI off';el('privacy').textContent='AI is not configured. Explore the three material presets.';}
   } catch {provider='disabled';el('mode-badge').textContent='Local presets · service offline';el('privacy').textContent='The description service is unreachable. Your squishy and presets are still available.';}
 }
 void configureProvider();

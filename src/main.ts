@@ -129,6 +129,13 @@ async function updateLettering(text:string,font:Appearance['font']){
 }
 el<HTMLInputElement>('text-color').oninput=event=>{appearance={...appearance,textColor:(event.target as HTMLInputElement).value};void updateLettering(el<HTMLInputElement>('custom-text').value,appearance.font);};
 el<HTMLInputElement>('custom-text').oninput=event=>{void updateLettering((event.target as HTMLInputElement).value,appearance.font);};
+document.querySelectorAll<HTMLButtonElement>('[data-emoji]').forEach(button=>button.onclick=async()=>{
+  const input=el<HTMLInputElement>('custom-text'),emoji=button.dataset.emoji!,start=input.selectionStart??input.value.length,end=input.selectionEnd??start;
+  if(input.value.length-(end-start)+emoji.length>input.maxLength){el('emoji-status').textContent='Make a little room in your message first.';return;}
+  el('emoji-status').textContent='';input.setRangeText(emoji,start,end,'end');const caret=start+emoji.length;
+  await updateLettering(input.value,appearance.font);
+  if(input.value.slice(start,caret)===emoji){input.focus({preventScroll:true});input.setSelectionRange(caret,caret);}
+});
 document.querySelectorAll<HTMLButtonElement>('[data-font]').forEach(button=>button.onclick=()=>{void updateLettering(el<HTMLInputElement>('custom-text').value,button.dataset.font as Appearance['font']);});
 el<HTMLButtonElement>('download-png').onclick=async()=>{
   const button=el<HTMLButtonElement>('download-png');button.disabled=true;

@@ -42,7 +42,7 @@ export class Decorations {
     if(appearance.text?.trim()){
       const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=256;const ctx=canvas.getContext('2d')!;
       ctx.textAlign='center';ctx.textBaseline='middle';let size=180;const text=appearance.text.trim();
-      do{ctx.font=`${size}px "${appearance.font??'Chewy'}"`;if(ctx.measureText(text).width<940)break;size-=2;}while(size>18);
+      do{ctx.font=`${size}px "${appearance.font??'Chewy'}", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;if(ctx.measureText(text).width<940)break;size-=2;}while(size>18);
       ctx.lineJoin='round';ctx.strokeStyle='#fff8ec';ctx.lineWidth=10;ctx.strokeText(text,512,128);ctx.fillStyle=appearance.textColor??'#47334e';ctx.fillText(text,512,128);
       const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;
       const columns=32,rows=12,bindings:BoundVertex[]=[],uv:number[]=[],indices:number[]=[];

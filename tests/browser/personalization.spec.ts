@@ -22,12 +22,26 @@ test('clearing a squishy cancels lettering waiting for a font',async({page})=>{
  expect(snapshot.appearance.face).toBe(true);expect(snapshot.appearance.text).toBeUndefined();
 });
 test('cute lettering persists, follows shape changes and exports PNG',async({page})=>{
- await page.goto('/');await page.waitForFunction(()=>!!window.__squishy);await page.getByLabel('A little message').fill('Hello August');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string}}).appearance.text).toBe('Hello August');
+ await page.goto('/');await page.waitForFunction(()=>!!window.__squishy);await page.getByLabel('A little message').fill('Hello August 😊🫶🏽');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string}}).appearance.text).toBe('Hello August 😊🫶🏽');
  await page.getByLabel('Text color').fill('#ed4b91');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{textColor?:string}}).appearance.textColor).toBe('#ed4b91');
  for(const name of ['Baloo 2','Pacifico','Short Stack','Chewy']){await page.getByRole('button',{name,exact:true}).click();await expect(page.getByRole('button',{name,exact:true})).toHaveAttribute('aria-pressed','true');}
- await page.getByRole('button',{name:'Cat',exact:true}).click();await expect(page.getByLabel('A little message')).toHaveValue('Hello August');
+ await page.getByRole('button',{name:'Cat',exact:true}).click();await expect(page.getByLabel('A little message')).toHaveValue('Hello August 😊🫶🏽');
  const downloadPromise=page.waitForEvent('download');await page.getByRole('button',{name:'Download PNG ↓',exact:true}).click();const download=await downloadPromise;expect(download.suggestedFilename()).toBe('my-squishy.png');const bytes=await readFile((await download.path())!);expect(bytes.subarray(0,8).toString('hex')).toBe('89504e470d0a1a0a');expect(bytes.length).toBeGreaterThan(10000);
- await page.reload();await expect(page.getByLabel('Text color')).toHaveValue('#ed4b91');await expect(page.getByLabel('A little message')).toHaveValue('Hello August');await page.getByLabel('A little message').fill('');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string;face:boolean}}).appearance.text).toBe('');
+ await page.reload();await expect(page.getByLabel('Text color')).toHaveValue('#ed4b91');await expect(page.getByLabel('A little message')).toHaveValue('Hello August 😊🫶🏽');await page.getByLabel('A little message').fill('');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string;face:boolean}}).appearance.text).toBe('');
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);
 });
 
+
+test('emoji picks insert at the caret, replace a selection and respect the message limit',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.goto('/');await page.waitForFunction(()=>!!window.__squishy);
+ const input=page.getByLabel('A little message');await input.fill('Hi there');
+ await input.evaluate((node:HTMLInputElement)=>node.setSelectionRange(3,3));
+ await page.getByRole('button',{name:'Add heart emoji',exact:true}).click();await expect(input).toHaveValue('Hi ❤️there');
+ await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string}}).appearance.text).toBe('Hi ❤️there');
+ await input.evaluate((node:HTMLInputElement)=>node.setSelectionRange(3,5));
+ await page.getByRole('button',{name:'Add smile emoji',exact:true}).click();await expect(input).toHaveValue('Hi 😊there');
+ await input.fill('a'.repeat(39));await input.evaluate((node:HTMLInputElement)=>node.setSelectionRange(39,39));
+ await page.getByRole('button',{name:'Add heart hands emoji',exact:true}).click();await expect(input).toHaveValue('a'.repeat(39));
+ await expect(page.locator('#emoji-status')).toHaveText('Make a little room in your message first.');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);
+});

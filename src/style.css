@@ -337,6 +337,10 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 .personalization #text-color{display:block;width:100%;height:44px;padding:4px;cursor:pointer;background:var(--paper)}
 .personalization #text-color::-webkit-color-swatch{border:0;border-radius:7px}
 .personalization #text-color::-moz-color-swatch{border:0;border-radius:7px}
+.emoji-picks{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:12px 0}
+.emoji-picks button{min-width:0;min-height:44px;border:1px solid var(--line);border-radius:12px;background:#fff8ec;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:23px;cursor:pointer;touch-action:manipulation}
+.emoji-picks button:hover{background:var(--lavender)}.emoji-picks button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.personalization #emoji-status:empty{display:none}
 
 .sound-mode{touch-action:manipulation;-webkit-appearance:none;appearance:none;width:90px;border:1.5px solid var(--ink);box-shadow:2px 3px 0 var(--ink)}
 

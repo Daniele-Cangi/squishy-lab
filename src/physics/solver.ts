@@ -56,16 +56,23 @@ export class SoftBody {
       this.volumeTargets[t]=Math.max(volumes[t]*0.4,volumes[t]+(v-volumes[t])*this.spec.compressibility);
     }
     const contact=this.contact;
-    // Spread a top press over the thin bar's surface, not through its thickness.
-    // The continuous normal blend leaves horizontal side pressure unchanged.
-    const topSpread=contact&&this.cage.shape==='chocolate'
-      ?1+(Math.min(2.5,Math.max(1,Math.sqrt(this.cage.radii[0]*this.cage.radii[2])/this.cage.radii[1]))-1)*Math.max(0,contact.normal[1])**4:1;
+    // Top contact on low shapes needs a lateral footprint independent of height.
+    // For a ring, use the local tube width rather than the whole ring diameter.
+    // Blend continuously with the normal; horizontal side presses stay identical.
+    const lowTop=contact&&(this.cage.shape==='chocolate'||this.cage.shape==='donut')
+      ?Math.max(0,contact.normal[1])**4:0;
+    const lateralSize=Math.sqrt(this.cage.radii[0]*this.cage.radii[2])*(this.cage.shape==='donut'?.4:1);
+    const topSpread=1+(Math.min(2.5,Math.max(this.cage.shape==='donut'?1.5:1,lateralSize/this.cage.radii[1]))-1)*lowTop;
+    const contactSize=Math.min(...this.cage.radii);
+    // Limit extra penetration to the available height, even at thin proportions.
+    const depthGain=this.cage.shape==='donut'?1.25:1.5;
+    const depthSize=contactSize+(Math.min(contactSize*depthGain,this.cage.radii[1]*depthGain)-contactSize)*lowTop;
     if(contact) for(let i=0;i<mass.length;i++) {
       const dx=rest[i*3]-contact.point[0],dy=rest[i*3+1]-contact.point[1],dz=rest[i*3+2]-contact.point[2];
       const d=Math.hypot(dx,dy,dz);
       const along=dx*contact.normal[0]+dy*contact.normal[1]+dz*contact.normal[2];
       const distanceSquared=topSpread===1?d*d:along*along+Math.max(0,d*d-along*along)/(topSpread*topSpread);
-      const radius=Math.min(...this.cage.radii)*(.65+.48*Math.sqrt(contact.intensity))*(1+.22*(contact.sustain??0));
+      const radius=contactSize*(.65+.48*Math.sqrt(contact.intensity))*(1+.22*(contact.sustain??0));
       this.influence[i]=Math.exp(-2.5*distanceSquared/(radius*radius));
     }
     this.edgeLambda.fill(0); this.volumeLambda.fill(0);
@@ -78,7 +85,7 @@ export class SoftBody {
         if(!mass[i]) { p[j]=rest[j];p[j+1]=rest[j+1];p[j+2]=rest[j+2]; continue; }
         for(let a=0;a<3;a++) p[j+a]+=(this.targets[j+a]-p[j+a])*tether;
         if(contact && this.influence[i]>0.012) {
-          const w=this.influence[i],depth=Math.min(...this.cage.radii)*0.65*contact.intensity*w*(1+.95*(contact.sustain??0));
+          const w=this.influence[i],depth=depthSize*0.65*contact.intensity*w*(1+.95*(contact.sustain??0));
           const along=(p[j]-rest[j])*contact.normal[0]+(p[j+1]-rest[j+1])*contact.normal[1]+(p[j+2]-rest[j+2])*contact.normal[2];
           // A finger pushes inward; it cannot pull recovering foam outward.
           // Unilateral contact keeps a new light press continuous with its dent.

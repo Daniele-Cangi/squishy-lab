@@ -154,10 +154,72 @@ for pocket in references['cheese']['pockets']:
             else:c=a-segments;d=b-segments;indices.extend([c,a,d,a,b,d])
     add_group('cheese','recess lining',verts,indices,'#ce932f',pocket['axis'])
 for sign in [-1,1]:line('peanut',[(-.98+i*1.96/64,0) for i in range(65)],.008,'#a87c4c',1,sign,height=.005)
+
+def pad(name,x,y,rx,ry,color,height=.045,axis=2):
+    verts=[x,y,height];indices=[];segments=32;rings=7
+    for ring in range(1,rings+1):
+        radius=ring/rings
+        for i in range(segments):
+            angle=i*2*math.pi/segments
+            if name=='paw' and x==0:
+                px=math.sin(angle)**3;py=(13*math.cos(angle)-5*math.cos(2*angle)-2*math.cos(3*angle)-math.cos(4*angle))/17
+            else:px=math.cos(angle);py=math.sin(angle)
+            verts.extend([x+rx*radius*px,y+ry*radius*py,.008+(height-.008)*(1-radius*radius)])
+            a=1+(ring-1)*segments+i;b=1+(ring-1)*segments+(i+1)%segments
+            if ring==1:indices.extend([0,a,b])
+            else:c=a-segments;d=b-segments;indices.extend([c,a,d,a,b,d])
+    add_group(name,'soft raised pad',verts,indices,color,axis)
+
+for x,y in [(-.67,.77),(-.23,.84),(.23,.84),(.67,.77)]:pad('paw',x,y,.135,.16,'#e7a6b7')
+pad('paw',0,-.05,.38,.30,'#e7a6b7',.065)
+for side in [-1,1]:
+    pad('capybara',side*.65,.65,.12,.12,'#8b664e',.02,axis=1)
+    line('capybara',[(side*.46,-.64),(side*.65,-.65)],.013,'#86634d')
+
+import copy
+for expression in ['smile','happy','sleepy','wink','surprised']:
+    source='face'+('' if expression=='smile' else '-'+expression)
+    target='capy-face'+('' if expression=='smile' else '-'+expression)
+    pad(target,0,.12,.48,.33,'#caa27b',.006)
+    for asset in copy.deepcopy(assets[source]):
+        # Slightly wider eyes and a lower mouth suit the broad capybara muzzle.
+        for j in range(0,len(asset['positions']),3):
+            asset['positions'][j]*=1.18
+            if asset['positions'][j+1]>.25:asset['positions'][j+1]+=.16
+        add_group(target,'expression',asset['positions'],asset['indices'],asset['color'],asset['axis'],asset['sign'])
+    for x in [-.14,.14]:ellipse(target,x,.2,.048,.028,'#76543f',height=.025)
+
+# Icing coats the actual toroidal skin; no triangle bridges the center hole.
+for face in references['donut']['faceGrids']:
+    if face['axis']==1 and face['sign']==-1:continue
+    n=references['donut']['subdivisions'];verts=[];indices=[]
+    def border(u):return .25+.17*math.sin(7*math.pi*u)+.07*math.sin(13*math.pi*u)
+    for y in range(n):
+        for x in range(n):
+            for corners in [[(x,y),(x+1,y),(x,y+1)],[(x+1,y),(x+1,y+1),(x,y+1)]]:
+                poly=[(2*a/n-1,2*b/n-1) for a,b in corners];clipped=[]
+                if face['axis']==1:clipped=poly
+                else:
+                    for a,b in zip(poly,poly[1:]+poly[:1]):
+                        fa=a[1]-border(a[0]);fb=b[1]-border(b[0])
+                        if fa>=0:clipped.append(a)
+                        if (fa>=0)!=(fb>=0):
+                            t=fa/(fa-fb);clipped.append((a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])))
+                if len(clipped)>=3:
+                    start=len(verts)//3;verts.extend([value for u,v in clipped for value in (u,v,.009)])
+                    for j in range(1,len(clipped)-1):indices.extend([start,start+j,start+j+1])
+    if face['axis']==2 and face['sign']==1:
+        for j in range(0,len(indices),3):indices[j+1],indices[j+2]=indices[j+2],indices[j+1]
+    if verts:add_group('donut','icing',verts,indices,'#ed91b1',face['axis'],face['sign'])
+random.seed(723)
+for i in range(64):
+    u=random.uniform(-.94,.94);v=random.uniform(-.72,.72);angle=random.uniform(0,math.pi)
+    line('donut',[(u-.012*math.cos(angle)+j*.024*math.cos(angle)/4,v-.04*math.sin(angle)+j*.08*math.sin(angle)/4) for j in range(5)],.009,['#fff5bd','#85ced8','#b9a0e9','#faf3ec'][i%4],axis=1,height=.027)
 out=ROOT/'public'/'assets';out.mkdir(parents=True,exist_ok=True)
 (out/'collection-details.json').write_text(json.dumps(dict(version=1,blender=bpy.app.version_string,groups=assets),separators=(',',':')),encoding='utf8')
 # The editable workshop contains the exact runtime reference surfaces.
 items=[('Mochi','mochi',['face'],(.65,.53,.86)),('Butter','butter',['butter'],(.93,.78,.38)),('Strawberry','butter',['strawberry'],(.95,.55,.69)),('Strawberry face','strawberry',['face','seeds','leaves'],(.9,.2,.3)),('Jelly cube','cube',[],(.3,.75,.9)),('Chocolate','chocolate',['chocolate'],(.46,.26,.18)),('Banana','banana',['banana'],(.96,.81,.33)),('Cat','cat',['cat','cat-face'],(.91,.67,.47)),('Cheese','cheese',['cheese'],(.95,.75,.3)),('Peanut','peanut',['peanut'],(.83,.64,.43))]
+items.extend([('Jelly Drop','drop',[],(.57,.8,.89)),('Sugar Drop','gumdrop',[],(.86,.62,.87)),('Kitty Paw','paw',['paw'],(.94,.85,.79)),('Sleepy Capybara','capybara',['capybara','capy-face-sleepy'],(.71,.55,.41)),('Glazed Donut','donut',['donut'],(.87,.67,.40))])
 def project(ref,asset,u,v,height):
     # Exact barycentric sampling of the exported runtime triangles and normals.
     n=ref['subdivisions'];face=next(f for f in ref['faceGrids'] if f['axis']==asset['axis'] and f['sign']==asset['sign']);grid=face['grid']
@@ -173,12 +235,12 @@ for i,(name,shape,groups,color) in enumerate(items):
     location=((i%5)*4.5,(i//5)*-5,0)
     obj=bpy.data.objects.new(name+' - reference skin',mesh);collection.objects.link(obj);obj.location=location;obj.rotation_euler.x=math.pi/2
     mat=material(name+' surface',color);obj.data.materials.append(mat)
-    if shape=='peanut':
+    if shape in ['peanut','capybara']:
         attribute=mesh.color_attributes.new(name='Shell grain',type='FLOAT_COLOR',domain='POINT')
         for j,entry in enumerate(attribute.data):entry.color=(*ref['colors'][j*3:j*3+3],1)
         nodes=mat.node_tree.nodes;grain=nodes.new('ShaderNodeVertexColor');grain.layer_name='Shell grain';mix=nodes.new('ShaderNodeMixRGB');mix.blend_type='MULTIPLY';mix.inputs[0].default_value=1;mix.inputs[1].default_value=(*color,1)
         mat.node_tree.links.new(grain.outputs['Color'],mix.inputs[2]);mat.node_tree.links.new(mix.outputs[0],nodes['Principled BSDF'].inputs['Base Color'])
-    if shape=='cube':
+    if shape in ['cube','drop']:
         bsdf=mat.node_tree.nodes['Principled BSDF'];bsdf.inputs['Transmission Weight'].default_value=.91;bsdf.inputs['IOR'].default_value=1.38;bsdf.inputs['Roughness'].default_value=.09
     for p in mesh.polygons:p.use_smooth=True
     for group in groups:

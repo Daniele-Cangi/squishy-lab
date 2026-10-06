@@ -6,9 +6,14 @@ export interface DetailLibrary {version:1;groups:Record<string,DetailAsset[]>}
 let library:Promise<DetailLibrary>|undefined;
 export function loadDetails(){return library??=fetch(`${import.meta.env.BASE_URL}assets/collection-details.json`).then(r=>{if(!r.ok)throw new Error('Details unavailable');return r.json() as Promise<DetailLibrary>;});}
 export interface BoundVertex extends MaterialPoint {height:number}
-export function bindDetails(surface:SurfaceEmbedding,asset:DetailAsset):BoundVertex[]{
+export function decorationPoint(surface:SurfaceEmbedding,shape:Appearance['shape'],axis:number,sign:number,u:number,v:number){
+  // The donut's message occupies its front outer arc, rather than wrapping
+  // around the ring or crossing the hole. Other models retain their face map.
+  return shape==='donut'?facePoint(surface,2,1,-.62+u*.14,v*.65):facePoint(surface,axis,sign,u,v);
+}
+export function bindDetails(surface:SurfaceEmbedding,asset:DetailAsset,shape?:Appearance['shape']):BoundVertex[]{
   const result:BoundVertex[]=[];
-  for(let i=0;i<asset.positions.length;i+=3)result.push({...facePoint(surface,asset.axis,asset.sign,asset.positions[i],asset.positions[i+1]),height:asset.positions[i+2]});
+  for(let i=0;i<asset.positions.length;i+=3)result.push({...shape?decorationPoint(surface,shape,asset.axis,asset.sign,asset.positions[i],asset.positions[i+1]):facePoint(surface,asset.axis,asset.sign,asset.positions[i],asset.positions[i+1]),height:asset.positions[i+2]});
   return result;
 }
 // Sample the very triangles being rendered, including their current normals.
@@ -23,21 +28,21 @@ export function updateDetails(bindings:BoundVertex[],positions:ArrayLike<number>
 }
 export class Decorations {
   readonly group=new THREE.Group();
-  private meshes:{mesh:THREE.Mesh;bindings:BoundVertex[]}[]=[];
+  private meshes:{mesh:THREE.Mesh;bindings:BoundVertex[];skinNormals?:boolean}[]=[];
   private sparkle:THREE.Points|undefined;
   private sparkleBindings:BoundVertex[]=[];
   constructor(surface:SurfaceEmbedding,appearance:Appearance,assets:DetailLibrary){
-    const face=appearance.shape==='cat'?'cat-face':'face',expression=appearance.expression??'smile';
-    const names=[...(appearance.label==='none'?[]:[appearance.label]),...(appearance.face&&!appearance.text?.trim()?[expression==='smile'?face:`${face}-${expression}`]:[]),...(appearance.shape==='strawberry'?['seeds','leaves']:[]),...(['chocolate','banana','cat','cheese','peanut'].includes(appearance.shape)?[appearance.shape]:[])];
+    const face=appearance.shape==='cat'?'cat-face':appearance.shape==='capybara'?'capy-face':'face',expression=appearance.expression??'smile';
+    const names=[...(appearance.label==='none'?[]:[appearance.label]),...(appearance.face&&!appearance.text?.trim()?[expression==='smile'?face:`${face}-${expression}`]:[]),...(appearance.shape==='strawberry'?['seeds','leaves']:[]),...(['chocolate','banana','cat','cheese','peanut','paw','capybara','donut'].includes(appearance.shape)?[appearance.shape]:[])];
     const batches=new Map<string,{positions:number[];indices:number[];bindings:BoundVertex[]}>();
     for(const name of names)for(const asset of assets.groups[name]??[]){
       let batch=batches.get(asset.color);if(!batch){batch={positions:[],indices:[],bindings:[]};batches.set(asset.color,batch);}
-      const offset=batch.bindings.length;batch.bindings.push(...bindDetails(surface,asset));batch.positions.push(...asset.positions);batch.indices.push(...asset.indices.map(i=>i+offset));
+      const offset=batch.bindings.length;batch.bindings.push(...bindDetails(surface,asset,name.startsWith('face')?appearance.shape:undefined));batch.positions.push(...asset.positions);batch.indices.push(...asset.indices.map(i=>i+offset));
     }
     for(const [color,batch] of batches){
       const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(batch.positions.length),3));geometry.setIndex(batch.indices);
-      const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color,roughness:.62,side:THREE.DoubleSide}));mesh.frustumCulled=false;
-      this.meshes.push({mesh,bindings:batch.bindings});this.group.add(mesh);
+      const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color,roughness:appearance.shape==='donut'&&color==='#ed91b1'?.32:.62,side:THREE.DoubleSide}));mesh.frustumCulled=false;
+      this.meshes.push({mesh,bindings:batch.bindings,skinNormals:appearance.shape==='donut'&&color==='#ed91b1'});this.group.add(mesh);
     }
     if(appearance.text?.trim()){
       const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=256;const ctx=canvas.getContext('2d')!;
@@ -47,7 +52,7 @@ export class Decorations {
       const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;
       const columns=32,rows=12,bindings:BoundVertex[]=[],uv:number[]=[],indices:number[]=[];
       for(let y=0;y<=rows;y++)for(let x=0;x<=columns;x++){
-        bindings.push({...facePoint(surface,2,1,(x/columns-.5)*1.45,(y/rows-.5)*.85+.25),height:.012});uv.push(x/columns,y/rows);
+        bindings.push({...decorationPoint(surface,appearance.shape,2,1,(x/columns-.5)*1.45,(y/rows-.5)*.85+.25),height:.012});uv.push(x/columns,y/rows);
         if(x<columns&&y<rows){const a=x+y*(columns+1);indices.push(a,a+1,a+columns+1,a+1,a+columns+2,a+columns+1);}
       }
       const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(bindings.length*3),3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geometry.setIndex(indices);
@@ -59,7 +64,7 @@ export class Decorations {
       const count=360,colors=new Float32Array(count*3);let seed=19;
       const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
       for(let i=0;i<count;i++){
-        const axis=i%3,sign=i%7===0?-1:1;
+        const axis=appearance.shape==='donut'?1+i%2:i%3,sign=i%7===0?-1:1;
         this.sparkleBindings.push({...facePoint(surface,axis,sign,random()*1.88-.94,random()*1.88-.94),height:.008});
         new THREE.Color(['#fffef3','#f7d782','#e6aaff','#bbf4ff'][i%4]).toArray(colors,i*3);
       }
@@ -70,7 +75,14 @@ export class Decorations {
     }
   }
   update(positions:ArrayLike<number>,normals:ArrayLike<number>){
-    for(const {mesh,bindings}of this.meshes){const attr=mesh.geometry.getAttribute('position');updateDetails(bindings,positions,normals,attr.array as Float32Array);attr.needsUpdate=true;mesh.geometry.computeVertexNormals();}
+    for(const {mesh,bindings,skinNormals}of this.meshes){
+      const attr=mesh.geometry.getAttribute('position');updateDetails(bindings,positions,normals,attr.array as Float32Array);attr.needsUpdate=true;
+      if(skinNormals){
+        if(!mesh.geometry.getAttribute('normal'))mesh.geometry.setAttribute('normal',new THREE.BufferAttribute(new Float32Array(bindings.length*3),3));
+        const normal=mesh.geometry.getAttribute('normal');
+        for(let i=0;i<bindings.length;i++){const {nodes,weights}=bindings[i],n=[0,0,0];for(let k=0;k<3;k++)for(let a=0;a<3;a++)n[a]+=normals[nodes[k]*3+a]*weights[k];const length=Math.hypot(...n)||1;normal.setXYZ(i,n[0]/length,n[1]/length,n[2]/length);}normal.needsUpdate=true;
+      }else mesh.geometry.computeVertexNormals();
+    }
     if(this.sparkle){const attr=this.sparkle.geometry.getAttribute('position');updateDetails(this.sparkleBindings,positions,normals,attr.array as Float32Array);attr.needsUpdate=true;}
   }
   get vertices(){return this.meshes.reduce((n,m)=>n+m.bindings.length,0)+this.sparkleBindings.length;}

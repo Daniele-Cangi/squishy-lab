@@ -11,7 +11,7 @@
 
 ## Features and limits
 
-- The collection has 10 entries: Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese and Peanut.
+- The collection has 15 entries: Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese, Peanut, Jelly Drop, Sugar Drop, Kitty Paw, Sleepy Capybara and Glazed Donut.
 - Mouse, touch and keyboard interaction; longer holds deepen the squeeze. Fullscreen is available on desktop and mobile.
 - Soft touch, glitter and clear finishes; five face expressions; custom lettering in four fonts with a text color picker.
 - Recorded gel and crunchy sound textures. Audio starts after interaction and can be muted.

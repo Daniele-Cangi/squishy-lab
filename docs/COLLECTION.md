@@ -14,6 +14,11 @@ The collection is authored locally and works without a provider or a network AI 
 | Cat | Rounded head with two integral soft ears | Pink inner ears, stripes, five expressions, nose and whiskers |
 | Cheese | Rounded triangular wedge with seven recessed pockets | Subdivided pocket linings follow the bowls |
 | Peanut | Two slightly unequal rounded lobes and a narrow waist | Sculpted shell grain, material-bound color variation and a seam |
+| Jelly Drop | Smooth tapered teardrop with a rounded tip | Clear finish and attached sparkle by default |
+| Sugar Drop | Broad seated candy dome, narrower crown | Deterministic locally generated bump texture and attached sparkle |
+| Kitty Paw | Broad palm with four integral toe lobes | Four raised pink toe pads and a heart-shaped palm pad |
+| Sleepy Capybara | Rounded body with integral ear relief and a broad projecting muzzle | Inner-ear pads, light muzzle pigment, nostrils, paw markings and five expressions |
+| Glazed Donut | Periodic toroidal volume with an actual center hole | Curved icing with a clipped wavy edge, attached sprinkles and a front-arc message area |
 
 Every entry supports soft-touch, glitter or transparent appearance, and a face. Collection selection applies the entry's base color while retaining material softness, recovery, damping, compressibility and proportions. Effects and faces preserve deformation. Switching body geometry releases contact and atomically replaces cage, welded render mesh and probes. The two bar prints share a body, so switching between their labels preserves its dent. Reset explicitly restores the current reference.
 
@@ -27,7 +32,7 @@ Every entry supports soft-touch, glitter or transparent appearance, and a face. 
 
 The Python script is the reproducible source for the print library. Editing only the saved workshop does not automatically update the app: change the script and rebuild, or extend its export path for manual mesh edits. Windows Arial Bold is used if available, otherwise Blender's built-in font; rebuilding with a different font changes lettering geometry. The prebuilt library is committed, and neither Blender nor a font installation is a build dependency.
 
-Bodies remain analytic so a new body cannot silently diverge from its physical cage. Each new shape maps both the 216 cage particles and the welded 5,402-vertex render surface with the same function. Existing positive sparse deformation weights remain in use. The solver operates on each shape's own edge lengths and rest tetrahedron volumes.
+Bodies remain analytic so a new body cannot silently diverge from its physical cage. The solid forms use the cube-derived map; the donut uses the separate periodic ring map described below. Each new shape maps both the 216 cage particles and the welded 5,402-vertex render surface with the same function. Existing positive sparse deformation weights remain in use. The solver operates on each shape's own edge lengths and rest tetrahedron volumes.
 
 The banana rotates rounded cross sections along its arc, with a separate continuous stem profile and fuller ends. A blend of logical and rounded axial coordinates keeps the coarse reference cells oriented through the bend. The peanut's waist, unequal lobes and shallow shell grain are part of the same body map; its color variation stays in material coordinates. Both shapes anchor their support at their actual lowest cage height. Cat ears stretch the same head surface; chocolate squares and cheese recesses are in the body map, not rigid attachments. Cage construction checks orientation against logical cells and rejects folded maps before normalizing tetrahedron winding. The banana camera shows the curved profile and backs away on narrow viewports. Other entries retain their framing.
 
@@ -68,3 +73,23 @@ All 114 unit tests, typecheck, lint and the production build passed, together wi
 The five added entries were verified with **104 unit tests**, typecheck, lint and the production build; **22 browser tests** passed using installed Chrome and the desktop GPU. All five new pressure/recovery browser cases also passed separately in default SwiftShader, using the same assertions. The prebuilt detail library matches the production copy by SHA-256, and Worker dry-run packaging completed with the provider disabled.
 
 `evidence/collection-expanded/` preserves a separate normal-time video, 19 PNGs and source/GPU/timing metadata. All five forms are captured at rest, held and recovering; additional captures show a glitter peanut with a face and real pointer drag, transparent cheese and the complete mobile gallery with a banana. The recording has no browser errors. Recorded median frame intervals were **16.6–16.7 ms**, with **24.9–33.2 ms P95**, across 120 active samples per form on Chrome 154 / AMD Vega 8 at 1366×1100, DPR 1. These are short desktop video samples, not sustained mobile performance measurements.
+
+
+## Five-model expansion — October 6, 2026
+
+The collection now has 15 entries and 14 body geometries. Research and selection are recorded in [the expansion proposal](NEXT-COLLECTION.md). These original local models do not change the AI material contract or consume inference quota.
+
+The donut is a genuine toroidal body: 16 periodic angular cells, a 3-by-3 square-to-disk cross-section, 256 particles and 864 tetrahedra. Opposite angular endpoints share particle and skin indices. Its 3,600-vertex surface has Euler characteristic zero and no caps or triangles across the hole. The solid-body code path retains its existing topology and counts. Positive-volume checks also reject a folded ring reference before tetrahedra are reordered.
+
+Physical constraints, fixed timestep, recovery and pointer capture remain the existing solver and interaction path. The standard donut squeeze uses a visible part of the ring. Its faces and custom messages occupy a short outer front arc; icing and sparkles use native ring coordinates. Ray picking samples the actual rendered mesh, so pressing the hole does not grab invisible geometry.
+
+Icing edges are clipped against a smooth periodic profile instead of dropping whole grid cells. Icing inherits the parent skin's interpolated normals so independent paint triangles do not introduce visible facet seams; colored sprinkles remain bound relief. The paw pads have radial subdivisions and a varying offset. Capybara expression groups share a curved muzzle patch and nostrils, with five distinct moods. Text temporarily replaces its expression group. Authored accent colors remain stable when changing the body's base color.
+
+Sugar grain is a deterministic 256-by-256 canvas bump texture generated only when Sugar Drop is selected. It is reused, follows material UV coordinates and is disposed with the scene. It adds no remote texture request and no physical particles. Clear is a visual transmission finish; neither sparkles nor sugar represent independent internal particles or liquid flow.
+
+The Blender script rebuilds all 15 editable collections from the runtime references, including the ring cage and its pigment assets. The saved workshop and detail library are generated outputs; changes should be made to the scripts and mappings before rebuilding them.
+
+
+Verification for this expansion: typecheck, lint, the production build and all **145 unit tests** passed. **25 browser cases** passed in installed Chrome, covering existing collection behavior, the five new bodies, recovery/reset, clear finish, expressions, text/emoji PNG export, the donut hole's mouse hit testing, and saved personalization. A separate 390-by-844 touch emulation run verified hold, release and recovery for all five models. The saved Blender workshop was reopened and all five new reference skins and editable collections were checked.
+
+[Rest/held captures and diagnostics](../evidence/collection-next/captures.json), [touch diagnostics](../evidence/collection-next/touch.json) and PNGs in the same directory preserve the runtime source hash, conditions and snapshots. These are desktop/browser-emulation checks, not sustained performance measurements on a physical Android phone. `npx tsx scripts/record-next-collection.ts` reproduces the normal-time captures against a local server on port 5173; an alternate origin may be passed as the first argument. No remote AI inference was requested for this expansion.

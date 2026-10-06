@@ -4,7 +4,7 @@ export type Vec3 = [number, number, number];
 export interface Cage {
   rest: Float64Array; logical: Float64Array; inverseMass: Float64Array;
   tets: Uint16Array; volumes: Float64Array; edges: Uint16Array; lengths: Float64Array;
-  cells: number; radii: Vec3; shape:ShapeId;
+  cells: number; radii: Vec3; shape:ShapeId; ringSegments?:number;
 }
 export function roundedPoint(x: number, y: number, z: number, r: Vec3): Vec3 {
   // Spherified cube, continuous throughout the volume. Bottom is gently seated.
@@ -20,13 +20,17 @@ export const CHEESE_POCKETS=[
   {axis:1,u:-.36,v:.43,radius:.2,depth:.2},{axis:1,u:.39,v:.65,radius:.17,depth:.19},
   {axis:1,u:.1,v:-.32,radius:.15,depth:.17},
 ];
-const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.28,.55,.39],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.05,.82,.63]};
+const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.28,.55,.39],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.05,.82,.63],drop:[.88,1.25,.88],gumdrop:[.95,.95,.95],paw:[1,.95,.48],capybara:[1,.78,1.13],donut:[1,.5,1]};
 export function shellRelief(x:number,angle:number){
   const lengthwise=((1+Math.cos(10*angle+.6*Math.sin(7*x)))/2)**6;
   const crosswise=((1+Math.cos(25*x+.9*Math.sin(4*angle)))/2)**8;
   return .018*lengthwise+.014*crosswise+.003*Math.sin(43*x+8*angle);
 }
 export function shapeTint(shape:ShapeId,q:Vec3):Vec3{
+  if(shape==='capybara'){
+    const muzzle=Math.exp(-((q[0]/.62)**4)-(((q[1]-.1)/.5)**4))*((q[2]+1)/2)**8;
+    return [1+.13*muzzle,1+.1*muzzle,1+.065*muzzle];
+  }
   if(shape!=='peanut')return [1,1,1];
   const p=roundedPoint(...q,[1,1,1]),angle=Math.atan2(p[2],p[1]-1.04);
   const shade=.8+6*shellRelief(p[0],angle)+.025*Math.sin(61*p[0]+13*angle);
@@ -37,7 +41,31 @@ export function axialCoordinate(shape:ShapeId,q:Vec3){
 }
 export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='mochi'):Vec3{
   if(shape==='mochi')return roundedPoint(x,y,z,r);
+  if(shape==='donut'){
+    const angle=(x+1)*Math.PI,dy=y*Math.sqrt(1-z*z/2),dz=z*Math.sqrt(1-y*y/2),radius=1.04+.4*dz;
+    return [Math.cos(angle)*radius*r[0],(dy+1)*r[1]+.04,Math.sin(angle)*radius*r[2]];
+  }
   const unit=roundedPoint(x,y,z,[1,1,1]),sx=unit[0],sy=unit[1]-1.04,sz=unit[2];
+  if(shape==='drop'){
+    const taper=1.12-.7*(sy+1)/2;
+    return [sx*r[0]*taper,(sy+1)*r[1]+.04,sz*r[2]*taper];
+  }
+  if(shape==='gumdrop'){
+    const t=(y+1)/2,profile=1.14-.35*t;
+    return [(x*.2+sx*.8)*r[0]*profile,(y*.2+sy*.8+1)*r[1]+.04,(z*.2+sz*.8)*r[2]*profile];
+  }
+  if(shape==='paw'){
+    const toes=[-.66,-.22,.22,.66].reduce((sum,c)=>sum+Math.exp(-(((sx-c)/.15)**2)),0);
+    const palm=.82+.18*(sy+1)/2;
+    return [sx*r[0]*palm,(sy+1+.3*toes*((sy+1)/2)**5)*r[1]+.04,sz*r[2]];
+  }
+  if(shape==='capybara'){
+    const bx=.15*x+.85*sx,by=.15*y+.85*sy,bz=.15*z+.85*sz;
+    const ears=Math.exp(-(((bx-.55)/.18)**2))+Math.exp(-(((bx+.55)/.18)**2));
+    const muzzle=.28*Math.exp(-((bx/.65)**4)-((by-.03)/.55)**4)*((z+1)/2)**5;
+    const feet=.12*Math.exp(-(((Math.abs(sx)-.65)/.2)**2)-((sy+.62)/.24)**2);
+    return [bx*r[0]*(1+feet),(by+1+.65*ears*((by+1)/2)**5)*r[1]+.04,(bz+muzzle)*r[2]];
+  }
   if(shape==='strawberry'){
     const taper=.6+.4*(sy+1)/2;
     return [sx*r[0]*taper,(sy+1)*r[1]+.04,sz*r[2]*taper];
@@ -81,7 +109,31 @@ export function signedVolume(p: ArrayLike<number>, a: number, b: number, c: numb
   return (bx*(cy*dz-cz*dy) + by*(cz*dx-cx*dz) + bz*(cx*dy-cy*dx))/6;
 }
 export const permutations = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+// A periodic angular lattice gives the ring a genuine empty center. No cells
+// span the hole, and both the solver and the visible skin share this mapping.
+function generateRingCage(spec:SquishySpec):Cage{
+  const cells=3,ringSegments=16,n=cells+1,radii=compileSpec(spec).radii.map((v,a)=>v*SHAPE_SCALE.donut[a]) as Vec3;
+  const count=ringSegments*n*n,rest=new Float64Array(count*3),logical=rest.slice(),inverseMass=new Float64Array(count).fill(1);
+  const id=(x:number,y:number,z:number)=>(x%ringSegments+ringSegments)%ringSegments+ringSegments*(y+n*z);
+  for(let z=0;z<n;z++)for(let y=0;y<n;y++)for(let x=0;x<ringSegments;x++){
+    const i=id(x,y,z),q:Vec3=[2*x/ringSegments-1,2*y/cells-1,2*z/cells-1];logical.set(q,i*3);rest.set(shapePoint(...q,radii,'donut'),i*3);
+    if(rest[i*3+1]<.04+radii[1]*.16)inverseMass[i]=0;
+  }
+  const ts:number[]=[],vs:number[]=[],edgeSet=new Set<string>();
+  for(let z=0;z<cells;z++)for(let y=0;y<cells;y++)for(let x=0;x<ringSegments;x++)for(const order of permutations){
+    const q=[x,y,z],verts=[id(...q as Vec3)],parameters=[...q];for(const axis of order){q[axis]++;verts.push(id(...q as Vec3));parameters.push(...q);}
+    let volume=signedVolume(rest,...verts as [number,number,number,number]);
+    if(volume*signedVolume(parameters,0,1,2,3)>=0)throw new Error('Folded ring tetrahedron');
+    if(volume<0){[verts[1],verts[2]]=[verts[2],verts[1]];volume=-volume;}
+    if(!Number.isFinite(volume)||volume<1e-7)throw new Error('Degenerate ring tetrahedron');
+    ts.push(...verts);vs.push(volume);for(let a=0;a<4;a++)for(let b=a+1;b<4;b++)edgeSet.add([verts[a],verts[b]].sort((a,b)=>a-b).join(','));
+  }
+  const edges=Uint16Array.from([...edgeSet].flatMap(k=>k.split(',').map(Number))),lengths=new Float64Array(edges.length/2);
+  for(let e=0;e<lengths.length;e++){const a=edges[e*2]*3,b=edges[e*2+1]*3;lengths[e]=Math.hypot(rest[a]-rest[b],rest[a+1]-rest[b+1],rest[a+2]-rest[b+2]);}
+  return {rest,logical,inverseMass,tets:Uint16Array.from(ts),volumes:Float64Array.from(vs),edges,lengths,cells,radii,shape:'donut',ringSegments};
+}
 export function generateCage(spec: SquishySpec, cells=5,shape:ShapeId='mochi'): Cage {
+  if(shape==='donut')return generateRingCage(spec);
   const radii=compileSpec(spec).radii.map((v,a)=>v*SHAPE_SCALE[shape][a]) as Vec3, n=cells+1, count=n**3;
   const rest=new Float64Array(count*3), logical=new Float64Array(count*3), inverseMass=new Float64Array(count).fill(1);
   const id=(x:number,y:number,z:number)=> x + n*(y+n*z);
@@ -119,12 +171,13 @@ export interface SurfaceEmbedding {
 export function createSurface(cage:Cage, subdivisions=30):SurfaceEmbedding {
   const faceGrids:SurfaceEmbedding['faceGrids']=[];
   const rest:number[]=[], logical:number[]=[], indices:number[]=[], nodes:number[]=[], weights:number[]=[], map=new Map<string,number>();
-  const n=cage.cells+1, id=(p:number[])=>p[0]+n*(p[1]+n*p[2]);
+  const n=cage.cells+1,ring=cage.ringSegments,id=(p:number[])=>ring?((p[0]%ring+ring)%ring)+ring*(p[1]+n*p[2]):p[0]+n*(p[1]+n*p[2]);
+  const gridPoint=(q:number[])=>q.map((v,a)=>(v+1)*(a===0&&ring?ring:cage.cells)/2);
   function vertex(q:Vec3) {
-    const key=q.map(v=>Math.round(v*subdivisions)).join(',');
+    const key=q.map((v,a)=>Math.round((ring&&a===0&&v===1?-1:v)*subdivisions)).join(',');
     const found=map.get(key); if(found!==undefined) return found;
     const index=rest.length/3; map.set(key,index); rest.push(...shapePoint(...q,cage.radii,cage.shape));logical.push(...q);
-    const g=q.map(v=>(v+1)*cage.cells/2), cell=g.map(v=>Math.min(cage.cells-1,Math.floor(v))), f=g.map((v,i)=>v-cell[i]);
+    const g=gridPoint(q), cell=g.map((v,a)=>Math.min((a===0&&ring?ring:cage.cells)-1,Math.floor(v))), f=g.map((v,i)=>v-cell[i]);
     const order=[0,1,2].sort((a,b)=>f[b]-f[a]), path=[...cell];
     nodes.push(id(path));
     for(const axis of order) { path[axis]++; nodes.push(id(path)); }
@@ -132,6 +185,7 @@ export function createSurface(cage:Cage, subdivisions=30):SurfaceEmbedding {
     return index;
   }
   for(let axis=0;axis<3;axis++) for(const sign of [-1,1]) {
+    if(ring&&axis===0)continue;
     const other=[0,1,2].filter(a=>a!==axis), grid:number[]=[];
     for(let v=0;v<=subdivisions;v++) for(let u=0;u<=subdivisions;u++) {
       const q:Vec3=[0,0,0]; q[axis]=sign; q[other[0]]=u*2/subdivisions-1; q[other[1]]=v*2/subdivisions-1;
@@ -143,6 +197,7 @@ export function createSurface(cage:Cage, subdivisions=30):SurfaceEmbedding {
       if((axis===1?-1:1)*sign>0) indices.push(a,b,c,b,d,c); else indices.push(a,c,b,b,c,d);
     }
   }
+  if(ring)for(let i=0;i<indices.length;i+=3)[indices[i+1],indices[i+2]]=[indices[i+2],indices[i+1]];
   const adjacent=Array.from({length:rest.length/3},()=>new Set<number>());
   for(let i=0;i<indices.length;i+=3)for(let a=0;a<3;a++)for(let b=0;b<3;b++)if(a!==b)adjacent[indices[i+a]].add(indices[i+b]);
   const offsets=[0],neighbors:number[]=[];
@@ -152,7 +207,7 @@ export function createSurface(cage:Cage, subdivisions=30):SurfaceEmbedding {
   // Compile eight graph-diffusion passes into one sparse cage-to-surface map.
   // Positive weights preserve coherence and avoid overshoot; no visual solver state.
   let maps=adjacent.map((_,v)=>{
-    const g=[0,1,2].map(a=>(logical[v*3+a]+1)*cage.cells/2),cell=g.map(v=>Math.min(cage.cells-1,Math.floor(v))),f=g.map((v,i)=>v-cell[i]),map=new Map<number,number>();
+    const g=gridPoint(Array.from(logical.slice(v*3,v*3+3))),cell=g.map((v,a)=>Math.min((a===0&&ring?ring:cage.cells)-1,Math.floor(v))),f=g.map((v,i)=>v-cell[i]),map=new Map<number,number>();
     for(let x=0;x<2;x++)for(let y=0;y<2;y++)for(let z=0;z<2;z++){
       const weight=(x?f[0]:1-f[0])*(y?f[1]:1-f[1])*(z?f[2]:1-f[2]);
       if(weight>0)map.set(id([cell[0]+x,cell[1]+y,cell[2]+z]),weight);
@@ -192,9 +247,9 @@ export function facePoint(surface:SurfaceEmbedding,axis:number,sign:number,u:num
   return fu+fv<=1?{nodes:[a,b,c],weights:[1-fu-fv,fu,fv]}:{nodes:[b,d,c],weights:[1-fv,fu+fv-1,1-fu]};
 }
 export function cagePoint(cage:Cage,q:Vec3):MaterialPoint {
-  const g=q.map(v=>(v+1)*cage.cells/2),cell=g.map(v=>Math.min(cage.cells-1,Math.floor(v))),f=g.map((v,i)=>v-cell[i]);
+  const ring=cage.ringSegments,g=q.map((v,a)=>(v+1)*(a===0&&ring?ring:cage.cells)/2),cell=g.map((v,a)=>Math.min((a===0&&ring?ring:cage.cells)-1,Math.floor(v))),f=g.map((v,i)=>v-cell[i]);
   const order=[0,1,2].sort((a,b)=>f[b]-f[a]),path=[...cell],nodes:number[]=[],n=cage.cells+1;
-  const id=()=>path[0]+n*(path[1]+n*path[2]);nodes.push(id());for(const axis of order){path[axis]++;nodes.push(id());}
+  const id=()=>ring?((path[0]%ring+ring)%ring)+ring*(path[1]+n*path[2]):path[0]+n*(path[1]+n*path[2]);nodes.push(id());for(const axis of order){path[axis]++;nodes.push(id());}
   return {nodes,weights:[1-f[order[0]],f[order[0]]-f[order[1]],f[order[1]]-f[order[2]],f[order[2]]]};
 }
 // Locate a triangle once in material coordinates, then keep its barycentrics.

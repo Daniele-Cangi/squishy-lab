@@ -15,7 +15,7 @@ Pick a shape, press and hold to sink deeper, then release and watch it recover. 
 
 ## Features
 
-- **10 collection entries:** Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese and Peanut. Nine underlying body geometries include curved silhouettes, integral ears, recessed cheese pockets and a textured peanut shell.
+- **15 collection entries:** Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese, Peanut, Jelly Drop, Sugar Drop, Kitty Paw, Sleepy Capybara and Glazed Donut. Fourteen underlying body geometries include curved silhouettes, raised paw pads, a broad capybara muzzle, fine candy grain and a donut with a genuine center hole, icing and sprinkles.
 - **Soft-body interaction:** press, hold or drag with a mouse or touch. Longer holds deepen and widen the dent. Keyboard controls, reset and rotation are included.
 - **Finishes and faces:** Soft touch, Glitter and Clear, plus Smile, Happy, Sleepy, Wink and Surprised expressions. Surface details follow the deforming geometry.
 - **Make it yours:** a short message, four locally hosted fonts (Chewy, Baloo 2, Pacifico and Short Stack), and a text color picker. Your message replaces the face; clearing it restores the selected expression. Personalization persists across collection changes and reloads.
@@ -77,7 +77,7 @@ For opt-in local live inference, authenticate using `npx wrangler login` and run
 
 ## How it works
 
-A **216-particle / 750-tetrahedron CPU cage** uses XPBD distance and volume constraints. A welded **5,402-vertex visual surface** follows the cage, including its lettering and decorations. Physics runs at a fixed 120 Hz with bounded catch-up, supports, inversion barriers and rejected unsafe steps.
+Solid forms use a **216-particle / 750-tetrahedron CPU cage** with XPBD distance and volume constraints and a welded **5,402-vertex visual surface**. The donut uses a separate periodic ring cage with **256 particles / 864 tetrahedra** and **3,600 surface vertices**; no physical cells or skin triangles fill its hole. Lettering and decorations follow the respective deforming surface. Physics runs at a fixed 120 Hz with bounded catch-up, supports, inversion barriers and rejected unsafe steps.
 
 Pressure ramps over 0.85 seconds. Sustained holds progressively deepen and widen the contact until second six; dragging moves the contact and adds depth. No hardware pressure sensor is required. The simulation is a tuned toy material, not a calibrated engineering model; arbitrary self-collision is not implemented and only one pointer deforms the object.
 

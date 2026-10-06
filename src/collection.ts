@@ -1,4 +1,4 @@
-export const SHAPE_IDS=['mochi','butter','strawberry','cube','chocolate','banana','cat','cheese','peanut'] as const;
+export const SHAPE_IDS=['mochi','butter','strawberry','cube','chocolate','banana','cat','cheese','peanut','drop','gumdrop','paw','capybara','donut'] as const;
 export type ShapeId=typeof SHAPE_IDS[number];
 export type SurfaceEffect='foam'|'glitter'|'clear';
 export const FACE_EXPRESSIONS=['smile','happy','sleepy','wink','surprised'] as const;
@@ -16,6 +16,11 @@ export const COLLECTION:{id:string;name:string;note:string;color:string;appearan
   {id:'cat',name:'Cat',note:'Soft ears, a nose and whiskers',color:'#e9ab77',appearance:{shape:'cat',label:'none',face:true,effect:'foam'}},
   {id:'cheese',name:'Cheese',note:'A cheese wedge with little holes',color:'#f3be4d',appearance:{shape:'cheese',label:'none',face:false,effect:'foam'}},
   {id:'peanut',name:'Peanut',note:'Two-lobed peanut with a textured shell',color:'#d4a46e',appearance:{shape:'peanut',label:'none',face:false,effect:'foam'}},
+  {id:'drop',name:'Jelly Drop',note:'A sparkling teardrop with a soft rounded tip',color:'#92cde3',appearance:{shape:'drop',label:'none',face:false,effect:'clear'}},
+  {id:'gumdrop',name:'Sugar Drop',note:'A candy dome with a fine sugar texture',color:'#dc9ddd',appearance:{shape:'gumdrop',label:'none',face:false,effect:'glitter'}},
+  {id:'paw',name:'Kitty Paw',note:'Four soft toes and raised pink pads',color:'#f1d9ca',appearance:{shape:'paw',label:'none',face:false,effect:'foam'}},
+  {id:'capybara',name:'Sleepy Capybara',note:'A sleepy little friend with a broad muzzle',color:'#b68c69',appearance:{shape:'capybara',label:'none',face:true,expression:'sleepy',effect:'foam'}},
+  {id:'donut',name:'Glazed Donut',note:'A real ring with pink icing and sprinkles',color:'#dfaa67',appearance:{shape:'donut',label:'none',face:false,effect:'foam'}},
 ];
 export function validateAppearance(value:unknown):Appearance{
   if(!value||typeof value!=='object')throw new Error('Invalid appearance');

@@ -7,7 +7,7 @@
 
 **Happiness is squeezable.** A playful 3D squishy playground with soft-body deformation, cute personalization, recorded sound textures and optional AI material editing.
 
-**[Play Squishy Lab →](https://www.squishylab.fun/)**
+**Live website: [https://www.squishylab.fun/](https://www.squishylab.fun/)**
 
 Pick a shape, press and hold to sink deeper, then release and watch it recover. Make it yours with a little message, a cute font and your favorite text color, and download a PNG of your creation.
 

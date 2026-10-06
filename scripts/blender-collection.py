@@ -155,39 +155,70 @@ for pocket in references['cheese']['pockets']:
     add_group('cheese','recess lining',verts,indices,'#ce932f',pocket['axis'])
 for sign in [-1,1]:line('peanut',[(-.98+i*1.96/64,0) for i in range(65)],.008,'#a87c4c',1,sign,height=.005)
 
+from mathutils import Vector, geometry
+from mathutils.bvhtree import BVHTree
+paw_ref=references['paw'];paw_n=paw_ref['subdivisions']
+paw_grid=next(f['grid'] for f in paw_ref['faceGrids'] if f['axis']==2 and f['sign']==1)
+paw_plane=[Vector((paw_ref['positions'][i],paw_ref['positions'][i+1],0)) for i in range(0,len(paw_ref['positions']),3)]
+paw_triangles=[];paw_uv={}
+for y in range(paw_n+1):
+    for x in range(paw_n+1):paw_uv[paw_grid[x+(paw_n+1)*y]]=Vector((2*x/paw_n-1,2*y/paw_n-1,0))
+for y in range(paw_n):
+    for x in range(paw_n):
+        a=paw_grid[x+(paw_n+1)*y];b=paw_grid[x+1+(paw_n+1)*y];c=paw_grid[x+(paw_n+1)*(y+1)];d=paw_grid[x+1+(paw_n+1)*(y+1)]
+        paw_triangles.extend([(a,b,c),(b,d,c)])
+paw_bvh=BVHTree.FromPolygons(paw_plane,paw_triangles,all_triangles=True)
+def paw_center(u,v):
+    gu=(u+1)*paw_n/2;gv=(v+1)*paw_n/2;x=min(paw_n-1,math.floor(gu));y=min(paw_n-1,math.floor(gv));fu=gu-x;fv=gv-y
+    a=paw_grid[x+(paw_n+1)*y];b=paw_grid[x+1+(paw_n+1)*y];c=paw_grid[x+(paw_n+1)*(y+1)];d=paw_grid[x+1+(paw_n+1)*(y+1)]
+    ids,weights=([a,b,c],[1-fu-fv,fu,fv]) if fu+fv<=1 else ([b,d,c],[1-fv,fu+fv-1,1-fu])
+    return sum((paw_plane[i]*w for i,w in zip(ids,weights)),Vector())
+def paw_pad_uv(center,dx,dy):
+    point=center+Vector((dx*paw_ref['radii'][0],dy*paw_ref['radii'][1],0))
+    hit,normal,index,distance=paw_bvh.ray_cast(point+Vector((0,0,1)),Vector((0,0,-1)))
+    if hit is None:raise ValueError('Paw pad exceeds the front surface')
+    a,b,c=paw_triangles[index]
+    uv=geometry.barycentric_transform(hit,paw_plane[a],paw_plane[b],paw_plane[c],paw_uv[a],paw_uv[b],paw_uv[c])
+    return uv.x,uv.y
+
 def pad(name,x,y,rx,ry,color,height=.045,axis=2):
     verts=[x,y,height];indices=[];segments=32;rings=7
+    center=paw_center(x,y) if name=='paw' else None
     for ring in range(1,rings+1):
         radius=ring/rings
         for i in range(segments):
             angle=i*2*math.pi/segments
             if name=='paw' and x==0:
-                px=math.sin(angle)**3;py=(13*math.cos(angle)-5*math.cos(2*angle)-2*math.cos(3*angle)-math.cos(4*angle))/17
+                px=math.cos(angle)*(1+.10*math.sin(3*angle));py=math.sin(angle)*(1+.10*math.sin(3*angle))
             else:px=math.cos(angle);py=math.sin(angle)
-            verts.extend([x+rx*radius*px,y+ry*radius*py,.008+(height-.008)*(1-radius*radius)])
+            u,v=paw_pad_uv(center,rx*radius*px,ry*radius*py) if name=='paw' else (x+rx*radius*px,y+ry*radius*py)
+            verts.extend([u,v,.008+(height-.008)*(1-radius*radius)])
             a=1+(ring-1)*segments+i;b=1+(ring-1)*segments+(i+1)%segments
             if ring==1:indices.extend([0,a,b])
             else:c=a-segments;d=b-segments;indices.extend([c,a,d,a,b,d])
     add_group(name,'soft raised pad',verts,indices,color,axis)
 
-for x,y in [(-.67,.77),(-.23,.84),(.23,.84),(.67,.77)]:pad('paw',x,y,.135,.16,'#e7a6b7')
-pad('paw',0,-.05,.38,.30,'#e7a6b7',.065)
+for x,y in [(-.69,.46),(-.27,.78),(.27,.78),(.69,.46)]:pad('paw',x,y,.14,.24,'#e7a6b7',.055)
+pad('paw',0,-.22,.40,.50,'#e7a6b7',.045)
 for side in [-1,1]:
-    pad('capybara',side*.65,.65,.12,.12,'#8b664e',.02,axis=1)
-    line('capybara',[(side*.46,-.64),(side*.65,-.65)],.013,'#86634d')
+    pad('capybara',side*.62,.32,.16,.17,'#b68c69',.09,axis=1)
+    pad('capybara',side*.62,.32,.09,.10,'#8b664e',.11,axis=1)
+    pad('capybara',side*.69,-.27,.14,.28,'#a17b59',.024)
+    pad('capybara',side*.50,-.79,.22,.13,'#8b664e',.028)
+    for dx in [-.045,.045]:line('capybara',[(side*.50+dx,-.83),(side*.50+dx,-.74)],.008,'#76543f')
+pad('capybara',0,-.32,.36,.34,'#c6a17d',.008)
 
 import copy
 for expression in ['smile','happy','sleepy','wink','surprised']:
     source='face'+('' if expression=='smile' else '-'+expression)
     target='capy-face'+('' if expression=='smile' else '-'+expression)
-    pad(target,0,.12,.48,.33,'#caa27b',.006)
+    pad(target,0,.50,.52,.24,'#caa27b',.006)
     for asset in copy.deepcopy(assets[source]):
-        # Slightly wider eyes and a lower mouth suit the broad capybara muzzle.
         for j in range(0,len(asset['positions']),3):
-            asset['positions'][j]*=1.18
-            if asset['positions'][j+1]>.25:asset['positions'][j+1]+=.16
+            asset['positions'][j]*=1.1
+            asset['positions'][j+1]=.36+.85*asset['positions'][j+1]
         add_group(target,'expression',asset['positions'],asset['indices'],asset['color'],asset['axis'],asset['sign'])
-    for x in [-.14,.14]:ellipse(target,x,.2,.048,.028,'#76543f',height=.025)
+    for x in [-.16,.16]:ellipse(target,x,.55,.040,.023,'#76543f',height=.021)
 
 # Icing coats the actual toroidal skin; no triangle bridges the center hole.
 for face in references['donut']['faceGrids']:

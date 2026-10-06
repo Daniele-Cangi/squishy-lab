@@ -18,8 +18,8 @@ export const COLLECTION:{id:string;name:string;note:string;color:string;appearan
   {id:'peanut',name:'Peanut',note:'Two-lobed peanut with a textured shell',color:'#d4a46e',appearance:{shape:'peanut',label:'none',face:false,effect:'foam'}},
   {id:'drop',name:'Jelly Drop',note:'A sparkling teardrop with a soft rounded tip',color:'#92cde3',appearance:{shape:'drop',label:'none',face:false,effect:'clear'}},
   {id:'gumdrop',name:'Sugar Drop',note:'A candy dome with a fine sugar texture',color:'#dc9ddd',appearance:{shape:'gumdrop',label:'none',face:false,effect:'glitter'}},
-  {id:'paw',name:'Kitty Paw',note:'Four soft toes and raised pink pads',color:'#f1d9ca',appearance:{shape:'paw',label:'none',face:false,effect:'foam'}},
-  {id:'capybara',name:'Sleepy Capybara',note:'A sleepy little friend with a broad muzzle',color:'#b68c69',appearance:{shape:'capybara',label:'none',face:true,expression:'sleepy',effect:'foam'}},
+  {id:'paw',name:'Kitty Paw',note:'Four rounded toes with soft pink cushions',color:'#f1d9ca',appearance:{shape:'paw',label:'none',face:false,effect:'foam'}},
+  {id:'capybara',name:'Sleepy Capybara',note:'A seated sleepy friend with a broad muzzle and little paws',color:'#b68c69',appearance:{shape:'capybara',label:'none',face:true,expression:'sleepy',effect:'foam'}},
   {id:'donut',name:'Glazed Donut',note:'A real ring with pink icing and sprinkles',color:'#dfaa67',appearance:{shape:'donut',label:'none',face:false,effect:'foam'}},
 ];
 export function validateAppearance(value:unknown):Appearance{

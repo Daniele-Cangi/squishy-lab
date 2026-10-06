@@ -15,7 +15,7 @@ Pick a shape, press and hold to sink deeper, then release and watch it recover. 
 
 ## Features
 
-- **15 collection entries:** Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese, Peanut, Jelly Drop, Sugar Drop, Kitty Paw, Sleepy Capybara and Glazed Donut. Fourteen underlying body geometries include curved silhouettes, raised paw pads, a broad capybara muzzle, fine candy grain and a donut with a genuine center hole, icing and sprinkles.
+- **15 collection entries:** Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese, Peanut, Jelly Drop, Sugar Drop, Kitty Paw, Sleepy Capybara and Glazed Donut. Fourteen underlying body geometries include curved silhouettes, a four-toed paw with rounded pink pads, a seated capybara with a broad muzzle and short limbs, fine candy grain and a donut with a genuine center hole, icing and sprinkles.
 - **Soft-body interaction:** press, hold or drag with a mouse or touch. Longer holds deepen and widen the dent. Keyboard controls, reset and rotation are included.
 - **Finishes and faces:** Soft touch, Glitter and Clear, plus Smile, Happy, Sleepy, Wink and Surprised expressions. Surface details follow the deforming geometry.
 - **Make it yours:** a short message, four locally hosted fonts (Chewy, Baloo 2, Pacifico and Short Stack), and a text color picker. Your message replaces the face; clearing it restores the selected expression. Personalization persists across collection changes and reloads.

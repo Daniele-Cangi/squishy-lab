@@ -16,8 +16,8 @@ The collection is authored locally and works without a provider or a network AI 
 | Peanut | Two slightly unequal rounded lobes and a narrow waist | Sculpted shell grain, material-bound color variation and a seam |
 | Jelly Drop | Smooth tapered teardrop with a rounded tip | Clear finish and attached sparkle by default |
 | Sugar Drop | Broad seated candy dome, narrower crown | Deterministic locally generated bump texture and attached sparkle |
-| Kitty Paw | Broad palm with four integral toe lobes | Four raised pink toe pads and a heart-shaped palm pad |
-| Sleepy Capybara | Rounded body with integral ear relief and a broad projecting muzzle | Inner-ear pads, light muzzle pigment, nostrils, paw markings and five expressions |
+| Kitty Paw | Broad palm with four integral toe lobes | Four rounded pink toe pads and a broad central cushion |
+| Sleepy Capybara | Seated body with a distinct head, short limbs and a broad projecting muzzle | Rounded ear cushions, inner-ear pigment, muzzle, belly, paws and five expressions |
 | Glazed Donut | Periodic toroidal volume with an actual center hole | Curved icing with a clipped wavy edge, attached sprinkles and a front-arc message area |
 
 Every entry supports soft-touch, glitter or transparent appearance, and a face. Collection selection applies the entry's base color while retaining material softness, recovery, damping, compressibility and proportions. Effects and faces preserve deformation. Switching body geometry releases contact and atomically replaces cage, welded render mesh and probes. The two bar prints share a body, so switching between their labels preserves its dent. Reset explicitly restores the current reference.
@@ -101,3 +101,13 @@ Chocolate and Glazed Donut use a broader contact footprint and a height-bounded 
 
 The default 6.5-second hold increases the rendered contact depth from 0.255 to 0.380 for Chocolate and from 0.184 to 0.280 for Donut, compared with revision `9d5b402`. These are scene units under identical material and fixed-step input, not physical measurements. Both default probes have zero safety backoffs and recover to less than 0.002 displacement after 12 seconds. See `evidence/low-shapes/comparison.json` and the dedicated unit/browser tests for the input conditions.
 Validation: `npm run check` passed all 152 unit tests, TypeScript, lint and production build. The 25 Chrome browser tests across collection, next collection and low shapes passed, including 390px touch emulation (not a physical Android device). Upper mouse holds, 12-second recovery and reset passed for both low shapes. The held screenshots in `evidence/low-shapes/` use the real mouse raycast contact; the numerical comparison uses the fixed standard probe.
+
+
+### Paw and Capybara refinement — October 6, 2026
+
+Kitty Paw now has a broad padded palm and four stronger toe lobes. The pad footprints are authored in the physical front plane, then mapped back to the skin with Blender BVH barycentric projection. This keeps their rest silhouettes rounded despite the nonlinear body mapping. Their relief and color still follow the deforming skin.
+
+Sleepy Capybara is now a complete seated figure with a waist separating the head and body, a projecting blunt muzzle, short integral limb relief, belly pigment and rounded attached ears. The five facial expressions remain available. The capybara and paw use a lower default camera angle to show the front features. The original generic cage resolution is unchanged; no new solver or AI contract is required.
+
+Commercial visual references: [Taba sleeping capybara](https://tabasquishy.com/products/brown-sleeping-capybara-taba-squishy) and the [paw/capybara product family](https://tabasquishy.com/pages/dumpling-squishy). The seated pose is a Squishy Lab modeling interpretation, not an exact reproduction of a particular commercial toy.
+Validation: all 152 unit tests, TypeScript, lint, build and 25 collection/personalization browser tests passed. Both refined models passed Chrome touch hold/release/reset emulation at 390px. Rest, held and mobile renders are in `evidence/collection-refined/`; regenerate desktop/layout captures with `npx tsx scripts/record-refined-collection.ts`. Physical Android performance was not measured.

@@ -95,7 +95,7 @@ export class SquishyScene {
   private updateCamera() {
     const banana=this.appearance.shape==='banana',targetY=this.body.cage.radii[1]*(banana?1.45:.95);
     const distance=banana?Math.max(1,1.38/this.camera.aspect):this.canvas.closest('.is-expanded')?Math.max(1,.8/this.camera.aspect):1;
-    this.camera.position.set(Math.sin(this.angle)*5.3*distance,targetY+((banana?2.65:4.3)-targetY)*distance,Math.cos(this.angle)*5.3*distance);this.camera.lookAt(0,targetY,0);this.camera.updateMatrixWorld();this.needsRender=true;
+    this.camera.position.set(Math.sin(this.angle)*5.3*distance,targetY+((banana?2.65:['capybara','paw'].includes(this.appearance.shape)?3.05:4.3)-targetY)*distance,Math.cos(this.angle)*5.3*distance);this.camera.lookAt(0,targetY,0);this.camera.updateMatrixWorld();this.needsRender=true;
   }
   private resize() {const w=this.canvas.clientWidth,h=this.canvas.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();this.updateCamera();}
   applySpec(spec:SquishySpec) {

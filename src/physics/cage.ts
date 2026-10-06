@@ -20,7 +20,7 @@ export const CHEESE_POCKETS=[
   {axis:1,u:-.36,v:.43,radius:.2,depth:.2},{axis:1,u:.39,v:.65,radius:.17,depth:.19},
   {axis:1,u:.1,v:-.32,radius:.15,depth:.17},
 ];
-const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.28,.55,.39],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.05,.82,.63],drop:[.88,1.25,.88],gumdrop:[.95,.95,.95],paw:[1,.95,.48],capybara:[1,.78,1.13],donut:[1,.5,1]};
+const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.28,.55,.39],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.05,.82,.63],drop:[.88,1.25,.88],gumdrop:[.95,.95,.95],paw:[1,.95,.48],capybara:[.78,1.30,.72],donut:[1,.5,1]};
 export function shellRelief(x:number,angle:number){
   const lengthwise=((1+Math.cos(10*angle+.6*Math.sin(7*x)))/2)**6;
   const crosswise=((1+Math.cos(25*x+.9*Math.sin(4*angle)))/2)**8;
@@ -55,16 +55,22 @@ export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='moch
     return [(x*.2+sx*.8)*r[0]*profile,(y*.2+sy*.8+1)*r[1]+.04,(z*.2+sz*.8)*r[2]*profile];
   }
   if(shape==='paw'){
-    const toes=[-.66,-.22,.22,.66].reduce((sum,c)=>sum+Math.exp(-(((sx-c)/.15)**2)),0);
-    const palm=.82+.18*(sy+1)/2;
-    return [sx*r[0]*palm,(sy+1+.3*toes*((sy+1)/2)**5)*r[1]+.04,sz*r[2]];
+    // Broad rounded palm and four toe lobes share one padded volume.
+    const px=x*Math.sqrt(1-y*y/2),py=y*Math.sqrt(1-x*x/2),rho=Math.hypot(px,py);
+    const bx=.2*x+.8*px,by=.2*y+.8*py,t=(by+1)/2;
+    const toes=[-.66,-.24,.24,.66].reduce((sum,c)=>sum+Math.exp(-(((bx-c)/.17)**2)),0);
+    const bevel=1-.10*z*z;
+    return [bx*(.8+.2*t)*bevel*r[0],(by+.45*toes*t**5+1)*bevel*r[1]+.04,z*r[2]*Math.sqrt(1-.55*rho*rho)];
   }
   if(shape==='capybara'){
-    const bx=.15*x+.85*sx,by=.15*y+.85*sy,bz=.15*z+.85*sz;
-    const ears=Math.exp(-(((bx-.55)/.18)**2))+Math.exp(-(((bx+.55)/.18)**2));
-    const muzzle=.28*Math.exp(-((bx/.65)**4)-((by-.03)/.55)**4)*((z+1)/2)**5;
-    const feet=.12*Math.exp(-(((Math.abs(sx)-.65)/.2)**2)-((sy+.62)/.24)**2);
-    return [bx*r[0]*(1+feet),(by+1+.65*ears*((by+1)/2)**5)*r[1]+.04,(bz+muzzle)*r[2]];
+    const bx=.10*x+.90*sx,by=.10*y+.90*sy,bz=.10*z+.90*sz;
+    const waist=1-.16*Math.exp(-(((by-.08)/.22)**2));
+    const ears=Math.exp(-(((bx-.56)/.22)**2))+Math.exp(-(((bx+.56)/.22)**2));
+    const front=((z+1)/2)**4;
+    const muzzle=.40*Math.exp(-((bx/.65)**4)-(((by-.40)/.28)**4));
+    const arms=.16*Math.exp(-(((Math.abs(bx)-.62)/.21)**2)-(((by+.30)/.30)**2));
+    const feet=.26*Math.exp(-(((Math.abs(bx)-.50)/.24)**2)-(((by+.73)/.21)**2));
+    return [bx*waist*r[0],(by+1+.27*ears*((by+1)/2)**6)*r[1]+.04,(bz*waist+(muzzle+arms+feet)*front)*r[2]];
   }
   if(shape==='strawberry'){
     const taper=.6+.4*(sy+1)/2;

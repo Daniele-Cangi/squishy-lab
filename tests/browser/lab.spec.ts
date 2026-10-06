@@ -5,14 +5,18 @@ async function snapshot(page:Page){return page.evaluate(()=>window.__squishy!.sn
 async function ready(page:Page){await page.goto('/');await expect(page.locator('#mode-badge')).toHaveText('Local demo · no AI');await expect.poll(async()=>page.evaluate(()=>!!window.__squishy)).toBe(true);}
 
 test('material comparison resets memory and preserves appearance; interruption restores the actual edit',async({page})=>{
+  test.setTimeout(90000);
   await ready(page);const before=(await snapshot(page)).spec;
   // A controlled multi-field reply proves the comparison really holds visual
   // appearance fixed, even when the actual edit changes color and proportions.
   await page.route('**/api/squishy',route=>route.fulfill({json:{version:1,status:'ok',provider:'mock',patch:{softness:.5,color:'#77c8ea',proportions:{height:.78}},spec:{...before,softness:.5,color:'#77c8ea',proportions:{...before.proportions,height:.78}},message:'Fixture edit.',corrections:[],repaired:false}}));
   await page.getByRole('textbox',{name:'Color, softness, recovery…',exact:true}).fill('Same, but a little firmer.');await page.locator('#generate').click();await expect(page.locator('#comparison-row')).toBeVisible();
-  const edited=(await snapshot(page)).spec;await page.locator('#compare').click();await expect(page.locator('#comparison-row')).toHaveAttribute('data-phase','before');
-  expect((await snapshot(page)).spec).toEqual(before);await expect.poll(async()=>(await snapshot(page)).renderedSurfaceDepthUnits).toBeGreaterThan(.1);
-  await expect(page.locator('#comparison-row')).toHaveAttribute('data-phase','after',{timeout:16000});
+  const edited=(await snapshot(page)).spec;
+  // Comparison phases follow fixed simulation time, not runner/GPU wall time.
+  await page.clock.install({time:new Date('2026-10-06T00:00:00Z')});await page.clock.pauseAt(new Date('2026-10-06T01:00:00Z'));
+  await page.locator('#compare').click();await expect(page.locator('#comparison-row')).toHaveAttribute('data-phase','before');
+  expect((await snapshot(page)).spec).toEqual(before);await page.clock.runFor(1000);expect((await snapshot(page)).renderedSurfaceDepthUnits).toBeGreaterThan(.1);
+  await page.clock.runFor(6200);await expect(page.locator('#comparison-row')).toHaveAttribute('data-phase','after');
   const after=await snapshot(page);expect(after.physicsTime).toBeLessThan(1);expect(after.spec.color).toBe(before.color);expect(after.spec.proportions).toEqual(before.proportions);expect(after.spec.softness).toBe(edited.softness);
   await page.locator('#compare').click();await expect(page.locator('#comparison-row')).toHaveAttribute('data-phase','ready');expect((await snapshot(page)).spec).toEqual(edited);expect((await snapshot(page)).maxDisplacement).toBeLessThan(.001);
 });

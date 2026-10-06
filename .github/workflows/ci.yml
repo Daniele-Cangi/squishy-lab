@@ -19,5 +19,7 @@ jobs:
           name: browser-evidence
           path: |
             playwright-report/
+            test-results/
+            work/low-shapes/*.png
             evidence/*.png
             evidence/refined/browser-smoke/*.png

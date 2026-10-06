@@ -9,7 +9,7 @@
 
 **Live website: [https://www.squishylab.fun/](https://www.squishylab.fun/)**
 
-Pick a shape, press and hold to sink deeper, then release and watch it recover. Make it yours with a little message, a cute font and your favorite text color, and download a PNG of your creation.
+Pick a shape, press and hold to sink deeper, then release and watch it recover. Make it yours with a little message, emoji, a cute font and your favorite text color, and download a PNG of your creation.
 
 ![Squishy Lab desktop playground with customization controls](docs/images/playground-desktop.png)
 
@@ -18,8 +18,9 @@ Pick a shape, press and hold to sink deeper, then release and watch it recover. 
 - **10 collection entries:** Mochi, Butter, Strawberry bar, Strawberry face, Jelly cube, Chocolate, Banana, Cat, Cheese and Peanut. Nine underlying body geometries include curved silhouettes, integral ears, recessed cheese pockets and a textured peanut shell.
 - **Soft-body interaction:** press, hold or drag with a mouse or touch. Longer holds deepen and widen the dent. Keyboard controls, reset and rotation are included.
 - **Finishes and faces:** Soft touch, Glitter and Clear, plus Smile, Happy, Sleepy, Wink and Surprised expressions. Surface details follow the deforming geometry.
-- **Make it yours:** up to 40 characters, four locally hosted fonts (Chewy, Baloo 2, Pacifico and Short Stack), and a text color picker. Your message replaces the face; clearing it restores the selected expression. Personalization persists across collection changes and reloads.
-- **Download PNG:** save the current rendered squishy without the page's controls or panels.
+- **Make it yours:** a short message, four locally hosted fonts (Chewy, Baloo 2, Pacifico and Short Stack), and a text color picker. Your message replaces the face; clearing it restores the selected expression. Personalization persists across collection changes and reloads.
+- **Emoji personalization:** use your phone's emoji keyboard, paste emoji, or tap one of 12 quick picks. Mix emoji with text; quick picks insert at the cursor or replace selected text. Emoji count toward the message length limit. Their appearance follows the device's available fonts and may vary across platforms; color emoji retain their own colors when you change the text color.
+- **Download PNG:** save the current rendered squishy, including its text and emoji, without the page's controls or panels.
 - **Gel and Crunchy audio:** pressure-responsive excerpts from real recordings. Gel is selected and enabled by default, starting after the first playground gesture as required by browsers. Choose Crunchy or mute with the speaker button.
 - **Responsive playground:** a large squishy with the AI panel below it on the left, and collection/customization controls on the right on desktop. On mobile, the squishy stays above the controls and AI is the last panel. Fullscreen uses the browser API or a viewport fallback.
 - **Optional AI material edits:** describe color, softness, firmness, recovery or proportions in English. The public app uses Cloudflare Workers AI; local development uses an explicit mock. AI does not generate new shapes, text or fonts.

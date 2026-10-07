@@ -181,6 +181,12 @@ export class SquishyScene {
     return {ref,normal:normal.toArray() as Vec3,world:hit.point,embedding:{nodes:[a,b,c],weights:[bary.x,bary.y,bary.z]}};
   }
   private bindInput() {
+    // Cancel native panning only for a touch that grabbed the squishy.
+    // Cancelling touchstart keeps subsequent drags from becoming pointercancel;
+    // touches on the empty canvas still use the browser's normal page scrolling.
+    this.canvas.addEventListener('touchstart',event=>{
+      if(this.pointer!==null&&this.held&&event.cancelable)event.preventDefault();
+    },{passive:false});
     this.canvas.addEventListener('pointerdown',event=>{
       if(this.pointer!==null||event.button!==0)return;this.stopComparison();const hit=this.hit(event.clientX,event.clientY);if(!hit)return;
       event.preventDefault();this.canvas.focus({preventScroll:true});this.pointer=event.pointerId;this.canvas.setPointerCapture(event.pointerId);this.held=true;this.keyboard=false;this.pressStart=this.body.time;this.startY=this.currentY=event.clientY;this.pointerPoint=hit.ref;this.pointerNormal=hit.normal;this.targetNormal=hit.normal;this.haloEmbedding=hit.embedding;this.moveHalo(hit.world,hit.normal);this.onState('pressing');

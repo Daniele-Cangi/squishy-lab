@@ -86,12 +86,39 @@ test('touch layout, pointer cancellation, outside release and optional storage',
   await page.mouse.move(box.x+box.width/2,box.y+box.height*.5);await page.mouse.down();await page.mouse.move(380,10);await page.mouse.up();await expect(page.locator('#state')).not.toHaveText('Being squished');
   await page.getByRole('button',{name:'Peach mochi Foam · a little firmer'}).click();await page.reload();await expect.poll(async()=>(await snapshot(page)).spec.color).toBe('#f6aa8b');await page.getByRole('button',{name:'Clear saved squishy'}).click();expect(await page.evaluate(()=>localStorage.getItem('squishy-spec-v1'))).toBeNull();
 });
-test('mobile can scroll to the options with a gesture that starts on the render',async({browser})=>{
+test('mobile can scroll on the render background and tap the options shortcut',async({browser})=>{
   const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const page=await context.newPage();
   try{
-    await ready(page);const box=(await page.locator('#squishy').boundingBox())!,session=await context.newCDPSession(page),x=box.x+box.width*.5,y=box.y+box.height*.72;
+    await ready(page);const box=(await page.locator('#squishy').boundingBox())!,session=await context.newCDPSession(page),x=box.x+box.width*.08,y=box.y+box.height*.5;
     await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id:1}]});await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-180,id:1}]});await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(0);
-    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await expect(page.getByRole('region',{name:'Shapes and finishes'})).toBeVisible();
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await expect(page.locator('#state')).not.toHaveText('Being squished');
+    await page.evaluate(()=>window.scrollTo(0,0));await page.getByRole('link',{name:'Shapes & styles ↓'}).tap();await expect(page).toHaveURL(/#collection$/);expect((await page.locator('#collection').boundingBox())!.y).toBeLessThan(100);
+  }finally{await context.close();}
+});
+test('touch pressure survives vertical finger movement until release, including fullscreen',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const page=await context.newPage();
+  try{
+    await ready(page);const session=await context.newCDPSession(page);
+    for(const fullscreen of [false,true]){
+      if(fullscreen)await page.getByRole('button',{name:'Enter fullscreen',exact:true}).click();
+      const box=(await page.locator('#squishy').boundingBox())!,x=box.x+box.width*.5,y=box.y+box.height*.5,initialScroll=await page.evaluate(()=>scrollY);
+      await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id:1}]});await expect(page.locator('#state')).toHaveText('Being squished');await page.waitForTimeout(700);
+      await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-40,id:1}]});await page.waitForTimeout(300);await expect(page.locator('#state')).toHaveText('Being squished');expect(await page.evaluate(()=>scrollY)).toBe(initialScroll);
+      await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+20,y:y+35,id:1}]});await page.waitForTimeout(300);await expect(page.locator('#state')).toHaveText('Being squished');
+      await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await expect(page.locator('#state')).not.toHaveText('Being squished');
+    }
+  }finally{await context.close();}
+});
+test('stationary touch maintains pressure for the full sustained hold and releases on lift',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const page=await context.newPage();
+  try{
+    await ready(page);const box=(await page.locator('#squishy').boundingBox())!,session=await context.newCDPSession(page),x=box.x+box.width*.5,y=box.y+box.height*.5,initialScroll=await page.evaluate(()=>scrollY);
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id:1}]});
+    for(const delay of [700,2000,3500]){
+      await page.waitForTimeout(delay);await expect(page.locator('#state')).toHaveText('Being squished');expect(await page.evaluate(()=>(window.__squishy!.snapshot() as {contact:unknown}).contact)).not.toBeNull();
+    }
+    expect(await page.evaluate(()=>scrollY)).toBe(initialScroll);
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await expect(page.locator('#state')).not.toHaveText('Being squished');expect(await page.evaluate(()=>(window.__squishy!.snapshot() as {contact:unknown}).contact)).toBeNull();
   }finally{await context.close();}
 });
 test('API validation on the running adapter',async({request})=>{

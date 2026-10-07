@@ -350,6 +350,8 @@ footer button {font-size:10px;color:#75657b;background:none;border:0;padding:5px
 .vibe-sticker>span{font-size:30px}.vibe-sticker strong{display:block;font-family:Chewy,system-ui,sans-serif;font-size:32px;line-height:1.2}
 @media(max-width:720px){.vibe-sticker{font-size:14px;margin-top:18px;padding:9px 15px;gap:10px}.vibe-sticker strong{font-size:26px}}
 
+@media(max-width:720px){.play-area canvas{touch-action:pan-y}.scroll-hint{display:inline-block;margin-top:3px;color:#59466e;font-size:9px;font-weight:700}}
+
 .about-lab{margin-top:56px;padding:32px;border:1.5px solid var(--ink);border-radius:24px;background:var(--paper);box-shadow:4px 5px 0 #c4b7d2;scroll-margin-top:24px}
 .about-sticker{display:inline-block;padding:7px 12px;background:var(--mint);border:1px solid var(--ink);border-radius:9px;transform:rotate(-2deg);font-size:12px;font-weight:700}
 .about-lab h1,.about-lab h2{font-family:Manrope,system-ui,sans-serif;font-size:clamp(23px,3vw,32px);letter-spacing:-.7px;margin:20px 0 12px;line-height:1.2}

@@ -86,6 +86,14 @@ test('touch layout, pointer cancellation, outside release and optional storage',
   await page.mouse.move(box.x+box.width/2,box.y+box.height*.5);await page.mouse.down();await page.mouse.move(380,10);await page.mouse.up();await expect(page.locator('#state')).not.toHaveText('Being squished');
   await page.getByRole('button',{name:'Peach mochi Foam · a little firmer'}).click();await page.reload();await expect.poll(async()=>(await snapshot(page)).spec.color).toBe('#f6aa8b');await page.getByRole('button',{name:'Clear saved squishy'}).click();expect(await page.evaluate(()=>localStorage.getItem('squishy-spec-v1'))).toBeNull();
 });
+test('mobile can scroll to the options with a gesture that starts on the render',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const page=await context.newPage();
+  try{
+    await ready(page);const box=(await page.locator('#squishy').boundingBox())!,session=await context.newCDPSession(page),x=box.x+box.width*.5,y=box.y+box.height*.72;
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id:1}]});await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-180,id:1}]});await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(0);
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await expect(page.getByRole('region',{name:'Shapes and finishes'})).toBeVisible();
+  }finally{await context.close();}
+});
 test('API validation on the running adapter',async({request})=>{
   expect((await request.post('/api/squishy',{data:{version:1,mode:'create',prompt:''}})).status()).toBe(400);
   expect((await request.post('/api/squishy',{data:'x'.repeat(9000),headers:{'Content-Type':'application/json'}})).status()).toBe(413);

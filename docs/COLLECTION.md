@@ -18,6 +18,7 @@ The collection is authored locally and works without a provider or a network AI 
 | Sugar Drop | Broad seated candy dome, narrower crown | Deterministic locally generated bump texture and attached sparkle |
 | Kitty Paw | Broad palm with four integral toe lobes | Four rounded pink toe pads and a broad central cushion |
 | Sleepy Capybara | Seated body with a distinct head, short limbs and a broad projecting muzzle | Rounded ear cushions, inner-ear pigment, muzzle, belly, paws and five expressions |
+| Dumpling | Rounded body with twelve radial folds and a central gathered pinch | Five expressions; daily steamer variants with pastel colors and optional glitter |
 | Glazed Donut | Periodic toroidal volume with an actual center hole | Curved icing with a clipped wavy edge, attached sprinkles and a front-arc message area |
 
 Every entry supports soft-touch, glitter or transparent appearance, and a face. Collection selection applies the entry's base color while retaining material softness, recovery, damping, compressibility and proportions. Effects and faces preserve deformation. Switching body geometry releases contact and atomically replaces cage, welded render mesh and probes. The two bar prints share a body, so switching between their labels preserves its dent. Reset explicitly restores the current reference.
@@ -26,7 +27,7 @@ Every entry supports soft-touch, glitter or transparent appearance, and a face. 
 
 `scripts/export-workshop.ts` exports the exact runtime reference surfaces and cages into ignored `work/`. `scripts/blender-collection.py` runs Blender in background mode and builds triangle assets from editable font meshes and simple drawings. Tested with the installed Blender 5.2.2 LTS at `E:\blender.exe`.
 
-- `assets/blender/squishy-collection.blend`: ten editable named collections in two rows, original body meshes, separately editable print meshes, hidden cage references and hidden material-coordinate print templates.
+- `assets/blender/squishy-collection.blend`: sixteen editable named collections, original body meshes, separately editable print meshes, hidden cage references and hidden material-coordinate print templates.
 - Workshop objects rotate the runtime Y-up reference into Blender's native Z-up view. The exported browser detail coordinates remain unchanged.
 - `public/assets/collection-details.json`: generated positions in face material coordinates, triangle indices and colors. No external fonts, textures, commercial photographs or logos are required by the browser.
 
@@ -111,3 +112,7 @@ Sleepy Capybara is now a complete seated figure with a waist separating the head
 
 Commercial visual references: [Taba sleeping capybara](https://tabasquishy.com/products/brown-sleeping-capybara-taba-squishy) and the [paw/capybara product family](https://tabasquishy.com/pages/dumpling-squishy). The seated pose is a Squishy Lab modeling interpretation, not an exact reproduction of a particular commercial toy.
 Validation: all 152 unit tests, TypeScript, lint, build and 25 collection/personalization browser tests passed. Both refined models passed Chrome touch hold/release/reset emulation at 390px. Rest, held and mobile renders are in `evidence/collection-refined/`; regenerate desktop/layout captures with `npx tsx scripts/record-refined-collection.ts`. Physical Android performance was not measured.
+
+## Daily dumpling
+
+The steamer uses a CSS lid animation and a vector preview. Opening selects one of six colors and five moods, with an independent 15% glitter chance. The playable result uses the normal soft-body scene; twelve folds and the pinch are integral surface geometry. `squishy-daily-dumpling-v1` stores the result and its opening timestamp before revealing it. The next opening is allowed after 86,400,000 ms, independent of the visit counter token renewal. Refreshing, switching shapes and clearing the active squishy do not reset the opening history. Web Locks serialize claims across tabs; storage events refresh the other tab. Browser storage is required to open; no account, backend counter or AI request is used. This is a browser-local daily surprise rather than a tamper-proof entitlement.

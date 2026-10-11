@@ -1,4 +1,4 @@
-export const SHAPE_IDS=['mochi','butter','strawberry','cube','chocolate','banana','cat','cheese','peanut','drop','gumdrop','paw','capybara','donut'] as const;
+export const SHAPE_IDS=['mochi','butter','strawberry','cube','chocolate','banana','cat','cheese','peanut','drop','gumdrop','paw','capybara','donut','dumpling'] as const;
 export type ShapeId=typeof SHAPE_IDS[number];
 export type SurfaceEffect='foam'|'glitter'|'clear';
 export const FACE_EXPRESSIONS=['smile','happy','sleepy','wink','surprised'] as const;
@@ -21,6 +21,7 @@ export const COLLECTION:{id:string;name:string;note:string;color:string;appearan
   {id:'paw',name:'Kitty Paw',note:'Four rounded toes with soft pink cushions',color:'#f1d9ca',appearance:{shape:'paw',label:'none',face:false,effect:'foam'}},
   {id:'capybara',name:'Sleepy Capybara',note:'A seated sleepy friend with a broad muzzle and little paws',color:'#b68c69',appearance:{shape:'capybara',label:'none',face:true,expression:'sleepy',effect:'foam'}},
   {id:'donut',name:'Glazed Donut',note:'A real ring with pink icing and sprinkles',color:'#dfaa67',appearance:{shape:'donut',label:'none',face:false,effect:'foam'}},
+  {id:'dumpling',name:'Dumpling',note:'Gathered pleats and a little smile',color:'#f5dfb6',appearance:{shape:'dumpling',label:'none',face:true,effect:'foam'}},
 ];
 export function validateAppearance(value:unknown):Appearance{
   if(!value||typeof value!=='object')throw new Error('Invalid appearance');

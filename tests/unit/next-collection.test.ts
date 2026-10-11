@@ -6,7 +6,7 @@ import {createSurface,embedSurface,shapePoint,signedVolume,facePoint,samplePoint
 import {standardContact} from '../../src/physics/gesture';
 import {DEFAULT_SPEC} from '../../src/shared/spec';
 import {bindDetails,updateDetails,type DetailLibrary} from '../../src/decorations';
-const shapes=['drop','gumdrop','paw','capybara','donut'] as const;
+const shapes=['drop','gumdrop','paw','capybara','donut','dumpling'] as const;
 for(const shape of shapes){
  it(`${shape}: manifold skin, positive physical cells, held recovery and exact reset`,()=>{
   const body=new SoftBody(DEFAULT_SPEC,shape),surface=createSurface(body.cage),edges=new Map<string,number>();

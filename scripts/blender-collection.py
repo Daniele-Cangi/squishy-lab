@@ -250,7 +250,7 @@ out=ROOT/'public'/'assets';out.mkdir(parents=True,exist_ok=True)
 (out/'collection-details.json').write_text(json.dumps(dict(version=1,blender=bpy.app.version_string,groups=assets),separators=(',',':')),encoding='utf8')
 # The editable workshop contains the exact runtime reference surfaces.
 items=[('Mochi','mochi',['face'],(.65,.53,.86)),('Butter','butter',['butter'],(.93,.78,.38)),('Strawberry','butter',['strawberry'],(.95,.55,.69)),('Strawberry face','strawberry',['face','seeds','leaves'],(.9,.2,.3)),('Jelly cube','cube',[],(.3,.75,.9)),('Chocolate','chocolate',['chocolate'],(.46,.26,.18)),('Banana','banana',['banana'],(.96,.81,.33)),('Cat','cat',['cat','cat-face'],(.91,.67,.47)),('Cheese','cheese',['cheese'],(.95,.75,.3)),('Peanut','peanut',['peanut'],(.83,.64,.43))]
-items.extend([('Jelly Drop','drop',[],(.57,.8,.89)),('Sugar Drop','gumdrop',[],(.86,.62,.87)),('Kitty Paw','paw',['paw'],(.94,.85,.79)),('Sleepy Capybara','capybara',['capybara','capy-face-sleepy'],(.71,.55,.41)),('Glazed Donut','donut',['donut'],(.87,.67,.40))])
+items.extend([('Jelly Drop','drop',[],(.57,.8,.89)),('Sugar Drop','gumdrop',[],(.86,.62,.87)),('Kitty Paw','paw',['paw'],(.94,.85,.79)),('Sleepy Capybara','capybara',['capybara','capy-face-sleepy'],(.71,.55,.41)),('Glazed Donut','donut',['donut'],(.87,.67,.40)),('Dumpling','dumpling',['face'],(.96,.87,.71))])
 def project(ref,asset,u,v,height):
     # Exact barycentric sampling of the exported runtime triangles and normals.
     n=ref['subdivisions'];face=next(f for f in ref['faceGrids'] if f['axis']==asset['axis'] and f['sign']==asset['sign']);grid=face['grid']

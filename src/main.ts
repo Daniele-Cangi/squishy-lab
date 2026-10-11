@@ -1,3 +1,4 @@
+import { setupDailyDumpling, dumplingAppearance, DUMPLING_COLORS } from './daily-dumpling';
 import {inject} from '@vercel/analytics';
 import {setupFullscreen} from './fullscreen';
 import {SquishySound} from './sound';
@@ -187,6 +188,13 @@ squeeze.onkeydown=event=>{if((event.code==='Space'||event.code==='Enter')&&!even
 squeeze.onkeyup=event=>{if(event.code==='Space'||event.code==='Enter'){event.preventDefault();scene?.release();}};
 el('forget').onclick=()=>{letteringRevision++;cancelRequest();clearComparison();try{localStorage.removeItem('squishy-spec-v1');localStorage.removeItem('squishy-appearance-v1');}catch{/* Storage can be disabled. */}appearance={...DEFAULT_APPEARANCE};scene?.setAppearance(appearance);updateAppearanceControls();scene?.reset();spec=structuredClone(DEFAULT_SPEC);scene?.applySpec(spec);name='Purple cloud';updateSummary();status.textContent='Saved squishy cleared. Descriptions are never stored.';};
 updateSummary();updateAppearanceControls();
+setupDailyDumpling(reward=>{
+  letteringRevision++;
+  applyAppearance(dumplingAppearance(reward));
+  apply({...structuredClone(DEFAULT_SPEC),color:DUMPLING_COLORS[reward.colorIndex].color},'Your daily dumpling');
+  scene?.reset();status.textContent='Your daily dumpling is ready. Hold to squish!';
+  document.querySelector('.play-area')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+});
 async function configureProvider() {
   try {
     const response=await fetch(`${import.meta.env.VITE_API_BASE??''}/api/config`,{signal:AbortSignal.timeout(4000)});if(!response.ok)throw new Error();

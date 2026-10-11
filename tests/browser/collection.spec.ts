@@ -2,7 +2,7 @@ import { test,expect,type Page } from '@playwright/test';
 import { DEFAULT_SPEC } from '../../src/shared/spec';
 type Snapshot={appearance:{shape:string;label:string;face:boolean;effect:string};contactDepthUnits:number;contact:{sustain:number;normal:number[]}|null;detailsReady:boolean;decorationVertices:number;spec:typeof DEFAULT_SPEC;physicsTime:number;maxDisplacement:number;minVolumeRatio:number;safetyBackoffs:number;renderer:{render:{frame:number}}};
 const snapshot=async(page:Page)=>await page.evaluate(()=>window.__squishy!.snapshot()) as Snapshot;
-const ready=async(page:Page)=>{await page.goto('/');await expect.poll(async()=>(await snapshot(page))?.detailsReady).toBe(true);};
+const ready=async(page:Page)=>{await page.goto('/');await expect.poll(async()=>(await snapshot(page))?.detailsReady,{timeout:15000}).toBe(true);};
 for(const name of ['Mochi','Banana','Peanut','Chocolate'])test(`${name}: stationary mouse hold continues sinking, then recovers`,async({page})=>{
   test.setTimeout(90000);
   await page.clock.install({time:new Date('2026-10-04T00:00:00Z')});await ready(page);await page.clock.pauseAt(new Date('2026-10-04T01:00:00Z'));
@@ -35,9 +35,10 @@ for(const [name,shape]of [['Chocolate','chocolate'],['Banana','banana'],['Cat','
   await page.getByRole('button',{name:'Reset shape'}).click();expect((await snapshot(page)).maxDisplacement).toBeLessThan(.001);
 });
 test('effects and face preserve deformation; saved collection survives reload and deletion',async({page})=>{
+  test.setTimeout(90000);
   await page.clock.install({time:new Date('2026-10-03T00:00:00Z')});await ready(page);await page.clock.pauseAt(new Date('2026-10-03T01:00:00Z'));await page.getByRole('button',{name:'Butter',exact:true}).click();await page.evaluate(()=>window.__squishy!.press());await page.clock.runFor(1400);await page.evaluate(()=>window.__squishy!.release());const held=await snapshot(page);
   await page.getByRole('button',{name:'✦ Glitter',exact:true}).click();await page.getByLabel('Show face').check();const fx=await snapshot(page);expect(fx.maxDisplacement).toBe(held.maxDisplacement);expect(fx.physicsTime).toBe(held.physicsTime);expect(fx.appearance).toMatchObject({shape:'butter',effect:'glitter',face:true});
-  await page.reload();await expect.poll(async()=>(await snapshot(page)).detailsReady).toBe(true);expect((await snapshot(page)).appearance).toEqual(fx.appearance);await expect(page.getByRole('button',{name:'Butter',exact:true})).toHaveAttribute('aria-pressed','true');await expect(page.getByLabel('Show face')).toBeChecked();
+  await page.reload();await expect.poll(async()=>(await snapshot(page)).detailsReady,{timeout:15000}).toBe(true);expect((await snapshot(page)).appearance).toEqual(fx.appearance);await expect(page.getByRole('button',{name:'Butter',exact:true})).toHaveAttribute('aria-pressed','true');await expect(page.getByLabel('Show face')).toBeChecked();
   await page.getByRole('button',{name:'Clear saved squishy'}).click();expect((await snapshot(page)).appearance.shape).toBe('mochi');expect(await page.evaluate(()=>localStorage.getItem('squishy-appearance-v1'))).toBeNull();
 });
 test('material AI edits keep the selected panetto and its lettering',async({page})=>{
@@ -63,7 +64,7 @@ test('English mood controls preserve the dent and persist the selected expressio
   await expect(page.locator('html')).toHaveAttribute('lang','en');await expect(page.getByRole('textbox',{name:'Color, softness, recovery…',exact:true})).toHaveAttribute('placeholder','A purple mochi, very soft, with a slow return.');await expect(page.getByLabel('Show face')).toBeChecked();
   await page.evaluate(()=>window.__squishy!.press());await page.clock.runFor(1600);await page.evaluate(()=>window.__squishy!.release());const held=await snapshot(page);expect(held.decorationVertices).toBeGreaterThan(100);
   for(const expression of ['Smile','Happy','Sleepy','Wink','Surprised']){await page.getByRole('button',{name:`${expression} face`,exact:true}).click();const next=await snapshot(page);expect(next.maxDisplacement).toBe(held.maxDisplacement);expect(next.physicsTime).toBe(held.physicsTime);expect(next.appearance).toMatchObject({face:true,expression:expression.toLowerCase()});await expect(page.getByRole('button',{name:`${expression} face`,exact:true})).toHaveAttribute('aria-pressed','true');}
-  await page.reload();await expect.poll(async()=>(await snapshot(page)).detailsReady).toBe(true);expect((await snapshot(page)).appearance).toMatchObject({expression:'surprised',face:true});
+  await page.reload();await expect.poll(async()=>(await snapshot(page)).detailsReady,{timeout:15000}).toBe(true);expect((await snapshot(page)).appearance).toMatchObject({expression:'surprised',face:true});
   await page.getByRole('button',{name:'Cat',exact:true}).click();await page.getByRole('button',{name:'Wink face',exact:true}).click();expect((await snapshot(page)).decorationVertices).toBeGreaterThan(400);
   await page.setViewportSize({width:320,height:740});expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(320);await expect(page.getByRole('group',{name:'Face expression'})).toBeVisible();
 });

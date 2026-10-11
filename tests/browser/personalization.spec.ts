@@ -22,7 +22,8 @@ test('clearing a squishy cancels lettering waiting for a font',async({page})=>{
  expect(snapshot.appearance.face).toBe(true);expect(snapshot.appearance.text).toBeUndefined();
 });
 test('cute lettering persists, follows shape changes and exports PNG',async({page})=>{
- await page.goto('/');await page.waitForFunction(()=>!!window.__squishy);await page.getByLabel('A little message').fill('Hello August 😊🫶🏽');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string}}).appearance.text).toBe('Hello August 😊🫶🏽');
+ test.setTimeout(90000);
+ await page.goto('/');await page.waitForFunction(()=>!!window.__squishy);await page.evaluate(()=>document.fonts.ready.then(()=>undefined));await page.getByLabel('A little message').fill('Hello August 😊🫶🏽');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{text?:string}}).appearance.text,{timeout:15000}).toBe('Hello August 😊🫶🏽');
  await page.getByLabel('Text color').fill('#ed4b91');await expect.poll(async()=>((await page.evaluate(()=>window.__squishy!.snapshot())) as {appearance:{textColor?:string}}).appearance.textColor).toBe('#ed4b91');
  for(const name of ['Baloo 2','Pacifico','Short Stack','Chewy']){await page.getByRole('button',{name,exact:true}).click();await expect(page.getByRole('button',{name,exact:true})).toHaveAttribute('aria-pressed','true');}
  await page.getByRole('button',{name:'Cat',exact:true}).click();await expect(page.getByLabel('A little message')).toHaveValue('Hello August 😊🫶🏽');

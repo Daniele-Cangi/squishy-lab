@@ -197,7 +197,9 @@ setupDailyDumpling(reward=>{
 });
 async function configureProvider() {
   try {
-    const response=await fetch(`${import.meta.env.VITE_API_BASE??''}/api/config`,{signal:AbortSignal.timeout(4000)});if(!response.ok)throw new Error();
+    // Shader compilation can delay consuming an already received response.
+    // Configuration stays asynchronous while the playground starts rendering.
+    const response=await fetch(`${import.meta.env.VITE_API_BASE??''}/api/config`,{signal:AbortSignal.timeout(15000)});if(!response.ok)throw new Error();
     const config=await response.json() as {provider:string;model?:string;siteKey?:string};provider=config.provider;
     el('model-credit').textContent=config.model==='@cf/qwen/qwen3-30b-a3b-fp8'?'Qwen3 · Cloudflare Workers AI':['@cf/meta/llama-3.2-3b-instruct','@cf/meta/llama-3.1-8b-instruct'].includes(config.model??'')?'Built with Llama · Cloudflare Workers AI':'Cloudflare Workers AI';
     if(provider==='workers-ai') {

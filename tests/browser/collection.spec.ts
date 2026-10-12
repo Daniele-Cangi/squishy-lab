@@ -64,6 +64,10 @@ test('English mood controls preserve the dent and persist the selected expressio
   await expect(page.locator('html')).toHaveAttribute('lang','en');await expect(page.getByRole('textbox',{name:'Color, softness, recovery…',exact:true})).toHaveAttribute('placeholder','A purple mochi, very soft, with a slow return.');await expect(page.getByLabel('Show face')).toBeChecked();
   await page.evaluate(()=>window.__squishy!.press());await page.clock.runFor(1600);await page.evaluate(()=>window.__squishy!.release());const held=await snapshot(page);expect(held.decorationVertices).toBeGreaterThan(100);
   for(const expression of ['Smile','Happy','Sleepy','Wink','Surprised']){await page.getByRole('button',{name:`${expression} face`,exact:true}).click();const next=await snapshot(page);expect(next.maxDisplacement).toBe(held.maxDisplacement);expect(next.physicsTime).toBe(held.physicsTime);expect(next.appearance).toMatchObject({face:true,expression:expression.toLowerCase()});await expect(page.getByRole('button',{name:`${expression} face`,exact:true})).toHaveAttribute('aria-pressed','true');}
+  // End the paused-clock squeeze and drain its queued software GL work before
+  // booting a second renderer. Persistence is checked in normal browser time.
+  await page.evaluate(()=>document.querySelector('canvas')?.getContext('webgl2')?.getExtension('WEBGL_lose_context')?.loseContext());
+  await page.clock.resume();
   await page.reload();await expect.poll(async()=>(await snapshot(page)).detailsReady,{timeout:15000}).toBe(true);expect((await snapshot(page)).appearance).toMatchObject({expression:'surprised',face:true});
   await page.getByRole('button',{name:'Cat',exact:true}).click();await page.getByRole('button',{name:'Wink face',exact:true}).click();expect((await snapshot(page)).decorationVertices).toBeGreaterThan(400);
   await page.setViewportSize({width:320,height:740});expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(320);await expect(page.getByRole('group',{name:'Face expression'})).toBeVisible();

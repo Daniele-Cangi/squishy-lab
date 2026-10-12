@@ -9,7 +9,9 @@ test.afterEach(async({page})=>{
 test('daily prize persists, cannot reroll in a second tab and can be recalled',async({page,context})=>{
   test.setTimeout(90000);
   await page.goto('/');await expect.poll(async()=>(await snapshot(page)).detailsReady,{timeout:15000}).toBe(true);
-  await page.getByRole('button',{name:'Open my steamer ✨'}).click();
+  await page.getByRole('button',{name:'Open the dumpling basket'}).click();
+  await expect(page.locator('.daily-dumpling')).toHaveAttribute('aria-busy','true');
+  await expect(page.locator('#daily-basket')).toBeDisabled();
   await expect.poll(async()=>(await snapshot(page)).appearance.shape,{timeout:15000}).toBe('dumpling');
   const prize=await page.evaluate(key=>localStorage.getItem(key),key),first=await snapshot(page);
   expect(first.decorationVertices).toBeGreaterThan(0);
@@ -19,8 +21,20 @@ test('daily prize persists, cannot reroll in a second tab and can be recalled',a
   expect(await page.evaluate(key=>localStorage.getItem(key),key)).toBe(prize);
   const other=await context.newPage();await other.goto('/');await expect(other.locator('#daily-open')).toBeDisabled();await other.close();
   await page.getByRole('button',{name:'Mochi',exact:true}).click();
-  await page.locator('#daily-play').click();expect((await snapshot(page)).appearance).toEqual(first.appearance);
+  await page.getByRole('button',{name:'Squish today’s dumpling'}).click();expect((await snapshot(page)).appearance).toEqual(first.appearance);
+  expect(await page.evaluate(key=>localStorage.getItem(key),key)).toBe(prize);
   await page.locator('#forget').click();await expect(page.locator('#daily-open')).toBeDisabled();
+});
+
+test('reduced motion opens from the keyboard without an animation or reroll',async({page})=>{
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await page.goto('/');await expect.poll(async()=>(await snapshot(page)).detailsReady,{timeout:15000}).toBe(true);
+  await page.locator('#daily-basket').focus();await page.keyboard.press('Enter');
+  await expect.poll(async()=>(await snapshot(page)).appearance.shape,{timeout:15000}).toBe('dumpling');
+  await expect(page.locator('.daily-dumpling')).toHaveAttribute('aria-busy','false');
+  expect(await page.locator('.steamer-lid').evaluate(e=>getComputedStyle(e).animationName)).toBe('none');
+  const prize=await page.evaluate(key=>localStorage.getItem(key),key);
+  await page.locator('#daily-basket').click();expect(await page.evaluate(key=>localStorage.getItem(key),key)).toBe(prize);
 });
 test('pleated dumpling visibly deforms under a long hold and recovers',async({page})=>{
   test.setTimeout(90000);

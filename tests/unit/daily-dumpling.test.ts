@@ -1,6 +1,7 @@
 import { expect,it } from 'vitest';
 import { claimDumpling,DAILY_KEY,DAY_MS,drawDumpling,dumplingAppearance,readDumpling } from '../../src/daily-dumpling';
-import { shapePoint } from '../../src/physics/cage';
+import { generateCage,shapePoint } from '../../src/physics/cage';
+import { DEFAULT_SPEC } from '../../src/shared/spec';
 
 it('one opening per rolling day survives reloads, repeated clicks and the exact boundary',()=>{
   const values=new Map<string,string>(),storage={getItem:(key:string)=>values.get(key)??null,setItem:(key:string,value:string)=>{values.set(key,value);}};
@@ -30,4 +31,11 @@ it('dumpling folds are actual upper relief and fade into the smooth belly',()=>{
     const q:[number,number,number]=[Math.cos(a),0,Math.sin(a)];
     expect(shapePoint(...q,[1,1,1],'dumpling')).toEqual(shapePoint(...q,[1,1,1],'mochi'));
   }
+});
+it('dumpling body is taller than mochi and its rounded topknot rises above the gathered folds',()=>{
+  const mochi=generateCage(DEFAULT_SPEC,5,'mochi'),dumpling=generateCage(DEFAULT_SPEC,5,'dumpling');
+  expect(dumpling.radii[1]).toBeGreaterThan(mochi.radii[1]);
+  const pole=shapePoint(0,1,0,[1,1,1],'dumpling'),shoulder=shapePoint(.3,1,0,[1,1,1],'dumpling');
+  expect(pole[1]-shoulder[1]).toBeGreaterThan(.2);
+  expect(shapePoint(.0001,1,0,[1,1,1],'dumpling')[1]).toBeCloseTo(pole[1],5);
 });

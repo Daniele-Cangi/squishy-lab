@@ -20,7 +20,7 @@ export const CHEESE_POCKETS=[
   {axis:1,u:-.36,v:.43,radius:.2,depth:.2},{axis:1,u:.39,v:.65,radius:.17,depth:.19},
   {axis:1,u:.1,v:-.32,radius:.15,depth:.17},
 ];
-const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.28,.55,.39],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.05,.82,.63],drop:[.88,1.25,.88],gumdrop:[.95,.95,.95],paw:[1,.95,.48],capybara:[.78,1.30,.72],donut:[1,.5,1],dumpling:[1.05,.72,1.05]};
+const SHAPE_SCALE:Record<ShapeId,Vec3>={mochi:[1,1,1],butter:[1.35,.65,.74],strawberry:[.9,1.2,.9],cube:[.82,1.05,.93],chocolate:[1.25,.38,.82],banana:[1.28,.55,.39],cat:[.88,1.02,.7],cheese:[1.05,.68,.96],peanut:[1.05,.82,.63],drop:[.88,1.25,.88],gumdrop:[.95,.95,.95],paw:[1,.95,.48],capybara:[.78,1.30,.72],donut:[1,.5,1],dumpling:[1,1.08,1]};
 export function shellRelief(x:number,angle:number){
   const lengthwise=((1+Math.cos(10*angle+.6*Math.sin(7*x)))/2)**6;
   const crosswise=((1+Math.cos(25*x+.9*Math.sin(4*angle)))/2)**8;
@@ -47,14 +47,16 @@ export function shapePoint(x:number,y:number,z:number,r:Vec3,shape:ShapeId='moch
   }
   const unit=roundedPoint(x,y,z,[1,1,1]),sx=unit[0],sy=unit[1]-1.04,sz=unit[2];
   if(shape==='dumpling'){
-    // Twelve gathered folds fade into the smooth belly. The central pinch is
-    // radial, so the pole stays continuous and the cage has no separate parts.
+    // Twelve folds gather into a raised, rounded topknot above the fuller bun.
+    // The radial cap is part of the same volume, so it squishes with the body.
     const rho=Math.hypot(sx,sz),angle=Math.atan2(sz,sx);
     const upper=Math.max(0,sy),fold=Math.cos(12*angle+.65*rho);
-    const envelope=upper**2*Math.exp(-(((rho-.46)/.36)**2))*rho/(rho+.08);
+    const gathered=rho*rho/(rho*rho+.08*.08);
+    const envelope=upper**2*Math.exp(-(((rho-.46)/.36)**2))*gathered;
     const profile=1-.13*upper-.10*envelope*(.5+.5*fold);
-    const pinch=.11*Math.exp(-((rho/.19)**2))*upper**4;
-    return [sx*r[0]*profile,(sy+1+.17*envelope*fold-pinch)*r[1]+.04,sz*r[2]*profile];
+    const knot=.34*Math.exp(-((rho/.19)**2))*upper**4;
+    const neck=.045*Math.exp(-(((rho-.24)/.13)**2))*upper**4*gathered;
+    return [sx*r[0]*profile,(sy+1+.17*envelope*fold+knot-neck)*r[1]+.04,sz*r[2]*profile];
   }
   if(shape==='drop'){
     const taper=1.12-.7*(sy+1)/2;
